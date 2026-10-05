@@ -20,7 +20,7 @@ function seedState(){
   var st = {players:[], days:[], games:[]};
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
-  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji}; });
+  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||''}; });
   st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||''}; });
   st.games = S.games.map(function(g){
     return {
@@ -89,25 +89,13 @@ function playerStats(pid){
   });
   var t=overallTotals(); s.total=t[pid]||0;
   s.avg = s.rounds? Math.round(s.roundPts/s.rounds*10)/10 : 0;
+  var dset={};
+  state.games.forEach(function(g){ if(g.playerIds.indexOf(pid)>=0) dset[g.dayId]=1; });
+  s.daysPlayed=Object.keys(dset).length;
+  s.dayWins=0;
+  state.days.forEach(function(d){ if(dayRankMap(d.id)[pid]===1) s.dayWins++; });
   return s;
 }
-function settlePlan(totals){
-  var cred=[], debt=[];
-  for(var pid in totals){ var c=Math.round(totals[pid]*PT_RATE*100)/100;
-    if(c>0.004) cred.push({pid:pid,amt:c}); else if(c<-0.004) debt.push({pid:pid,amt:-c}); }
-  cred.sort(function(a,b){return b.amt-a.amt;}); debt.sort(function(a,b){return b.amt-a.amt;});
-  var tx=[],i=0,j=0;
-  while(i<debt.length&&j<cred.length){
-    var a=Math.min(debt[i].amt,cred[j].amt);
-    a=Math.round(a*100)/100;
-    tx.push({from:debt[i].pid,to:cred[j].pid,amt:a});
-    debt[i].amt=Math.round((debt[i].amt-a)*100)/100;
-    cred[j].amt=Math.round((cred[j].amt-a)*100)/100;
-    if(debt[i].amt<0.005)i++; if(cred[j].amt<0.005)j++;
-  }
-  return tx;
-}
-
 /* ---------------- share ---------------- */
 function standingsText(){
   var t=overallTotals(), r=ranked(t), L=[];
@@ -129,8 +117,7 @@ function tabbar(active){
     {r:'#/', i:'🏠', l:'Home'},
     {r:'#/days', i:'📅', l:'Days'},
     {r:'#/players', i:'👥', l:'Players'},
-    {r:'#/stats', i:'📊', l:'Stats'},
-    {r:'#/settle/all', i:'💸', l:'Settle'}
+    {r:'#/stats', i:'📊', l:'Stats'}
   ];
   $('#tabbar').innerHTML = tabs.map(function(t){
     var on = (t.r==='#/' && (active==='#/'||active==='#/home')) || (t.r!=='#/' && active.indexOf(t.r)===0);
@@ -156,6 +143,9 @@ function vHome(){
   var h='<div class="hero"><div class="kicker">🪁 Season Standings · Cumulative</div>';
   if(lead){ h+='<div class="big">'+lead.emoji+' '+esc(lead.name)+'</div><div class="mut">'+esc(lead.title)+' · <b class="'+cls(r[0].pts)+'">'+fmtPts(r[0].pts)+' pts</b> ('+fmtMoney(r[0].pts)+')</div>'; }
   h+='<div class="small mut" style="margin-top:8px">💰 Total money in play: <b class="gold">'+fmtMoney(pot)+'</b> · '+state.games.length+' games · '+state.days.length+' days</div></div>';
+  var lastD=state.days[state.days.length-1], lr=ranked(dayTotals(lastD.id));
+  if(lr.length){ var lp=pinfo(lr[0].pid);
+    h+='<div class="card" onclick="location.hash=\'#/day/'+lastD.id+'\'" style="cursor:pointer"><div class="row"><div class="grow"><div class="small dim">🗓️ Last session — '+esc(lastD.label)+' <span class="dim">'+esc(lastD.note||'')+'</span></div><div style="font-weight:800;font-size:16px">Winner: '+lp.emoji+' '+esc(lp.name)+' <span class="pos">'+fmtPts(lr[0].pts)+' pts</span></div></div><div class="gold" style="font-size:20px">→</div></div></div>'; }
   h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareStandings()">📤 Share standings</button></div>';
   h+='<h3>🏆 Cumulative Leaderboard</h3>';
   var lastDay=state.days[state.days.length-1];
@@ -206,7 +196,6 @@ function vDay(id){
       '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' rounds'+(gm.partial?' · partial history':'')+'</div></div>'+
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
-  h+='<div class="btnrow"><button class="btn ghost" onclick="location.hash=\'#/settle/'+id+'\'">💸 Settle '+esc(d.label)+'</button></div>';
   $('#view').innerHTML=h;
 }
 
@@ -231,9 +220,11 @@ function vPlayer(pid){
   var h='<div class="pf-hero"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
     '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div></div>';
   h+='<div class="tiles">'+
-    tile(s.games,'Games')+tile(s.rounds,'Rounds')+tile(s.crowns,'👑 Crowns')+
-    tile(s.avg,'Avg / round')+tile(s.best===null?'—':fmtPts(s.best),'Best round')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst round')+
+    tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / round')+
+    tile(s.best===null?'—':fmtPts(s.best),'Best round')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst round')+tile(s.dayWins,'🏅 Day wins')+
   '</div>';
+  var pat=pinfo(pid).pattern;
+  if(pat) h+='<div class="card"><h3 style="margin-top:0">🔍 The Pattern</h3><div style="font-size:14.5px;line-height:1.6">'+esc(pat)+'</div></div>';
   h+='<div class="card"><h3 style="margin-top:0">🎴 Table image</h3><div class="row" style="justify-content:space-around;text-align:center">'+
     miniStat('👁️',s.seen,'Saw maal')+miniStat('🙈',s.unseen,'Blind')+miniStat('🀄',s.dublee,'Dublee')+miniStat('🚩',s.foul,'Fouls')+
   '</div></div>';
@@ -244,12 +235,6 @@ function vPlayer(pid){
     h+='<tr><td>'+esc(d.label)+'</td><td class="num '+cls(dt[pid])+'"><b>'+fmtPts(dt[pid])+'</b></td><td class="num">'+dayRankMap(d.id)[pid]+'</td><td class="num">'+moveArrow(pid,di)+'</td></tr>';
   });
   h+='</table></div>';
-  h+='<h3>🃏 Game history</h3>';
-  var gs=state.games.filter(function(g){return g.playerIds.indexOf(pid)>=0;}).slice().reverse();
-  gs.forEach(function(g){
-    var gt=gameTotals(g), gr=ranked(gt), rk=gr.findIndex(function(e){return e.pid===pid;})+1;
-    h+='<div class="lb" onclick="location.hash=\'#/game/'+g.id+'\'" style="cursor:pointer"><div class="rank">'+rk+'</div><div class="grow"><div class="nm">'+esc(g.name)+' <span class="small dim">'+esc(dayLabel(g.dayId))+'</span></div><div class="ti2">'+g.rounds.length+' rounds'+(g.variant==='murder'?' · 🔪 murder':'')+'</div></div><div class="sc"><div class="pv '+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</div><div class="mv">'+fmtMoney(gt[pid])+'</div></div></div>';
-  });
   $('#view').innerHTML=h;
 }
 function tile(v,k){ return '<div class="tile"><div class="v">'+v+'</div><div class="k">'+k+'</div></div>'; }
@@ -279,29 +264,6 @@ function vGame(gid){
   h+='</tbody></table></div>';
   h+='<div class="small dim" style="margin:8px 2px">👑 round winner · 👁️ saw maal · 🙈 blind · 🀄 dublee · 🚩 foul</div>';
   h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareGame(\''+gid+'\')">📤 Share game</button></div>';
-  $('#view').innerHTML=h;
-}
-
-function vSettle(dayId){
-  tabbar('#/settle/all');
-  var totals, label;
-  if(dayId==='all'){ totals=overallTotals(); label='Season (cumulative)'; }
-  else{ var d=state.days.find(function(x){return x.id===dayId;}); if(!d){location.hash='#/days';return;} totals=dayTotals(dayId); label=d.label; }
-  var r=ranked(totals), tx=settlePlan(totals);
-  var h='<h2>💸 Settle — '+esc(label)+'</h2>';
-  h+='<div class="card"><h3 style="margin-top:0">Winners (receive) 🏆</h3>';
-  var win=r.filter(function(e){return e.pts>0;}), lose=r.filter(function(e){return e.pts<0;}).reverse();
-  if(!win.length) h+='<div class="small dim">Nobody won — settle nothing. Play more! 🃏</div>';
-  win.forEach(function(e){ var p=pinfo(e.pid); h+='<div class="kv"><span>'+p.emoji+' '+esc(p.name)+'</span><b class="pos">'+fmtMoney(e.pts)+'</b></div>'; });
-  h+='<h3>Payers 💳</h3>';
-  if(!lose.length) h+='<div class="small dim">No payers.</div>';
-  lose.forEach(function(e){ var p=pinfo(e.pid); h+='<div class="kv"><span>'+p.emoji+' '+esc(p.name)+'</span><b class="neg">'+fmtMoney(e.pts)+'</b></div>'; });
-  h+='</div>';
-  if(tx.length){ h+='<h3>🤝 Pay this way (fewest transfers)</h3><div class="card">';
-    tx.forEach(function(t){ h+='<div class="kv"><span>'+pinfo(t.from).emoji+' '+esc(pname(t.from))+' → '+pinfo(t.to).emoji+' '+esc(pname(t.to))+'</span><b class="gold">$'+t.amt.toFixed(2)+'</b></div>'; });
-    h+='</div>';
-  }
-  h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareSettle(\''+dayId+'\')">📤 Share settlement</button></div>';
   $('#view').innerHTML=h;
 }
 
@@ -338,16 +300,18 @@ function vStats(){
     var arr=state.players.map(function(p){var a=agg[p.id];return {pid:p.id,v:a.rounds>=10?Math.round(a.rpts/a.rounds*10)/10:null};}).filter(function(e){return e.v!==null;});
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
+  function hi(key){
+    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null;});
+    arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
+  }
   var cards=[
-    ['👑 Crown Collector','most rounds won', top('crowns'), function(e){return e.v+' crowns';}],
-    ['👁️ Maal Seer','saw maal the most', top('seen'), function(e){return e.v+' times';}],
-    ['🙈 Blind Faith','could not see maal', top('unseen'), function(e){return e.v+' times';}],
-    ['🀄 Dublee Dealer','most 7-pair shows', top('dublee'), function(e){return e.v+' dublees';}],
-    ['🚩 Foul Machine','most fouls', top('foul'), function(e){return e.v+' fouls';}],
-    ['🚀 Biggest Round','single round high', low('best')&&(function(){var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id].best};}).filter(function(e){return e.v!==null;});arr.sort(function(a,b){return b.v-a.v;});return arr[0];})(), function(e){return fmtPts(e.v)+' pts';}],
-    ['🕳️ Deepest Hole','single round low', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
-    ['⚡ Best Average','pts / round (10+ rounds)', avgTop(), function(e){return fmtPts(e.v)+' / round';}],
-    ['💰 Biggest Game','best single game', (function(){var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id].bestGame};}).filter(function(e){return e.v!==null;});arr.sort(function(a,b){return b.v-a.v;});return arr[0];})(), function(e){return fmtPts(e.v)+' pts';}]
+    ['🌼 Sayapatri Cup','most rounds won', top('crowns'), function(e){return e.v+' crowns';}],
+    ['🧲 Maal Magnet','saw the maal the most', top('seen'), function(e){return e.v+' times';}],
+    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
+    ['💥 Dhamaka Round','biggest single round', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🎁 Generous Host','most generous single round', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🎯 Sharp Shooter','best pts / round (10+ rounds)', avgTop(), function(e){return fmtPts(e.v)+' / round';}],
+    ['🏔️ Everest Game','best single game', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
   ];
   cards.forEach(function(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
@@ -369,7 +333,6 @@ function render(){
   if(parts[0]==='player') return vPlayer(parts[1]);
   if(parts[0]==='game') return vGame(parts[1]);
   if(parts[0]==='stats') return vStats();
-  if(parts[0]==='settle') return vSettle(parts[1]);
   return vHome();
 }
 
@@ -381,15 +344,6 @@ shareGame:function(gid){
   var g=state.games.find(function(x){return x.id===gid;}); if(!g)return;
   var gt=gameTotals(g), r=ranked(gt), L=['🃏 DPL — '+g.name+' ('+dayLabel(g.dayId)+')'];
   r.forEach(function(e,i){ L.push((i+1)+'. '+pname(e.pid)+'  '+fmtPts(e.pts)+' ('+fmtMoney(e.pts)+')'); });
-  shareText(L.join('\n'));
-},
-shareSettle:function(dayId){
-  var totals,label;
-  if(dayId==='all'){ totals=overallTotals(); label='Season (cumulative)'; }
-  else{ totals=dayTotals(dayId); label=dayLabel(dayId); }
-  var tx=settlePlan(totals), L=['💸 DPL Settlement — '+label];
-  tx.forEach(function(t){ L.push(pname(t.from)+' → '+pname(t.to)+': $'+t.amt.toFixed(2)); });
-  if(!tx.length) L.push('Nothing to settle 🎉');
   shareText(L.join('\n'));
 }
 };
