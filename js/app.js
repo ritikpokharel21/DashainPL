@@ -20,7 +20,7 @@ function seedState(){
   var st = {players:[], days:[], games:[]};
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
-  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||''}; });
+  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||''}; });
   st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||''}; });
   st.games = S.games.map(function(g){
     return {
@@ -213,21 +213,30 @@ function vPlayers(){
 
 function vPlayer(pid){
   tabbar('#/players');
+  var strk=0, sgn=0, _ds=state.days.slice().reverse(), _si;
+  for(_si=0;_si<_ds.length;_si++){ var _dt=dayTotals(_ds[_si].id); if(_dt[pid]===undefined) break;
+    var _s2=_dt[pid]>0?1:(_dt[pid]<0?-1:0); if(_s2===0) break; if(sgn===0) sgn=_s2; if(_s2!==sgn) break; strk++; }
+  var streakHtml=strk>=2?'<div class="small" style="margin-top:6px">'+(sgn>0?'🔥 '+strk+'-day green streak':'🧊 '+strk+'-day red streak')+'</div>':'';
   var p=pinfo(pid); if(p.name==='?'){ location.hash='#/players'; return; }
   var s=playerStats(pid);
   var t=overallTotals(), r=ranked(t);
   var orank=r.findIndex(function(e){return e.pid===pid;})+1;
   var h='<div class="pf-hero"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
-    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div></div>';
+    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>';
   h+='<div class="tiles">'+
     tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / round')+
     tile(s.best===null?'—':fmtPts(s.best),'Best round')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst round')+tile(s.dayWins,'🏅 Day wins')+
   '</div>';
   var pat=pinfo(pid).pattern;
+  var pp=pinfo(pid);
   if(pat) h+='<div class="card"><h3 style="margin-top:0">🔍 The Pattern</h3><div style="font-size:14.5px;line-height:1.6">'+esc(pat)+'</div></div>';
+  if(pp.strength||pp.weakness) h+='<div class="card"><h3 style="margin-top:0">💪⚖️ Strength & Weakness</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div class="small dim">💪 Strength</div><div style="font-size:14px;line-height:1.55">'+esc(pp.strength||'—')+'</div></div><div style="flex:1;min-width:200px"><div class="small dim">⚖️ Weakness</div><div style="font-size:14px;line-height:1.55">'+esc(pp.weakness||'—')+'</div></div></div></div>';
   h+='<div class="card"><h3 style="margin-top:0">🎴 Table image</h3><div class="row" style="justify-content:space-around;text-align:center">'+
     miniStat('👁️',s.seen,'Saw maal')+miniStat('🙈',s.unseen,'Blind')+miniStat('🀄',s.dublee,'Dublee')+miniStat('🚩',s.foul,'Fouls')+
   '</div></div>';
+  var _cum=0, _jp=[];
+  state.days.forEach(function(_d){ var _t=dayTotals(_d.id); if(_t[pid]!==undefined){ _cum+=_t[pid]; _jp.push('<span class="tag">'+esc(_d.label)+': <b class="'+cls(_cum)+'">'+fmtPts(_cum)+'</b></span>'); } });
+  if(_jp.length>1) h+='<div class="card"><h3 style="margin-top:0">🧭 Season journey</h3><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'+_jp.join('<span class="dim">→</span>')+'</div><div class="small dim" style="margin-top:6px">Cumulative total after each day played</div></div>';
   h+='<h3>📅 Day by day</h3><div class="card" style="padding:6px 12px"><table class="plain"><tr><th>Day</th><th class="num">Points</th><th class="num">Rank</th><th class="num">Move</th></tr>';
   state.days.forEach(function(d,di){
     var dt=dayTotals(d.id);
@@ -235,6 +244,12 @@ function vPlayer(pid){
     h+='<tr><td>'+esc(d.label)+'</td><td class="num '+cls(dt[pid])+'"><b>'+fmtPts(dt[pid])+'</b></td><td class="num">'+dayRankMap(d.id)[pid]+'</td><td class="num">'+moveArrow(pid,di)+'</td></tr>';
   });
   h+='</table></div>';
+  h+='<h3>🃏 Game history</h3>';
+  var gs=state.games.filter(function(g){return g.playerIds.indexOf(pid)>=0;}).slice().reverse();
+  gs.forEach(function(g){
+    var gt=gameTotals(g), gr=ranked(gt), rk=gr.findIndex(function(e){return e.pid===pid;})+1;
+    h+='<div class="lb" onclick="location.hash=\'#/game/'+g.id+'\'" style="cursor:pointer"><div class="rank">'+rk+'</div><div class="grow"><div class="nm">'+esc(g.name)+' <span class="small dim">'+esc(dayLabel(g.dayId))+'</span></div><div class="ti2">'+g.rounds.length+' rounds'+(g.variant==='murder'?' · 🔪 murder':'')+'</div></div><div class="sc"><div class="pv '+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</div><div class="mv">'+fmtMoney(gt[pid])+'</div></div></div>';
+  });
   $('#view').innerHTML=h;
 }
 function tile(v,k){ return '<div class="tile"><div class="v">'+v+'</div><div class="k">'+k+'</div></div>'; }
@@ -305,13 +320,13 @@ function vStats(){
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
   var cards=[
-    ['🌼 Sayapatri Cup','most rounds won', top('crowns'), function(e){return e.v+' crowns';}],
+    ['🌼 Sayapatri Mala','most rounds won', top('crowns'), function(e){return e.v+' crowns';}],
     ['🧲 Maal Magnet','saw the maal the most', top('seen'), function(e){return e.v+' times';}],
     ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
-    ['💥 Dhamaka Round','biggest single round', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
+    ['💥 Dashain Dhamaka','biggest single round', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
     ['🎁 Generous Host','most generous single round', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
     ['🎯 Sharp Shooter','best pts / round (10+ rounds)', avgTop(), function(e){return fmtPts(e.v)+' / round';}],
-    ['🏔️ Everest Game','best single game', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
+    ['🏔️ Sagarmatha Cap','best single game', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
   ];
   cards.forEach(function(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
