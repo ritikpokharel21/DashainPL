@@ -17,7 +17,6 @@ players: [
   {id:'p_saram',  name:'Saram',  title:'The Giver',          emoji:'🎁'},
   {id:'p_sami',   name:'Sami',   title:'The Philanthropist', emoji:'💸'},
   {id:'p_bijay',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝'},
-  {id:'p_vj',     name:'Vj',     title:'The Mystery',        emoji:'🎭'},
   {id:'p_shishi', name:'Shishi', title:'Trial by Fire',      emoji:'🌋'},
   {id:'p_sunira', name:'Sunira', title:'The Wildcard',       emoji:'🃏'},
   {id:'p_arun',   name:'Arun',   title:'The Quiet One',      emoji:'🤫'}
@@ -137,8 +136,8 @@ games: [
   {n:8, w:'p_bijay', s:[[61,'s'],[6,'s'],[-30,'s'],[-37,'u']]}
  ]},
 {id:'g_d3_2', dayId:'day3', name:'Murder Game', variant:'murder', date:'2026-10-04', partial:false,
- playerIds:['p_saram','p_ashu','p_vj','p_sumit','p_shishi','p_sunira'],
- totals:{p_saram:162,p_ashu:213,p_vj:-105,p_sumit:12,p_shishi:-178,p_sunira:-104},
+ playerIds:['p_saram','p_ashu','p_ritik','p_sumit','p_shishi','p_sunira'],
+ totals:{p_saram:162,p_ashu:213,p_ritik:-105,p_sumit:12,p_shishi:-178,p_sunira:-104},
  rounds:[
   {n:1, w:'p_ashu',   s:[[-28,'u'],[140,'s'],[-28,'u'],[-28,'u'],[-28,'u'],[-28,'u']]},
   {n:2, w:'p_sumit',  s:[[10,'s'],[-2,'s'],[-39,'u'],[109,'s'],[-39,'u'],[-39,'u']]},
