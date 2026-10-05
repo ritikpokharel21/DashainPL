@@ -4,13 +4,13 @@
    ============================================================ */
 (function(){
 'use strict';
-var PT_RATE = 0.1; // $ per point
+var PT_RATE = 0.1; // points to money rate
 
 /* ---------------- utils ---------------- */
 function $(s, r){ return (r||document).querySelector(s); }
 function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':s); return d.innerHTML; }
 function fmtPts(n){ n=Math.round(n*10)/10; return (n>0?'+':'')+n; }
-function fmtMoney(pts){ var d=Math.round(pts*PT_RATE*100)/100; return (d>=0?'+$':'−$')+Math.abs(d).toFixed(2); }
+function fmtMoney(pts){ var d=Math.round(pts*PT_RATE*100)/100; return (d>=0?'+':'−')+Math.abs(d).toFixed(2); }
 function cls(n){ return n>0?'pos':(n<0?'neg':''); }
 function toast(msg){ var t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){ t.remove(); },2600); }
 var ST_ICON = {s:'👁️', u:'🙈', d:'🀄', f:'🚩'};
@@ -161,7 +161,7 @@ function vHome(){
     }
     h+=lbRow(e,i,mv);
   });
-  h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Each point = $0.10 · Tap a player for full stats &amp; history<br>Updated '+esc(state.meta.updated||'')+'</div>';
+  h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Each point = 0.10 · Tap a player for full stats &amp; history<br>Updated '+esc(state.meta.updated||'')+'</div>';
   $('#view').innerHTML=h;
 }
 
@@ -276,7 +276,7 @@ function vGame(gid){
     }).join('')+'</tr>';
   });
   h+='<tr class="tot"><td class="rn">Σ</td>'+g.playerIds.map(function(pid){return '<td class="'+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</td>';}).join('')+'</tr>';
-  h+='<tr class="money"><td class="rn">$</td>'+g.playerIds.map(function(pid){return '<td>'+fmtMoney(gt[pid])+'</td>';}).join('')+'</tr>';
+  h+='<tr class="money"><td class="rn">💰</td>'+g.playerIds.map(function(pid){return '<td>'+fmtMoney(gt[pid])+'</td>';}).join('')+'</tr>';
   h+='</tbody></table></div>';
   h+='<div class="small dim" style="margin:8px 2px">👑 round winner · 👁️ saw maal · 🙈 blind · 🀄 dublee · 🚩 foul</div>';
   h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareGame(\''+gid+'\')">📤 Share game</button></div>';

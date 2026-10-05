@@ -2,7 +2,7 @@
    Round format: {n: roundNo, w: winnerPlayerId, s: [[points, status]...]} aligned with game.playerIds order.
    status: 's' seen 👁, 'u' unseen 🙈, 'd' dublee 🀄, 'f' foul 🚩 */
 window.DPL_SEED = {
-meta: {updated: 'October 5, 2026', rate: '$0.10/pt'},
+meta: {updated: 'October 5, 2026', rate: '0.10/pt'},
 players: [
   {id:'p_ritik',  name:'Ritik',  title:'Day One Don',        emoji:'👑', pattern:"Started the season with a +495 Day 1, then gave it all back. Highest volatility in the league — a +148 round and a −67 round. When he’s hot, nobody’s hotter.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
   {id:'p_ashu',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — green on all 3 days, 15 round wins (most in the league), and the only player averaging +20 a round. Wins murder and classic alike. Everyone else is playing for second.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
