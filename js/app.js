@@ -117,7 +117,8 @@ function tabbar(active){
     {r:'#/', i:'🏠', l:'Home'},
     {r:'#/days', i:'📅', l:'Days'},
     {r:'#/players', i:'👥', l:'Players'},
-    {r:'#/stats', i:'📊', l:'Stats'}
+    {r:'#/stats', i:'📊', l:'Stats'},
+    {r:'#/timeline', i:'🪔', l:'Timeline'}
   ];
   $('#tabbar').innerHTML = tabs.map(function(t){
     var on = (t.r==='#/' && (active==='#/'||active==='#/home')) || (t.r!=='#/' && active.indexOf(t.r)===0);
@@ -127,7 +128,7 @@ function tabbar(active){
 function lbRow(e, i, mv, clickable){
   var p=pinfo(e.pid);
   var click = clickable===false ? '' : ' onclick="location.hash=\'#/player/'+e.pid+'\'" style="cursor:pointer"';
-  return '<div class="lb'+(e.pid==='p_ritik'?' me':'')+'"'+click+'>'+
+  return '<div class="lb"'+click+'>'+
     '<div class="rank r'+(i+1)+'">'+(i+1)+'</div>'+
     '<div class="avatar">'+p.emoji+'</div>'+
     '<div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="ti2">'+esc(p.title)+'</div></div>'+
@@ -282,6 +283,23 @@ function vGame(gid){
   $('#view').innerHTML=h;
 }
 
+function vTimeline(){
+  tabbar('#/timeline');
+  var h='<h2>🪔 Season Timeline</h2>';
+  var start=new Date(2026,9,2), end=new Date(2026,10,15), now=new Date();
+  var total=Math.round((end-start)/864e5)+1, done=Math.min(total,Math.max(1,Math.floor((now-start)/864e5)+1));
+  var pct=Math.round(done/total*100);
+  h+='<div class="card"><div class="row"><div class="grow"><b>Season progress</b><div class="small dim">Oct 2 → Nov 15 · Day '+done+' of '+total+'</div></div><div class="gold" style="font-size:20px;font-weight:800">'+pct+'%</div></div><div class="prog"><div style="width:'+pct+'%"></div></div><div class="small dim" style="margin-top:6px">'+(total-done)+' days to the grand finale 🏁</div></div>';
+  h+='<div class="tl">';
+  state.days.forEach(function(d){
+    var r=ranked(dayTotals(d.id)), w=r[0]?pinfo(r[0].pid):null;
+    h+='<div class="tl-ev" onclick="location.hash=\'#/day/'+d.id+'\'" style="cursor:pointer"><div class="tl-date">'+(d.id==='day3'?'🔪':'🃏')+' '+esc(d.note||d.label)+'</div><div style="font-weight:800;font-size:16px;margin:2px 0">'+esc(d.label)+' — played</div>'+(w?'<div class="small">Winner: '+w.emoji+' <b>'+esc(w.name)+'</b> <span class="pos">'+fmtPts(r[0].pts)+' pts</span></div>':'')+'</div>';
+  });
+  h+='<div class="tl-ev"><div class="tl-date">🪔 Festival of Lights</div><div style="font-weight:800;font-size:16px;margin:2px 0">Tihar</div><div class="small dim">The league plays on through Dashain, Tihar and Chhath.</div></div>';
+  h+='<div class="tl-ev"><div class="tl-date">🌅 Nov 15</div><div style="font-weight:800;font-size:16px;margin:2px 0">Chhath Puja — Grand Finale</div><div class="small dim">The season ends after Chhath Puja. Final standings, one champion. 🏆</div></div>';
+  h+='</div><div class="garland">🌼 🌼 🌼</div>';
+  $('#view').innerHTML=h;
+}
 function vStats(){
   tabbar('#/stats');
   var h='<h2>📊 League Stats</h2>';
@@ -348,6 +366,7 @@ function render(){
   if(parts[0]==='player') return vPlayer(parts[1]);
   if(parts[0]==='game') return vGame(parts[1]);
   if(parts[0]==='stats') return vStats();
+  if(parts[0]==='timeline') return vTimeline();
   return vHome();
 }
 

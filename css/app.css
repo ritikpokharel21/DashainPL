@@ -126,3 +126,11 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .toast{position:fixed;bottom:calc(var(--tab-h) + 16px);left:50%;transform:translateX(-50%);background:#0e0507;border:1px solid var(--gold);color:var(--txt);padding:12px 18px;border-radius:12px;font-size:14px;z-index:99;box-shadow:0 6px 24px rgba(0,0,0,.6);max-width:90%;}
 .syncdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pos);margin-right:6px;}
 .syncdot.off{background:var(--dim);}
+
+/* timeline */
+.prog{height:10px;border-radius:99px;background:#3a242a;overflow:hidden;margin-top:8px;}
+.prog>div{height:100%;background:linear-gradient(90deg,var(--gold),#ff9d5c);border-radius:99px;}
+.tl{position:relative;margin:14px 0 0 6px;padding-left:24px;border-left:2px solid var(--gold);}
+.tl-ev{position:relative;margin:0 0 16px;}
+.tl-ev:before{content:'';position:absolute;left:-32px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);}
+.tl-date{font-size:12px;color:var(--gold2);font-weight:700;}
