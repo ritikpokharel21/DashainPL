@@ -2,7 +2,7 @@
    Round format: {n: roundNo, w: winnerPlayerId, s: [[points, status]...]} aligned with game.playerIds order.
    status: 's' seen 👁, 'u' unseen 🙈, 'd' dublee 🀄, 'f' foul 🚩 */
 window.DPL_SEED = {
-meta: {updated: 'October 5, 2026', rate: '0.10/pt'},
+meta: {updated: 'October 6, 2026', rate: '0.10/pt'},
 players: [
   {id:'p_ritik',  name:'Ritik',  title:'Day One Don',        emoji:'🌪️', pattern:"Started the season with a +495 Day 1, then gave it all back. Highest volatility in the league — a +148 round and a −67 round. When the tornado touches down, points fly everywhere.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
   {id:'p_ashu',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — green on all 3 days, 15 round wins (most in the league), and the only player averaging +20 a round. Wins murder and classic alike. Everyone else is playing for second.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
@@ -16,15 +16,17 @@ players: [
   {id:'p_reji',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Played once, left 234 points lighter. The league awaits her revenge arc.", strength:"A 49-point best round — can clearly play.", weakness:"Small sample, one rough night — −234 at −13.9/round."},
   {id:'p_saram',  name:'Saramsh',  title:'The Phoenix',        emoji:'🐦‍🔥', pattern:"Two days as the league ATM (−393), then a +302 Day 3 — the biggest single-day score of the season. Murder games are his happy place. The comeback is real.", strength:"Peak form — +302 Day 3 was the biggest day of the season; +12.7 murder avg.", weakness:"The first two days — −393 donated before the breakout."},
   {id:'p_sami',   name:'Samikxya', title:'The Philanthropist', emoji:'💸', pattern:"One game. −382. The single most expensive evening in DPL history. Legend status — earned the hard way.", strength:"A 90-point round win — the game is in there.", weakness:"Damage control — −31.6/round, the league's worst; one game cost −382."},
-  {id:'p_bijay',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝', pattern:"The sponsor is cutting costs: −383 → −37 → +73. First green day on Day 3. The turnaround has begun.", strength:"Best trajectory in the league — −383 → −37 → +73, improving every day.", weakness:"The hole — still −347 overall; 11 blind rounds."},
+  {id:'p_bijay',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝', pattern:"The sponsor is cutting costs: −383 → −37 → +73 → +108. Climbed off the bottom of the table on Day 4. The turnaround is real.", strength:"Best trajectory in the league — −383 → −37 → +73 → +108, improving every single day.", weakness:"The hole — still −347 overall; 11 blind rounds."},
   {id:'p_shishi', name:'Shishir',  title:'Trial by Fire',      emoji:'🌋', pattern:"Debut: −201. But stole a round with a 71 along the way — flashes of danger amid the donations.", strength:"Fearless debut — stole a round with 71.", weakness:"Debut tax — −201, and more blind (6) than seen (5)."},
   {id:'p_sunira', name:'Sunira', title:'The Wildcard',       emoji:'🃏', pattern:"Three round wins on debut — more crowns in a day than most manage in three. The −70 is just tuition fees.", strength:"3 crowns on debut — an instant round-winner.", weakness:"Leaky — only 4 seen vs 7 blind; the wins haven't covered it yet."},
   {id:'p_arun',   name:'Arun dai', title:'The OG',             emoji:'🫡', pattern:"The only debutant to finish green (+4). Never won a round — never needed to.", strength:"The only debutant to finish green (+4) — plays within himself.", weakness:"No crowns in 5 rounds — wins by not losing; untested over a full day."},
+  {id:'p_sandeep', name:'Sandeep', title:'The Rookie', emoji:'🆕', pattern:"Debut: −60 across his first murder game. The league's newest donor — for now.", strength:"A 57-point round on debut — the touch is there.", weakness:"Debut tax — −60 with no round wins yet."},
 ],
 days: [
   {id:'day1', label:'Day 1', date:'2026-10-02', note:'Oct 2'},
   {id:'day2', label:'Day 2', date:'2026-10-03', note:'Oct 3'},
-  {id:'day3', label:'Day 3', date:'2026-10-04', note:'Oct 4 evening'}
+  {id:'day3', label:'Day 3', date:'2026-10-04', note:'Oct 4 evening'},
+  {id:'day4', label:'Day 4', date:'2026-10-05', note:'Oct 5'}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -155,5 +157,41 @@ games: [
   {n:3, w:'p_ashu',   s:[[-19,'u'],[69,'s'],[-19,'u'],[-19,'u'],[-12,'s']]},
   {n:4, w:'p_sunira', s:[[-37,'u'],[-37,'u'],[80,'s'],[31,'s'],[-37,'u']]},
   {n:5, w:'p_shishi', s:[[-22,'u'],[-22,'u'],[-5,'s'],[-22,'u'],[71,'s']]}
+ ]},
+/* ---------- DAY 4 ---------- */
+{id:'g_d4_1', dayId:'day4', name:'Murder Game', variant:'murder', date:'2026-10-05', partial:false,
+ playerIds:['p_bijay','p_ritik','p_ashu','p_nitesh','p_saram'],
+ totals:{p_bijay:325,p_ritik:-85,p_ashu:-71,p_nitesh:-108,p_saram:-61},
+ rounds:[
+  {n:1, w:'p_nitesh', s:[[-37,'u'],[-15,'s'],[5,'s'],[27,'s'],[20,'s']]},
+  {n:2, w:'p_bijay',  s:[[67,'s'],[43,'s'],[-32,'s'],[-39,'u'],[-39,'u']]},
+  {n:3, w:'p_bijay',  s:[[129,'s'],[-47,'u'],[-5,'s'],[-30,'s'],[-47,'u']]},
+  {n:4, w:'p_bijay',  s:[[120,'s'],[-30,'u'],[-30,'u'],[-30,'u'],[-30,'u']]},
+  {n:5, w:'p_saram',  s:[[46,'s'],[-36,'u'],[-9,'s'],[-36,'u'],[35,'s']]}
+ ]},
+{id:'g_d4_2', dayId:'day4', name:'Classic Game', variant:'classic', date:'2026-10-05', partial:false,
+ playerIds:['p_bijay','p_ritik','p_ashu','p_nitesh','p_ranj'],
+ totals:{p_bijay:-213,p_ritik:87,p_ashu:68,p_nitesh:39,p_ranj:19},
+ rounds:[
+  {n:1, w:'p_ashu',   s:[[-39,'u'],[-39,'u'],[7,'s'],[18,'s'],[53,'s']]},
+  {n:2, w:'p_ranj',   s:[[-5,'s'],[-37,'u'],[-37,'u'],[-37,'u'],[116,'s']]},
+  {n:3, w:'p_ranj',   s:[[-47,'u'],[20,'s'],[-15,'s'],[38,'d'],[4,'s']]},
+  {n:4, w:'p_ritik',  s:[[-32,'u'],[61,'s'],[35,'s'],[-32,'u'],[-32,'u']]},
+  {n:5, w:'p_nitesh', s:[[-54,'u'],[28,'s'],[-12,'s'],[75,'s'],[-37,'s']]},
+  {n:6, w:'p_ritik',  s:[[0,'s'],[-21,'s'],[103,'d'],[-25,'s'],[-57,'u']]},
+  {n:7, w:'p_ritik',  s:[[-46,'u'],[87,'s'],[-46,'u'],[51,'s'],[-46,'u']]},
+  {n:8, w:'p_ashu',   s:[[-40,'s'],[-25,'s'],[92,'s'],[-47,'u'],[20,'s']]},
+  {n:9, w:'p_bijay',  s:[[5,'s'],[40,'s'],[-25,'s'],[-10,'s'],[-10,'s']]},
+  {n:10, w:'p_bijay', s:[[45,'s'],[-27,'s'],[-34,'u'],[8,'s'],[8,'s']]}
+ ]},
+{id:'g_d4_3', dayId:'day4', name:'Murder Game 2', variant:'murder', date:'2026-10-05', partial:false,
+ playerIds:['p_bijay','p_ritik','p_ashu','p_nitesh','p_sandeep'],
+ totals:{p_bijay:-4,p_ritik:18,p_ashu:21,p_nitesh:25,p_sandeep:-60},
+ rounds:[
+  {n:1, w:'p_bijay',  s:[[7,'s'],[-33,'s'],[-33,'s'],[2,'s'],[57,'s']]},
+  {n:2, w:'p_ashu',   s:[[-12,'s'],[33,'s'],[80,'s'],[-59,'u'],[-42,'s']]},
+  {n:3, w:'p_ritik',  s:[[-38,'u'],[48,'s'],[-6,'s'],[34,'s'],[-38,'u']]},
+  {n:4, w:'p_bijay',  s:[[56,'s'],[-20,'u'],[-3,'s'],[-13,'s'],[-20,'u']]},
+  {n:5, w:'p_nitesh', s:[[-17,'u'],[-10,'s'],[-17,'u'],[61,'s'],[-17,'u']]}
  ]}
 ]};
