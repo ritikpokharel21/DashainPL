@@ -134,3 +134,6 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .tl-ev{position:relative;margin:0 0 16px;}
 .tl-ev:before{content:'';position:absolute;left:-32px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);}
 .tl-date{font-size:12px;color:var(--gold2);font-weight:700;}
+/* music player: invisible audio-only YouTube embed */
+#ytWrap{position:fixed;width:2px;height:2px;left:-20px;top:-20px;overflow:hidden;opacity:0;pointer-events:none;}
+#musicBtn.playing{background:rgba(255,255,255,.32);}

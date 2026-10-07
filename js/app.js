@@ -370,9 +370,43 @@ function render(){
   return vHome();
 }
 
+/* ---------------- music (YouTube loop) ---------------- */
+var MUSIC_VIDEO='GI153LgNrig', YT_PLAYER=null, MUSIC_ON=false, YT_LOADING=false;
+function loadYTApi(cb){
+  if(window.YT && window.YT.Player){ cb(); return; }
+  if(YT_LOADING){ var iv=setInterval(function(){ if(window.YT&&window.YT.Player){ clearInterval(iv); cb(); } },300); return; }
+  YT_LOADING=true;
+  var tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api';
+  var first=document.getElementsByTagName('script')[0]; first.parentNode.insertBefore(tag,first);
+  var prev=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=function(){ if(prev)prev(); cb(); };
+}
+function setMusicBtn(){ var b=document.getElementById('musicBtn'); if(!b)return; b.textContent=MUSIC_ON?'⏸️':'🎵'; if(MUSIC_ON)b.classList.add('playing'); else b.classList.remove('playing'); }
+function toggleMusic(){
+  if(MUSIC_ON && YT_PLAYER){ YT_PLAYER.pauseVideo(); MUSIC_ON=false; setMusicBtn(); toast('Music paused'); return; }
+  if(YT_PLAYER){ YT_PLAYER.playVideo(); MUSIC_ON=true; setMusicBtn(); toast('🎶 Dashain Tihar on loop'); return; }
+  toast('Loading music…');
+  loadYTApi(function(){
+    YT_PLAYER=new YT.Player('ytPlayer',{
+      height:'1', width:'1', videoId:MUSIC_VIDEO,
+      playerVars:{autoplay:1, loop:1, playlist:MUSIC_VIDEO, rel:0},
+      events:{
+        onReady:function(e){ e.target.playVideo(); },
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.PLAYING){ MUSIC_ON=true; setMusicBtn(); }
+          else if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.CUED){ MUSIC_ON=false; setMusicBtn(); }
+          else if(e.data===YT.PlayerState.ENDED){ e.target.playVideo(); } /* loop backup */
+        }
+      }
+    });
+    MUSIC_ON=true; setMusicBtn(); toast('🎶 Dashain Tihar on loop');
+  });
+}
+
 /* ---------------- App API ---------------- */
 var App={
 go:function(r){ location.hash=r; },
+toggleMusic:function(){ toggleMusic(); },
 shareStandings:function(){ shareText(standingsText()); },
 shareGame:function(gid){
   var g=state.games.find(function(x){return x.id===gid;}); if(!g)return;
