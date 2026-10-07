@@ -137,3 +137,10 @@ table.plain td.num,table.plain th.num{text-align:right;}
 /* music player: invisible audio-only YouTube embed */
 #ytWrap{position:fixed;width:2px;height:2px;left:-20px;top:-20px;overflow:hidden;opacity:0;pointer-events:none;}
 #musicBtn.playing{background:rgba(255,255,255,.32);}
+
+/* ---- flashy music button (Dashain vibes) ---- */
+#musicBtn{background:linear-gradient(135deg,#ffb300,#ff5722 55%,#c2185b);border:1px solid rgba(255,255,255,.55);animation:musicPulse 2.4s ease-in-out infinite;}
+@keyframes musicPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,171,0,.55);transform:scale(1) rotate(0deg);}50%{box-shadow:0 0 0 12px rgba(255,171,0,0);transform:scale(1.12) rotate(-8deg);}}
+#musicBtn.playing{animation:none;background:rgba(255,255,255,.30);}
+/* ---- falling leaves overlay (while music plays) ---- */
+#leafCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;}

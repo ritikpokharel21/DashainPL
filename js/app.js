@@ -382,9 +382,56 @@ function loadYTApi(cb){
   window.onYouTubeIframeAPIReady=function(){ if(prev)prev(); cb(); };
 }
 function setMusicBtn(){ var b=document.getElementById('musicBtn'); if(!b)return; b.textContent=MUSIC_ON?'⏸️':'🎵'; if(MUSIC_ON)b.classList.add('playing'); else b.classList.remove('playing'); }
+
+/* ---------------- falling leaves (while music plays) ---------------- */
+var LEAF_CV=null, LEAF_CTX=null, LEAVES=[], LEAF_RAF=null, LEAF_LAST=0;
+var LEAF_COLORS=['#e65100','#ef6c00','#f9a825','#c62828','#8d6e00','#ff8f00','#b26a00'];
+function leafSetup(){
+  if(LEAF_CV) return;
+  LEAF_CV=document.createElement('canvas'); LEAF_CV.id='leafCanvas';
+  document.body.appendChild(LEAF_CV); leafResize();
+  window.addEventListener('resize', leafResize);
+}
+function leafResize(){ if(!LEAF_CV)return; LEAF_CV.width=window.innerWidth; LEAF_CV.height=window.innerHeight; LEAF_CTX=LEAF_CV.getContext('2d'); }
+function spawnLeaf(){
+  var w=LEAF_CV.width;
+  LEAVES.push({ x:Math.random()*w, y:-24, s:6+Math.random()*10,
+    vy:45+Math.random()*75, sway:25+Math.random()*45, ph:Math.random()*6.28,
+    sp:0.8+Math.random()*1.6, rot:Math.random()*6.28, vr:(Math.random()-0.5)*3,
+    c:LEAF_COLORS[(Math.random()*LEAF_COLORS.length)|0], a:0.5+Math.random()*0.45 });
+}
+function drawLeaf(l){
+  var ctx=LEAF_CTX; ctx.save(); ctx.translate(l.x,l.y); ctx.rotate(l.rot);
+  ctx.globalAlpha=l.a; ctx.fillStyle=l.c;
+  ctx.beginPath(); ctx.ellipse(0,0,l.s*0.55,l.s,0,0,6.283); ctx.fill();
+  ctx.strokeStyle='rgba(90,40,0,.35)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,-l.s); ctx.lineTo(0,l.s); ctx.stroke();
+  ctx.restore();
+}
+function leafTick(ts){
+  if(!LEAF_LAST) LEAF_LAST=ts;
+  var dt=Math.min(0.05,(ts-LEAF_LAST)/1000); LEAF_LAST=ts;
+  var w=LEAF_CV.width, h=LEAF_CV.height, t=ts/1000;
+  var wind=Math.sin(t*0.5)*30+Math.sin(t*0.13)*22; /* gusts */
+  LEAF_CTX.clearRect(0,0,w,h);
+  if(LEAVES.length<45 && Math.random()<0.55) spawnLeaf();
+  for(var i=LEAVES.length-1;i>=0;i--){
+    var l=LEAVES[i];
+    l.y+=l.vy*dt; l.ph+=l.sp*dt; l.rot+=l.vr*dt;
+    l.x+=(Math.sin(l.ph)*l.sway+wind)*dt;
+    if(l.y>h+30 || l.x<-60 || l.x>w+60){ LEAVES.splice(i,1); continue; }
+    drawLeaf(l);
+  }
+  LEAF_RAF=requestAnimationFrame(leafTick);
+}
+function startLeaves(){ leafSetup(); if(!LEAF_RAF){ LEAF_LAST=0; LEAF_RAF=requestAnimationFrame(leafTick); } }
+function stopLeaves(){
+  if(LEAF_RAF){ cancelAnimationFrame(LEAF_RAF); LEAF_RAF=null; }
+  LEAVES=[]; if(LEAF_CTX&&LEAF_CV) LEAF_CTX.clearRect(0,0,LEAF_CV.width,LEAF_CV.height);
+}
 function toggleMusic(){
-  if(MUSIC_ON && YT_PLAYER){ YT_PLAYER.pauseVideo(); MUSIC_ON=false; setMusicBtn(); toast('Music paused'); return; }
-  if(YT_PLAYER){ YT_PLAYER.playVideo(); MUSIC_ON=true; setMusicBtn(); toast('🎶 Dashain Tihar on loop'); return; }
+  if(MUSIC_ON && YT_PLAYER){ YT_PLAYER.pauseVideo(); MUSIC_ON=false; setMusicBtn(); stopLeaves(); toast('Music paused'); return; }
+  if(YT_PLAYER){ YT_PLAYER.playVideo(); MUSIC_ON=true; setMusicBtn(); startLeaves(); toast('🎶 Dashain Tihar on loop'); return; }
   toast('Loading music…');
   loadYTApi(function(){
     YT_PLAYER=new YT.Player('ytPlayer',{
@@ -393,13 +440,13 @@ function toggleMusic(){
       events:{
         onReady:function(e){ e.target.playVideo(); },
         onStateChange:function(e){
-          if(e.data===YT.PlayerState.PLAYING){ MUSIC_ON=true; setMusicBtn(); }
-          else if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.CUED){ MUSIC_ON=false; setMusicBtn(); }
+          if(e.data===YT.PlayerState.PLAYING){ MUSIC_ON=true; setMusicBtn(); startLeaves(); }
+          else if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.CUED){ MUSIC_ON=false; setMusicBtn(); stopLeaves(); }
           else if(e.data===YT.PlayerState.ENDED){ e.target.playVideo(); } /* loop backup */
         }
       }
     });
-    MUSIC_ON=true; setMusicBtn(); toast('🎶 Dashain Tihar on loop');
+    MUSIC_ON=true; setMusicBtn(); startLeaves(); toast('🎶 Dashain Tihar on loop');
   });
 }
 
