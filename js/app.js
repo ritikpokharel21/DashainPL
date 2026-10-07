@@ -385,7 +385,7 @@ function setMusicBtn(){ var b=document.getElementById('musicBtn'); if(!b)return;
 
 /* ---------------- Dashain atmosphere FX (while music plays) ---------------- */
 var FX_CV=null, FX_CTX=null, FX_RAF=null, FX_LAST=0;
-var FX_LEAVES=[], FX_WINDS=[], FX_SCENE=null, FX_NEXT_SCENE=0, FX_WIND_T=0;
+var FX_LEAVES=[], FX_WINDS=[], FX_WIND_T=0;
 var LEAF_COLORS=['#d84315','#e65100','#ef6c00','#f9a825','#c62828','#8d6e00','#ff8f00','#a83232'];
 
 function fxSetup(){
@@ -448,91 +448,6 @@ function drawWind(wd, dt){
   return true;
 }
 
-/* ---- little kid figure (dhaka-topi optional) ---- */
-function drawKid(ctx,x,y,s,o){
-  o=o||{};
-  var skin=o.skin||'#a9713d', shirt=o.shirt||'#c62828', pants=o.pants||'#283593';
-  var run=(o.run!=null), sit=!!o.sit;
-  ctx.save(); ctx.translate(x,y); ctx.lineCap='round'; ctx.lineJoin='round';
-  var bob=run?Math.abs(Math.sin(o.run))*s*0.035:0;
-  var hipY=-s*0.44+bob, shY=-s*0.62+bob, headR=s*0.135, headY=shY-s*0.13-headR*0.7;
-  ctx.strokeStyle=pants; ctx.lineWidth=Math.max(2,s*0.085);
-  var a1=run?Math.sin(o.run)*0.75:(sit?1.35:0.10);
-  var a2=run?Math.sin(o.run+Math.PI)*0.75:(sit?1.15:-0.10);
-  [a1,a2].forEach(function(ang){
-    var kx=Math.sin(ang)*s*0.20, ky=hipY+Math.cos(ang)*s*0.40;
-    ctx.beginPath(); ctx.moveTo(0,hipY); ctx.lineTo(kx,Math.min(ky,-s*0.02)); ctx.stroke();
-  });
-  ctx.strokeStyle=shirt; ctx.lineWidth=Math.max(3,s*0.16);
-  ctx.beginPath(); ctx.moveTo(0,hipY); ctx.lineTo(0,shY); ctx.stroke();
-  ctx.strokeStyle=skin; ctx.lineWidth=Math.max(2,s*0.07);
-  var armA=run?Math.sin(o.run+Math.PI)*0.8:(o.armUp?-2.6:-0.25);
-  var armB=run?Math.sin(o.run)*0.8:(o.armUp?-2.9:0.25);
-  [armA,armB].forEach(function(ang){
-    ctx.beginPath(); ctx.moveTo(0,shY);
-    ctx.lineTo(Math.sin(ang)*s*0.20, shY+Math.cos(ang)*s*0.20); ctx.stroke();
-  });
-  ctx.fillStyle=skin;
-  ctx.beginPath(); ctx.arc(0,headY,headR,0,6.283); ctx.fill();
-  ctx.fillStyle='#191919';
-  ctx.beginPath(); ctx.arc(0,headY-headR*0.12,headR*0.98,Math.PI*1.02,Math.PI*1.98); ctx.fill();
-  if(o.topi){
-    ctx.fillStyle='#8e1f1f';
-    ctx.beginPath();
-    ctx.moveTo(-headR*0.95,headY-headR*0.55); ctx.lineTo(headR*0.95,headY-headR*0.55);
-    ctx.lineTo(headR*0.55,headY-headR*1.35); ctx.lineTo(-headR*0.55,headY-headR*1.35);
-    ctx.closePath(); ctx.fill();
-    ctx.fillStyle='#f5d76e';
-    for(var d=-1;d<=1;d++){ ctx.beginPath(); ctx.arc(d*headR*0.4,headY-headR*0.95,Math.max(1,headR*0.09),0,6.283); ctx.fill(); }
-  }
-  ctx.restore();
-}
-
-/* ---- scene 1: Dashain bamboo swing (ping) ---- */
-function drawSwingScene(ctx,w,h,t,alpha){
-  var S=Math.min(w,h)*0.42, gx=w*0.72, gy=h*0.80, topY=gy-S;
-  ctx.save(); ctx.globalAlpha=alpha;
-  var gr=ctx.createRadialGradient(gx,gy-S*0.4,10,gx,gy-S*0.4,S*1.5);
-  gr.addColorStop(0,'rgba(255,150,50,.13)'); gr.addColorStop(1,'rgba(255,150,50,0)');
-  ctx.fillStyle=gr; ctx.fillRect(gx-S*1.5,gy-S*1.9,S*3,S*2.7);
-  ctx.strokeStyle='#8a5a2b'; ctx.lineCap='round'; ctx.lineWidth=Math.max(4,S*0.035);
-  ctx.beginPath(); ctx.moveTo(gx-S*0.42,gy); ctx.lineTo(gx-S*0.03,topY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(gx+S*0.42,gy); ctx.lineTo(gx+S*0.03,topY); ctx.stroke();
-  ctx.lineWidth=Math.max(3,S*0.028);
-  ctx.beginPath(); ctx.moveTo(gx-S*0.24,topY); ctx.lineTo(gx+S*0.24,topY); ctx.stroke();
-  var ang=Math.sin(t*1.7)*0.45, ropeL=S*0.62, sy=topY+S*0.02;
-  var seatX=gx+Math.sin(ang)*ropeL, seatY=sy+Math.cos(ang)*ropeL;
-  ctx.strokeStyle='#d9b382'; ctx.lineWidth=Math.max(2,S*0.014);
-  ctx.beginPath(); ctx.moveTo(gx-S*0.13,sy); ctx.lineTo(seatX-S*0.13,seatY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(gx+S*0.13,sy); ctx.lineTo(seatX+S*0.13,seatY); ctx.stroke();
-  ctx.save(); ctx.translate(seatX,seatY); ctx.rotate(ang*0.35);
-  ctx.fillStyle='#6d4c2f'; ctx.fillRect(-S*0.17,-S*0.02,S*0.34,S*0.045); ctx.restore();
-  drawKid(ctx, seatX, seatY-S*0.02, S*0.34, {sit:true, armUp:true, topi:true, shirt:'#d32f2f', pants:'#37474f'});
-  ctx.restore();
-}
-
-/* ---- scene 2: kids running with a kite ---- */
-function drawKiteScene(ctx,w,h,t,alpha){
-  var dur=11, prog=Math.min(1,t/dur), s1=Math.min(w,h)*0.16;
-  var x=-80+(w+160)*prog, baseY=h*0.80, ph=t*9;
-  ctx.save(); ctx.globalAlpha=alpha;
-  drawKid(ctx, x, baseY, s1, {run:ph, topi:true, shirt:'#1565c0', pants:'#4e342e'});
-  drawKid(ctx, x-s1*1.15, baseY+4, s1*0.88, {run:ph+2.2, shirt:'#2e7d32', pants:'#212121', skin:'#8f5a2e'});
-  var kx=x+Math.sin(t*1.3)*14, ky=baseY-s1*3.4+Math.sin(t*2.1)*12, ks=s1*0.55;
-  ctx.strokeStyle='rgba(255,255,255,.75)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(x+s1*0.1, baseY-s1*0.6);
-  ctx.quadraticCurveTo((x+kx)/2,(baseY+ky)/2+30, kx, ky+ks); ctx.stroke();
-  ctx.fillStyle='#ff5722';
-  ctx.beginPath(); ctx.moveTo(kx,ky-ks); ctx.lineTo(kx+ks*0.7,ky); ctx.lineTo(kx,ky+ks); ctx.lineTo(kx-ks*0.7,ky); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='#ffca28';
-  ctx.beginPath(); ctx.moveTo(kx,ky-ks); ctx.lineTo(kx+ks*0.7,ky); ctx.lineTo(kx,ky); ctx.closePath(); ctx.fill();
-  for(var i=1;i<=3;i++){
-    ctx.fillStyle=i%2?'#ffca28':'#ff5722';
-    ctx.beginPath(); ctx.arc(kx+Math.sin(t*3+i)*8, ky+ks+i*ks*0.55, ks*0.12, 0, 6.283); ctx.fill();
-  }
-  ctx.restore();
-}
-
 /* ---- main loop ---- */
 function fxTick(ts){
   if(!FX_LAST) FX_LAST=ts;
@@ -551,22 +466,15 @@ function fxTick(ts){
   FX_WIND_T-=dt;
   if(FX_WIND_T<=0){ spawnWind(); FX_WIND_T=1.5+Math.random()*3; }
   for(var j=FX_WINDS.length-1;j>=0;j--){ if(!drawWind(FX_WINDS[j],dt)) FX_WINDS.splice(j,1); }
-  if(!FX_SCENE && ts>FX_NEXT_SCENE){ FX_SCENE={kind:Math.random()<0.5?'swing':'kite', t:0, dur:12}; }
-  if(FX_SCENE){
-    var sc=FX_SCENE; sc.t+=dt;
-    var a=Math.min(1, sc.t/1.2, Math.max(0,(sc.dur-sc.t)/1.2));
-    if(sc.kind==='swing') drawSwingScene(FX_CTX,w,h,sc.t,a); else drawKiteScene(FX_CTX,w,h,sc.t,a);
-    if(sc.t>=sc.dur){ FX_SCENE=null; FX_NEXT_SCENE=ts+18000+Math.random()*20000; }
-  }
   FX_RAF=requestAnimationFrame(fxTick);
 }
 function startFX(){
   fxSetup();
-  if(!FX_RAF){ FX_LAST=0; FX_NEXT_SCENE=performance.now()+4000; FX_WIND_T=1; FX_RAF=requestAnimationFrame(fxTick); }
+  if(!FX_RAF){ FX_LAST=0; FX_WIND_T=1; FX_RAF=requestAnimationFrame(fxTick); }
 }
 function stopFX(){
   if(FX_RAF){ cancelAnimationFrame(FX_RAF); FX_RAF=null; }
-  FX_LEAVES=[]; FX_WINDS=[]; FX_SCENE=null;
+  FX_LEAVES=[]; FX_WINDS=[];
   if(FX_CTX&&FX_CV) FX_CTX.clearRect(0,0,FX_CV.width,FX_CV.height);
 }
 function toggleMusic(){
