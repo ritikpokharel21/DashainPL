@@ -724,6 +724,13 @@ sprout:function(ctx,w,h,t,dt){
   PFX_DRAW.stars(ctx,w,h,t,dt); }
 };
 
+function pfxResize(){
+  if(!PFX_CV||!PFX_CV.parentNode) return;
+  var r=PFX_CV.parentNode.getBoundingClientRect(), d=Math.min(2,window.devicePixelRatio||1);
+  PFX_W=r.width; PFX_H=r.height;
+  PFX_CV.width=Math.max(1,r.width*d); PFX_CV.height=Math.max(1,r.height*d);
+  PFX_CTX=PFX_CV.getContext('2d'); PFX_CTX.setTransform(d,0,0,d,0,0);
+}
 function pfxTick(ts){
   if(!PFX_LAST) PFX_LAST=ts;
   var dt=Math.min(0.05,(ts-PFX_LAST)/1000); PFX_LAST=ts; PFX_T+=dt;
