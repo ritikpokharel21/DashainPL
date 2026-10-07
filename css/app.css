@@ -146,3 +146,8 @@ table.plain td.num,table.plain th.num{text-align:right;}
 #musicBtn img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;}
 /* ---- falling leaves overlay (while music plays) ---- */
 #leafCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;}
+
+/* ---- per-player profile FX canvas (inside hero box) ---- */
+.pf-hero{position:relative;overflow:hidden;}
+.pf-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.pf-hero>*:not(.pf-fx){position:relative;z-index:1;}
