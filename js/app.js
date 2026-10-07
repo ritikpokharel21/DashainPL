@@ -427,7 +427,7 @@ function drawLeaf(l, t){
 function spawnWind(){
   var w=FX_CV.width, h=FX_CV.height;
   FX_WINDS.push({ x:-160, y:h*(0.15+Math.random()*0.6), len:90+Math.random()*140,
-    sp:130+Math.random()*110, max:0.10+Math.random()*0.08, life:0 });
+    sp:130+Math.random()*110, max:0.06+Math.random()*0.05, life:0 });
 }
 function drawWind(wd, dt){
   var ctx=FX_CTX;
@@ -455,7 +455,7 @@ function fxTick(ts){
   var w=FX_CV.width, h=FX_CV.height, t=ts/1000;
   var wind=Math.sin(t*0.5)*30+Math.sin(t*0.13)*22;
   FX_CTX.clearRect(0,0,w,h);
-  if(FX_LEAVES.length<45 && Math.random()<0.55) spawnLeaf();
+  if(FX_LEAVES.length<22 && Math.random()<0.35) spawnLeaf();
   for(var i=FX_LEAVES.length-1;i>=0;i--){
     var l=FX_LEAVES[i];
     l.y+=l.vy*dt; l.ph+=l.sp*dt; l.rot+=Math.sin(t*1.3+l.flp)*0.8*dt;
@@ -464,7 +464,7 @@ function fxTick(ts){
     drawLeaf(l,t);
   }
   FX_WIND_T-=dt;
-  if(FX_WIND_T<=0){ spawnWind(); FX_WIND_T=1.5+Math.random()*3; }
+  if(FX_WIND_T<=0){ spawnWind(); FX_WIND_T=5+Math.random()*5; }
   for(var j=FX_WINDS.length-1;j>=0;j--){ if(!drawWind(FX_WINDS[j],dt)) FX_WINDS.splice(j,1); }
   FX_RAF=requestAnimationFrame(fxTick);
 }
