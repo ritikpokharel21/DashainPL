@@ -403,7 +403,11 @@ function musicCreatePlayer(){
     }
   });
 }
-function setMusicBtn(){ var b=document.getElementById('musicBtn'); if(!b)return; b.textContent=MUSIC_ON?'\u23F8\uFE0F':'\uD83C\uDFB5'; if(MUSIC_ON)b.classList.add('playing'); else b.classList.remove('playing'); }
+function setMusicBtn(){
+  var b=document.getElementById('musicBtn'); if(!b)return;
+  if(MUSIC_ON){ b.innerHTML='<img src="icons/singer.jpg?v=1" alt="Sugam Pokharel — playing">'; b.classList.add('playing'); }
+  else { b.textContent='🎵'; b.classList.remove('playing'); }
+}
 
 /* ---------------- Dashain atmosphere FX (while music plays) ---------------- */
 var FX_CV=null, FX_CTX=null, FX_RAF=null, FX_LAST=0;
