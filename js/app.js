@@ -371,131 +371,42 @@ function render(){
 }
 
 /* ---------------- music (YouTube loop) ---------------- */
-var MUSIC_VIDEO='GI153LgNrig', YT_PLAYER=null, MUSIC_ON=false, YT_LOADING=false;
-function loadYTApi(cb){
-  if(window.YT && window.YT.Player){ cb(); return; }
-  if(YT_LOADING){ var iv=setInterval(function(){ if(window.YT&&window.YT.Player){ clearInterval(iv); cb(); } },300); return; }
-  YT_LOADING=true;
+var MUSIC_VIDEO='GI153LgNrig', YT_PLAYER=null, MUSIC_ON=false;
+
+/* Pre-load the YouTube player when the page opens (no autoplay attempt),
+   so the FIRST tap on the music button plays instantly inside the tap gesture.
+   (iOS blocks play() calls that happen outside a user gesture.) */
+function musicInit(){
   var tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api';
   var first=document.getElementsByTagName('script')[0]; first.parentNode.insertBefore(tag,first);
   var prev=window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady=function(){ if(prev)prev(); cb(); };
+  window.onYouTubeIframeAPIReady=function(){ if(prev)prev(); musicCreatePlayer(); };
+  var tries=0;
+  var iv=setInterval(function(){
+    tries++;
+    if(window.YT && window.YT.Player){ clearInterval(iv); musicCreatePlayer(); }
+    else if(tries>30){ clearInterval(iv); }
+  },500);
 }
-function setMusicBtn(){ var b=document.getElementById('musicBtn'); if(!b)return; b.textContent=MUSIC_ON?'⏸️':'🎵'; if(MUSIC_ON)b.classList.add('playing'); else b.classList.remove('playing'); }
-
-/* ---------------- Dashain atmosphere FX (while music plays) ---------------- */
-var FX_CV=null, FX_CTX=null, FX_RAF=null, FX_LAST=0;
-var FX_LEAVES=[], FX_WINDS=[], FX_WIND_T=0;
-var LEAF_COLORS=['#d84315','#e65100','#ef6c00','#f9a825','#c62828','#8d6e00','#ff8f00','#a83232'];
-
-function fxSetup(){
-  if(FX_CV) return;
-  FX_CV=document.createElement('canvas'); FX_CV.id='leafCanvas';
-  document.body.appendChild(FX_CV); fxResize();
-  window.addEventListener('resize', fxResize);
-}
-function fxResize(){ if(!FX_CV)return; FX_CV.width=window.innerWidth; FX_CV.height=window.innerHeight; FX_CTX=FX_CV.getContext('2d'); }
-
-/* ---- realistic tumbling leaves ---- */
-function spawnLeaf(){
-  var w=FX_CV.width;
-  FX_LEAVES.push({ x:Math.random()*w, y:-26, s:7+Math.random()*11,
-    vy:45+Math.random()*80, sway:25+Math.random()*50, ph:Math.random()*6.28,
-    sp:0.9+Math.random()*1.8, rot:Math.random()*6.28, fl:2+Math.random()*3, flp:Math.random()*6.28,
-    c:LEAF_COLORS[(Math.random()*LEAF_COLORS.length)|0], a:0.55+Math.random()*0.4 });
-}
-function drawLeaf(l, t){
-  var ctx=FX_CTX, s=l.s;
-  ctx.save(); ctx.translate(l.x,l.y);
-  var flutter=Math.sin(t*l.fl+l.flp);
-  ctx.rotate(l.rot+flutter*0.5);
-  ctx.scale(1, 0.55+0.45*Math.abs(Math.cos(t*l.fl*0.7+l.flp)));
-  ctx.globalAlpha=l.a; ctx.fillStyle=l.c;
-  ctx.beginPath();
-  ctx.moveTo(0,-s);
-  ctx.bezierCurveTo(s*0.62,-s*0.45, s*0.62,s*0.45, 0,s);
-  ctx.bezierCurveTo(-s*0.62,s*0.45, -s*0.62,-s*0.45, 0,-s);
-  ctx.fill();
-  ctx.strokeStyle='rgba(120,50,0,.45)'; ctx.lineWidth=Math.max(1,s*0.09);
-  ctx.beginPath(); ctx.moveTo(0,s); ctx.quadraticCurveTo(s*0.12,s*1.25, s*0.28,s*1.45); ctx.stroke();
-  ctx.strokeStyle='rgba(255,240,200,.35)'; ctx.lineWidth=Math.max(1,s*0.06);
-  ctx.beginPath(); ctx.moveTo(0,-s*0.85); ctx.lineTo(0,s*0.85); ctx.stroke();
-  ctx.restore();
-}
-
-/* ---- subtle wind sketches ---- */
-function spawnWind(){
-  var w=FX_CV.width, h=FX_CV.height;
-  FX_WINDS.push({ x:-160, y:h*(0.15+Math.random()*0.6), len:90+Math.random()*140,
-    sp:130+Math.random()*110, max:0.06+Math.random()*0.05, life:0 });
-}
-function drawWind(wd, dt){
-  var ctx=FX_CTX;
-  wd.life+=dt; wd.x+=wd.sp*dt;
-  var fade=Math.min(1, wd.life/1.2);
-  var out=wd.x>FX_CV.width+80 ? Math.max(0, 1-(wd.x-FX_CV.width-80)/160) : 1;
-  var a=wd.max*Math.min(fade,out);
-  if(out<=0) return false;
-  ctx.save(); ctx.globalAlpha=a; ctx.strokeStyle='#ffffff'; ctx.lineWidth=1.6; ctx.lineCap='round';
-  for(var k=0;k<3;k++){
-    var yy=wd.y+k*13, xx=wd.x-k*22;
-    ctx.beginPath(); ctx.moveTo(xx,yy);
-    ctx.quadraticCurveTo(xx+wd.len*0.4, yy-14, xx+wd.len*0.8, yy+4);
-    ctx.quadraticCurveTo(xx+wd.len, yy+10, xx+wd.len*1.15, yy+2);
-    ctx.stroke();
-  }
-  ctx.restore();
-  return true;
-}
-
-/* ---- main loop ---- */
-function fxTick(ts){
-  if(!FX_LAST) FX_LAST=ts;
-  var dt=Math.min(0.05,(ts-FX_LAST)/1000); FX_LAST=ts;
-  var w=FX_CV.width, h=FX_CV.height, t=ts/1000;
-  var wind=Math.sin(t*0.5)*30+Math.sin(t*0.13)*22;
-  FX_CTX.clearRect(0,0,w,h);
-  if(FX_LEAVES.length<22 && Math.random()<0.35) spawnLeaf();
-  for(var i=FX_LEAVES.length-1;i>=0;i--){
-    var l=FX_LEAVES[i];
-    l.y+=l.vy*dt; l.ph+=l.sp*dt; l.rot+=Math.sin(t*1.3+l.flp)*0.8*dt;
-    l.x+=(Math.sin(l.ph)*l.sway+wind)*dt;
-    if(l.y>h+30||l.x<-60||l.x>w+60){ FX_LEAVES.splice(i,1); continue; }
-    drawLeaf(l,t);
-  }
-  FX_WIND_T-=dt;
-  if(FX_WIND_T<=0){ spawnWind(); FX_WIND_T=5+Math.random()*5; }
-  for(var j=FX_WINDS.length-1;j>=0;j--){ if(!drawWind(FX_WINDS[j],dt)) FX_WINDS.splice(j,1); }
-  FX_RAF=requestAnimationFrame(fxTick);
-}
-function startFX(){
-  fxSetup();
-  if(!FX_RAF){ FX_LAST=0; FX_WIND_T=1; FX_RAF=requestAnimationFrame(fxTick); }
-}
-function stopFX(){
-  if(FX_RAF){ cancelAnimationFrame(FX_RAF); FX_RAF=null; }
-  FX_LEAVES=[]; FX_WINDS=[];
-  if(FX_CTX&&FX_CV) FX_CTX.clearRect(0,0,FX_CV.width,FX_CV.height);
+function musicCreatePlayer(){
+  if(YT_PLAYER || !(window.YT && window.YT.Player)) return;
+  if(!document.getElementById('ytPlayer')) return;
+  YT_PLAYER=new YT.Player('ytPlayer',{
+    height:'1', width:'1', videoId:MUSIC_VIDEO,
+    playerVars:{autoplay:0, loop:1, playlist:MUSIC_VIDEO, rel:0},
+    events:{
+      onStateChange:function(e){
+        if(e.data===YT.PlayerState.PLAYING){ MUSIC_ON=true; setMusicBtn(); startFX(); }
+        else if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.CUED){ MUSIC_ON=false; setMusicBtn(); stopFX(); }
+        else if(e.data===YT.PlayerState.ENDED){ e.target.playVideo(); } /* loop backup */
+      }
+    }
+  });
 }
 function toggleMusic(){
-  if(MUSIC_ON && YT_PLAYER){ YT_PLAYER.pauseVideo(); MUSIC_ON=false; setMusicBtn(); stopFX(); toast('Music paused'); return; }
-  if(YT_PLAYER){ YT_PLAYER.playVideo(); MUSIC_ON=true; setMusicBtn(); startFX(); toast('🎶 Dashain Tihar on loop'); return; }
-  toast('Loading music…');
-  loadYTApi(function(){
-    YT_PLAYER=new YT.Player('ytPlayer',{
-      height:'1', width:'1', videoId:MUSIC_VIDEO,
-      playerVars:{autoplay:1, loop:1, playlist:MUSIC_VIDEO, rel:0},
-      events:{
-        onReady:function(e){ e.target.playVideo(); },
-        onStateChange:function(e){
-          if(e.data===YT.PlayerState.PLAYING){ MUSIC_ON=true; setMusicBtn(); startFX(); }
-          else if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.CUED){ MUSIC_ON=false; setMusicBtn(); stopFX(); }
-          else if(e.data===YT.PlayerState.ENDED){ e.target.playVideo(); } /* loop backup */
-        }
-      }
-    });
-    MUSIC_ON=true; setMusicBtn(); startFX(); toast('🎶 Dashain Tihar on loop');
-  });
+  if(!YT_PLAYER){ toast('Music is still loading… tap again in a second'); return; }
+  if(MUSIC_ON){ YT_PLAYER.pauseVideo(); toast('Music paused'); }
+  else { YT_PLAYER.playVideo(); toast('\uD83C\uDFB6 Dashain Tihar on loop'); }
 }
 
 /* ---------------- App API ---------------- */
@@ -514,5 +425,5 @@ window.App=App;
 
 /* ---------------- init ---------------- */
 window.addEventListener('hashchange', render);
-document.addEventListener('DOMContentLoaded', function(){ render(); });
+document.addEventListener('DOMContentLoaded', function(){ render(); musicInit(); });
 })();
