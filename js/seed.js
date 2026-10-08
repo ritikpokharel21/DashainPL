@@ -6,14 +6,14 @@ meta: {updated: 'October 7, 2026', rate: '0.10/pt'},
 players: [
   {id:'p_ritik',  name:'Ritik',  title:'Day One Don',        emoji:'🌪️', pattern:"Started the season with a +495 Day 1, then gave it all back. Highest volatility in the league — a +148 round and a −67 round. When the tornado touches down, points fly everywhere.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
   {id:'p_ashu',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — 23 round wins (most in the league), green on 5 of 6 days. Wins murder and classic alike. Answered his first red day (−86) with +192.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
-  {id:'p_nitesh', name:'Nitesh', title:'Mr. Consistent',     emoji:'📈', pattern:"Classic is his kingdom — +175 and +135 on back-to-back days. Murder games took −220 on Day 3; Day 4's murders were kinder (−83). Keep him at the 🂡 table.", strength:"Classic-game grinder — +7.5 avg across 62 classic rounds; +175 and +135 on back-to-back days.", weakness:"Murder games eat him alive — −10.3 avg over 20 rounds."},
+  {id:'p_nitesh', name:'Nitesh', title:'Mr. Consistent',     emoji:'📈', pattern:"Two monster days back to back — +175 then +272. Classic is his kingdom, but murder's paying rent now (+137).", strength:"Back-to-back monster days — +175 and +272, including a 100-point murder round.", weakness:"Murder was his kryptonite (−10.3 avg) until Day 6's +137 — the sample's getting mixed."},
   {id:'p_bipin',  name:'Bipin',  title:'The Comeback King',  emoji:'🔥', pattern:"Boom or bust. Owns the wildest swing in DPL history: −223 on Day 1, +424 on Day 2. Averages nearly 3x more in murder games. Never boring.", strength:"Murder-game monster — +15.6 avg in murder vs +5.6 in classic; 12 crowns.", weakness:"Boom or bust — a −223 day shows the floor is lava when the cards go cold."},
-  {id:'p_ranj',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"The yo-yo only goes down now: −210 then −136. From mid-table to 17th in two days.", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−346 over two days — the league's coldest streak."},
+  {id:'p_ranj',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"−210, −136, then +49. First uptick in three days — still 16th.", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−346 then +49 — the yo-yo twitches upward."},
   {id:'p_sanka',  name:'Sankalpa', title:'The Grinder',        emoji:'⚙️', pattern:"Figuring it out — red on Day 1, green on Day 2, and quietly one of the better murder-game players (+6.8 avg).", strength:"Murder edge — +6.8 avg there; bounced back green on Day 2.", weakness:"Slow starter — −102 on Day 1; classic games still cost him."},
   {id:'p_dibi',   name:'Dibikxya', title:'The Survivor',       emoji:'🛟', pattern:"Flipped −111 on Day 1 into +170 on Day 2. Streaky: all or nothing, no middle ground — Day 6 was −103.", strength:"Best bounce-back in the league — −111 flipped to +170.", weakness:"All or nothing — no middle gear; quiet for long stretches."},
   {id:'p_sumit',  name:'Sumit',  title:'The Guest Star',     emoji:'🌟', pattern:"Day 6's biggest winner (+114 across two murder games), with rounds of 96 and 79. Murder is home; classic is hostile.", strength:"Murder specialist — +114 on Day 6 (two games), the day's biggest winner.", weakness:"Classic is hostile territory — −130 with no crowns in his first 10-round game."},
   {id:'p_sunil',  name:'Sunil',  title:'The Night Owl',      emoji:'🦉', pattern:"One night, −151, one foul. The night owl flew straight into a window.", strength:"Won 2 of 10 rounds — the touch is there.", weakness:"One bad night — −151 at −15.1/round, plus a foul."},
-  {id:'p_reji',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Played once, left 234 points lighter. The league awaits her revenge arc.", strength:"A 49-point best round — can clearly play.", weakness:"Small sample, one rough night — −234 at −13.9/round."},
+  {id:'p_reji',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Came back for revenge on Day 6 and left 141 points lighter. The arc is still loading.", strength:"A 49-point best round — can clearly play.", weakness:"Two rough nights — −375 total."},
   {id:'p_saram',  name:'Saramsh',  title:'The Phoenix',        emoji:'🐦‍🔥', pattern:"Two days as the league ATM (−393), then a +302 Day 3 — the biggest single-day score of the season. Murder games are his happy place. The comeback is real.", strength:"Peak form — +302 Day 3 was the biggest day of the season; +5.7 murder avg.", weakness:"The first two days — −393 donated before the breakout."},
   {id:'p_sami',   name:'Samikxya', title:'The Philanthropist', emoji:'💸', pattern:"One game. −382. The single most expensive evening in DPL history. Legend status — earned the hard way.", strength:"A 90-point round win — the game is in there.", weakness:"Damage control — −31.6/round, the league's worst; one game cost −382."},
   {id:'p_bijay',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝', pattern:"The sponsor is cutting costs: −383 → −37 → +73 → +108 → +153 → +55. Two steps forward, one step back — but still climbing.", strength:"Climbed from −383 to −31 — the league's best comeback.", weakness:"The hole — down to just −31 after the comeback."},
@@ -21,7 +21,7 @@ players: [
   {id:'p_sunira', name:'Sunira', title:'The Wildcard',       emoji:'🃏', pattern:"Three round wins on debut — more crowns in a day than most manage in three. The −70 is just tuition fees.", strength:"3 crowns on debut — an instant round-winner.", weakness:"Leaky — only 4 seen vs 7 blind; the wins haven't covered it yet."},
   {id:'p_arun',   name:'Arun dai', title:'The OG',             emoji:'🫡', pattern:"The only debutant to finish green (+4). Never won a round — never needed to.", strength:"The only debutant to finish green (+4) — plays within himself.", weakness:"No crowns in 5 rounds — wins by not losing; untested over a full day."},
   {id:'p_sandeep', name:'Sandeep', title:'The Rookie', emoji:'🆕', pattern:"Rough start: −186 across his first two games. The league's newest donor — for now.", strength:"A 57-point round on debut — the touch is there.", weakness:"Debut tax — −186 with no round wins yet."},
-  {id:'p_ashmita', name:'Ashmita', title:'The Debutant', emoji:'🌸', pattern:"Debut: −88 with two round wins (80 and 48). Showed flashes on day one.", strength:"Won 2 of her first 10 rounds — including an 80-pointer.", weakness:"Debut tax — −88; the flashes haven't added up yet."},
+  {id:'p_ashmita', name:'Ashmita', title:'The Debutant', emoji:'🌸', pattern:"Debut day: −132 across two games, but 4 round wins — including an 80-pointer.", strength:"4 round wins on debut day, including an 80-pointer.", weakness:"Debut tax — −132; the flashes haven't added up yet."},
 ],
 days: [
   {id:'day1', label:'Day 1', date:'2026-10-02', note:'Oct 2'},
@@ -162,6 +162,16 @@ games: [
   {n:5, w:'p_shishi', s:[[-22,'u'],[-22,'u'],[-5,'s'],[-22,'u'],[71,'s']]}
  ]},
 /* ---------- DAY 6 ---------- */
+{id:'g_d6_4', dayId:'day6', name:'Murder Game 3', variant:'murder', date:'2026-10-07', partial:false,
+ playerIds:['p_ashmita','p_reji','p_ashu','p_nitesh','p_ranj'],
+ totals:{p_ashmita:-44,p_reji:-141,p_ashu:-1,p_nitesh:137,p_ranj:49},
+ rounds:[
+  {n:1, w:'p_ashmita',s:[[3,'s'],[-27,'s'],[43,'s'],[-17,'s'],[-2,'s']]},
+  {n:2, w:'p_ranj',    s:[[-14,'u'],[-14,'u'],[-14,'u'],[-14,'u'],[56,'s']]},
+  {n:3, w:'p_nitesh',  s:[[-33,'u'],[-1,'s'],[-33,'u'],[100,'s'],[-33,'u']]},
+  {n:4, w:'p_ashmita',s:[[8,'s'],[-56,'u'],[61,'s'],[1,'s'],[-14,'s']]},
+  {n:5, w:'p_ranj',    s:[[-8,'s'],[-43,'s'],[-58,'s'],[67,'s'],[42,'s']]}
+ ]},
 {id:'g_d6_3', dayId:'day6', name:'Classic Game 2', variant:'classic', date:'2026-10-07', partial:false,
  playerIds:['p_ashmita','p_dibi','p_ashu','p_nitesh','p_ranj'],
  totals:{p_ashmita:-88,p_dibi:-103,p_ashu:192,p_nitesh:135,p_ranj:-136},
