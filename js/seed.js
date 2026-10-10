@@ -26,7 +26,7 @@ players: [
   {id:'p_naresh', zelle:'(225) 477-4087', name:'Naresh', title:'Day-One Threat', emoji:'⚡', pattern:"Debut: +134 with rounds of 80 and 74. Announced himself loudly.", strength:"6th overall after one game — the best debut of the season.", weakness:"One game sample."},
   {id:'p_arunbanjara', zelle:'(318) 557-0574', name:'Arun Banjara', title:'The Other Arun', emoji:'🎭', pattern:"Debut: −53 in his first murder game. Shares a name with The OG — not yet the game.", strength:"A 23-point round on debut.", weakness:"Debut tax — −53 with no round wins yet."},
   {id:'p_solti', zelle:'(225) 456-3902', name:'Solti dai', title:'The Khunkhar', emoji:'👹', pattern:"Day 7: −66 — the Khunkhar met the league.", strength:"Won a round on debut.", weakness:"−66 across three games."},
-  {id:'p_anit', name:'Anit', title:'Debutant 🆕', emoji:'🆕', pattern:"Day 8: +273 — the day's biggest winner. What a debut.", strength:"Two green games (+273), with rounds of 100 and 87.", weakness:"Two games in — still new."},
+  {id:'p_anit', zelle:'(225) 384-7673', name:'Anit', title:'Debutant 🆕', emoji:'🆕', pattern:"Day 8: +273 — the day's biggest winner. What a debut.", strength:"Two green games (+273), with rounds of 100 and 87.", weakness:"Two games in — still new."},
 ],
 couples: [
   ['p_reji','p_ritik'],
