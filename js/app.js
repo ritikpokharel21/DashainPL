@@ -223,6 +223,17 @@ function vDay(id){
   var h='<h2>🗓️ '+esc(d.label)+' <span class="small dim">'+esc(d.note||d.date)+'</span></h2>';
   h+='<h3>Standings</h3>';
   r.forEach(function(e,i){ h+=lbRow(e,i,moveArrow(e.pid,di)); });
+  if(d.settled){
+    var ss=settlements(t);
+    ss.sort(function(a,b){return b.pts-a.pts;});
+    h+='<h3>Who Pays Who</h3>';
+    if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
+    ss.forEach(function(x){
+      h+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
+        '<div class="sc"><div class="pv">$'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
+        '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
+    });
+  }
   h+='<h3>Games ('+g.length+')</h3>';
   g.forEach(function(gm){
     var gt=gameTotals(gm), gr=ranked(gt), lead=gr[0];
@@ -231,17 +242,6 @@ function vDay(id){
       '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' rounds'+(gm.partial?' · partial history':'')+'</div></div>'+
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
-  if(d.settled){
-    var ss=settlements(t);
-    ss.sort(function(a,b){return b.pts-a.pts;});
-    h+='<h3>Who Pays Who</h3>';
-    if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
-    ss.forEach(function(x){
-      h+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
-        '<div class="sc"><div class="pv">'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
-        '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
-    });
-  }
   $('#view').innerHTML=h;
 }
 
