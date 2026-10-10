@@ -5,14 +5,14 @@ window.DPL_SEED = {
 meta: {updated: 'October 7, 2026', rate: '0.10/pt'},
 players: [
   {id:'p_ritik', zelle:'(225) 220-2592',  name:'Ritik',  title:'Day One Don',        emoji:'🌪️', pattern:"Started the season with a +495 Day 1, then gave it all back. Day 6: +445 — the day's biggest winner by a mile. Day 8: −16 — quiet night. Still 3rd. When the tornado touches down, points fly everywhere.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
-  {id:'p_ashu', zelle:'(225) 715-0199',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — 37 round wins (most in the league). Day 8: −148 — a rare red day. Still the runaway leader.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
+  {id:'p_ashu', zelle:'(225) 715-0199',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — 38 round wins (most in the league). Day 8: −191 — a rare red day. Still the runaway leader.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
   {id:'p_nitesh', zelle:'(318) 737-9191', name:'Nitesh', title:'Mr. Consistent',     emoji:'📈', pattern:"Day 7: +69. Still 2nd.", strength:"+490 on Day 6 — the biggest day of the season.", weakness:"Murder was his kryptonite (−10.3 avg) until Day 6's +137 — the sample's getting mixed."},
   {id:'p_bipin', zelle:'(225) 495-6130',  name:'Bipin',  title:'The Comeback King',  emoji:'🔥', pattern:"Boom or bust. Owns the wildest swing in DPL history: −223 on Day 1, +424 on Day 2. Day 7: −285 — the bust side keeps busting. Never boring.", strength:"Murder-game monster — +15.6 avg in murder vs +5.6 in classic; 13 crowns.", weakness:"Boom or bust — a −223 day shows the floor is lava when the cards go cold."},
-  {id:'p_ranj', zelle:'(225) 685-7937',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"Day 8: −74 — the bleeding didn't slow.", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−230 over two days."},
+  {id:'p_ranj', zelle:'(225) 685-7937',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"Day 8: −115 — the bleeding didn't slow.", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−189 over two days."},
   {id:'p_sanka', zelle:'(412) 938-1419',  name:'Sankalpa', title:'The Grinder',        emoji:'⚙️', pattern:"Day 7: +107 — the Grinder grinds back. 20th.", strength:"Murder edge — +6.8 avg there.", weakness:"Classic games are a woodchipper — −456 in one game."},
   {id:'p_dibi', zelle:'dibibhandhari@gmail.com',   name:'Dibikxya', title:'The Survivor',       emoji:'🛟', pattern:"Day 7: +22 — back in the green. 6th.", strength:"6 round wins in one game (+182) — the hottest 10 rounds of her season.", weakness:"All or nothing — no middle gear; quiet for long stretches."},
   {id:'p_sumit', zelle:'(225) 476-8179',  name:'Sumit',  title:'The Guest Star',     emoji:'🌟', pattern:"Day 6's biggest winner (+114 across two murder games), with rounds of 96 and 79. Murder is home; classic is hostile.", strength:"Murder specialist — +114 on Day 6 (two games), the day's biggest winner.", weakness:"Classic is hostile territory — −130 with no crowns in his first 10-round game."},
-  {id:'p_sunil', zelle:'(341) 206-0057',  name:'Sunil',  title:'The Night Owl',      emoji:'🦉', pattern:"Day 8: +165 — the owl found the window and flew through it. 10th overall.", strength:"3 crowns on Day 8 — the touch was always there.", weakness:"+14 total — the −151 is nearly erased."},
+  {id:'p_sunil', zelle:'(341) 206-0057',  name:'Sunil',  title:'The Night Owl',      emoji:'🦉', pattern:"Day 8: +37 — the owl is awake. 15th.", strength:"3 crowns on Day 8 — the touch was always there.", weakness:"−114 total."},
   {id:'p_reji', zelle:'(225) 278-8245',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Day 8: +31 — back-to-back green games! Still last (−612).", strength:"A 49-point best round — can clearly play.", weakness:"−612 total — last place."},
   {id:'p_saram', zelle:'(571) 477-8727',  name:'Saramsh',  title:'The Phoenix',        emoji:'🐦‍🔥', pattern:"Two days as the league ATM (−393), then a +302 Day 3 — the biggest single-day score of the season. Day 7: −50. The yo-yo continues.", strength:"Peak form — +302 Day 3 was the biggest day of the season.", weakness:"The first two days — −393 donated before the breakout."},
   {id:'p_sami', zelle:'(561) 526-6339',   name:'Samikxya', title:'The Philanthropist', emoji:'💸', pattern:"One game. −382. The single most expensive evening in DPL history. Legend status — earned the hard way.", strength:"A 90-point round win — the game is in there.", weakness:"Damage control — −31.6/round, the league's worst; one game cost −382."},
@@ -26,7 +26,13 @@ players: [
   {id:'p_naresh', zelle:'(225) 477-4087', name:'Naresh', title:'Day-One Threat', emoji:'⚡', pattern:"Debut: +134 with rounds of 80 and 74. Announced himself loudly.", strength:"6th overall after one game — the best debut of the season.", weakness:"One game sample."},
   {id:'p_arunbanjara', zelle:'(318) 557-0574', name:'Arun Banjara', title:'The Other Arun', emoji:'🎭', pattern:"Debut: −53 in his first murder game. Shares a name with The OG — not yet the game.", strength:"A 23-point round on debut.", weakness:"Debut tax — −53 with no round wins yet."},
   {id:'p_solti', zelle:'(225) 456-3902', name:'Solti dai', title:'The Khunkhar', emoji:'👹', pattern:"Day 7: −66 — the Khunkhar met the league.", strength:"Won a round on debut.", weakness:"−66 across three games."},
-  {id:'p_anit', name:'Anit', title:'Debutant 🆕', emoji:'🆕', pattern:"Debut: +61, green on day one — a 100-point round announced the arrival.", strength:"Green on debut (+61), with a 100-point round.", weakness:"One game sample."},
+  {id:'p_anit', name:'Anit', title:'Debutant 🆕', emoji:'🆕', pattern:"Day 8: +273 — the day's biggest winner. What a debut.", strength:"Two green games (+273), with rounds of 100 and 87.", weakness:"Two games in — still new."},
+],
+couples: [
+  ['p_reji','p_ritik'],
+  ['p_ashu','p_ranj'],
+  ['p_shreya','p_sanka'],
+  ['p_bijay','p_ashmita']
 ],
 days: [
   {id:'day1', label:'Day 1', date:'2026-10-02', note:'Oct 2'},
@@ -36,7 +42,7 @@ days: [
   {id:'day5', label:'Day 5', date:'2026-10-06', note:'Oct 6'},
   {id:'day6', label:'Day 6', date:'2026-10-07', note:'Oct 7'},
   {id:'day7', label:'Day 7', date:'2026-10-08', note:'Oct 8'},
-  {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9'}
+  {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -169,6 +175,15 @@ games: [
   {n:5, w:'p_shishi', s:[[-22,'u'],[-22,'u'],[-5,'s'],[-22,'u'],[71,'s']]}
  ]},
 /* ---------- DAY 8 ---------- */
+{id:'g_d8_3', dayId:'day8', name:'Murder Game 3', variant:'murder', date:'2026-10-09', partial:false,
+ playerIds:['p_anit','p_ashu','p_sunil','p_ranj'],
+ totals:{p_anit:212,p_ashu:-43,p_sunil:-128,p_ranj:-41},
+ rounds:[
+  {n:1, w:'p_anit', s:[[87,'s'],[-58,'u'],[-58,'u'],[29,'s']]},
+  {n:2, w:'p_ashu', s:[[14,'s'],[52,'s'],[-33,'u'],[-33,'u']]},
+  {n:3, w:'p_anit', s:[[60,'s'],[-20,'u'],[-20,'u'],[-20,'u']]},
+  {n:4, w:'p_anit', s:[[51,'s'],[-17,'u'],[-17,'u'],[-17,'u']]}
+ ]},
 {id:'g_d8_2', dayId:'day8', name:'Murder Game 2', variant:'murder', date:'2026-10-09', partial:true,
  playerIds:['p_anit','p_ashu','p_sunil','p_bijay','p_ranj'],
  totals:{p_anit:61,p_ashu:-148,p_sunil:165,p_bijay:-4,p_ranj:-74},

@@ -22,6 +22,7 @@ function seedState(){
   st.meta = S.meta || {};
   st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||'',zelle:p.zelle||''}; });
   st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled}; });
+  st.couples = S.couples||[];
   st.games = S.games.map(function(g){
     return {
       id:g.id, dayId:g.dayId, name:g.name, variant:g.variant||'classic',
@@ -57,19 +58,34 @@ function ranked(totals){
   return Object.keys(totals).map(function(pid){ return {pid:pid, pts:totals[pid]}; })
     .sort(function(a,b){ return b.pts-a.pts; });
 }
-/* Minimal settlement: debtors pay creditors, fewest transactions possible */
+/* Minimal settlement: couples settle with each other first, then debtors pay creditors, fewest transactions possible */
 function settlements(t){
+  var bal={};
+  for(var pid in t) bal[pid]=Math.round(t[pid]*10)/10;
+  var out=[];
+  function pay(frm,to,amt,couple){
+    amt=Math.round(amt*10)/10;
+    if(amt<=0) return;
+    out.push({from:frm, to:to, pts:amt, couple:!!couple});
+    bal[frm]=Math.round((bal[frm]+amt)*10)/10;
+    bal[to]=Math.round((bal[to]-amt)*10)/10;
+  }
+  state.couples.forEach(function(cp){
+    var a=cp[0], b=cp[1];
+    if(bal[a]===undefined||bal[b]===undefined) return;
+    if(bal[a]>0 && bal[b]<0) pay(b,a,Math.min(bal[a],-bal[b]),true);
+    else if(bal[a]<0 && bal[b]>0) pay(a,b,Math.min(-bal[a],bal[b]),true);
+  });
   var cred=[], debt=[];
-  for(var pid in t){ var v=Math.round(t[pid]*10)/10; if(v>0) cred.push({pid:pid,amt:v}); else if(v<0) debt.push({pid:pid,amt:-v}); }
+  for(var p2 in bal){ if(bal[p2]>0) cred.push({pid:p2,amt:bal[p2]}); else if(bal[p2]<0) debt.push({pid:p2,amt:-bal[p2]}); }
   cred.sort(function(a,b){return b.amt-a.amt;});
   debt.sort(function(a,b){return b.amt-a.amt;});
-  var out=[], ci=0, di=0;
+  var ci=0, di=0;
   while(ci<cred.length && di<debt.length){
-    var c=cred[ci], db=debt[di];
-    var pay=Math.min(c.amt, db.amt);
-    out.push({from:db.pid, to:c.pid, pts:Math.round(pay*10)/10});
-    c.amt=Math.round((c.amt-pay)*10)/10;
-    db.amt=Math.round((db.amt-pay)*10)/10;
+    var c=cred[ci], db=debt[di], p=Math.min(c.amt,db.amt);
+    out.push({from:db.pid, to:c.pid, pts:Math.round(p*10)/10, couple:false});
+    c.amt=Math.round((c.amt-p)*10)/10;
+    db.amt=Math.round((db.amt-p)*10)/10;
     if(c.amt<=0) ci++;
     if(db.amt<=0) di++;
   }
@@ -220,7 +236,7 @@ function vDay(id){
     h+='<h3>💸 Who Pays Who</h3>';
     if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
     ss.forEach(function(x){
-      h+='<div class="lb"><div class="avatar">💵</div><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
+      h+='<div class="lb"><div class="avatar">'+(x.couple?'💑':'💵')+'</div><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
         '<div class="sc"><div class="pv neg">'+fmtMoney(x.pts)+'</div><div class="mv">'+fmtPts(x.pts)+' pts</div></div></div>';
     });
   }
