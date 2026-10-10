@@ -233,11 +233,13 @@ function vDay(id){
   });
   if(d.settled){
     var ss=settlements(t);
-    h+='<h3>💸 Who Pays Who</h3>';
+    ss.sort(function(a,b){return b.pts-a.pts;});
+    h+='<h3>Who Pays Who</h3>';
     if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
     ss.forEach(function(x){
-      h+='<div class="lb"><div class="avatar">'+(x.couple?'💑':'💵')+'</div><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
-        '<div class="sc"><div class="pv neg">'+fmtMoney(x.pts)+'</div><div class="mv">'+fmtPts(x.pts)+' pts</div></div></div>';
+      h+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
+        '<div class="sc"><div class="pv">'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
+        '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
     });
   }
   $('#view').innerHTML=h;
@@ -559,6 +561,10 @@ var App={
 go:function(r){ location.hash=r; },
 toggleMusic:function(){ toggleMusic(); },
 shareStandings:function(){ shareText(standingsText()); },
+copyZelleFor:function(pid){
+  var p=state.players.find(function(x){return x.id===pid;});
+  if(p&&p.zelle) App.copyZelle(p.zelle); else toast('No Zelle info for this player');
+},
 copyZelle:function(z){
   function done(){ toast('Copied — paste it in your bank app 💳'); }
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(z).then(done,function(){ toast('Copy failed — long-press to copy'); }); }
