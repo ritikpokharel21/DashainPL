@@ -20,7 +20,7 @@ function seedState(){
   var st = {players:[], days:[], games:[]};
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
-  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||''}; });
+  st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||'',zelle:p.zelle||''}; });
   st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled}; });
   st.games = S.games.map(function(g){
     return {
@@ -257,6 +257,7 @@ function vPlayer(pid){
   '</div>';
   var pat=pinfo(pid).pattern;
   var pp=pinfo(pid);
+  if(pp.zelle) h+='<div class="card" onclick="App.copyZelle(\''+esc(pp.zelle)+'\')" style="cursor:pointer"><div class="small dim">💳 Zelle Payment — tap to copy</div><div class="big" style="margin-top:4px">'+esc(pp.zelle)+'</div></div>';
   if(pat) h+='<div class="card"><h3 style="margin-top:0">🔍 The Pattern</h3><div style="font-size:14.5px;line-height:1.6">'+esc(pat)+'</div></div>';
   if(pp.strength||pp.weakness) h+='<div class="card"><h3 style="margin-top:0">💪⚖️ Strength & Weakness</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div class="small dim">💪 Strength</div><div style="font-size:14px;line-height:1.55">'+esc(pp.strength||'—')+'</div></div><div style="flex:1;min-width:200px"><div class="small dim">⚖️ Weakness</div><div style="font-size:14px;line-height:1.55">'+esc(pp.weakness||'—')+'</div></div></div></div>';
   h+='<div class="card"><h3 style="margin-top:0">🎴 Table image</h3><div class="row" style="justify-content:space-around;text-align:center">'+
@@ -542,6 +543,11 @@ var App={
 go:function(r){ location.hash=r; },
 toggleMusic:function(){ toggleMusic(); },
 shareStandings:function(){ shareText(standingsText()); },
+copyZelle:function(z){
+  function done(){ toast('Copied — paste it in your bank app 💳'); }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(z).then(done,function(){ toast('Copy failed — long-press to copy'); }); }
+  else { var ta=document.createElement('textarea'); ta.value=z; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){ toast('Copy failed — long-press to copy'); } ta.remove(); }
+},
 shareGame:function(gid){
   var g=state.games.find(function(x){return x.id===gid;}); if(!g)return;
   var gt=gameTotals(g), r=ranked(gt), L=['🃏 DPL — '+g.name+' ('+dayLabel(g.dayId)+')'];
