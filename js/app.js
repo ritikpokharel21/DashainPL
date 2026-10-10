@@ -21,7 +21,7 @@ function seedState(){
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
   st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||''}; });
-  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||''}; });
+  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled}; });
   st.games = S.games.map(function(g){
     return {
       id:g.id, dayId:g.dayId, name:g.name, variant:g.variant||'classic',
@@ -56,6 +56,24 @@ function overallTotals(){
 function ranked(totals){
   return Object.keys(totals).map(function(pid){ return {pid:pid, pts:totals[pid]}; })
     .sort(function(a,b){ return b.pts-a.pts; });
+}
+/* Minimal settlement: debtors pay creditors, fewest transactions possible */
+function settlements(t){
+  var cred=[], debt=[];
+  for(var pid in t){ var v=Math.round(t[pid]*10)/10; if(v>0) cred.push({pid:pid,amt:v}); else if(v<0) debt.push({pid:pid,amt:-v}); }
+  cred.sort(function(a,b){return b.amt-a.amt;});
+  debt.sort(function(a,b){return b.amt-a.amt;});
+  var out=[], ci=0, di=0;
+  while(ci<cred.length && di<debt.length){
+    var c=cred[ci], db=debt[di];
+    var pay=Math.min(c.amt, db.amt);
+    out.push({from:db.pid, to:c.pid, pts:Math.round(pay*10)/10});
+    c.amt=Math.round((c.amt-pay)*10)/10;
+    db.amt=Math.round((db.amt-pay)*10)/10;
+    if(c.amt<=0) ci++;
+    if(db.amt<=0) di++;
+  }
+  return out;
 }
 function dayRankMap(dayId){
   var r=ranked(dayTotals(dayId)), m={};
@@ -197,6 +215,15 @@ function vDay(id){
       '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' rounds'+(gm.partial?' · partial history':'')+'</div></div>'+
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
+  if(d.settled){
+    var ss=settlements(t);
+    h+='<h3>💸 Who Pays Who</h3>';
+    if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
+    ss.forEach(function(x){
+      h+='<div class="lb"><div class="avatar">💵</div><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
+        '<div class="sc"><div class="pv neg">'+fmtMoney(x.pts)+'</div><div class="mv">'+fmtPts(x.pts)+' pts</div></div></div>';
+    });
+  }
   $('#view').innerHTML=h;
 }
 
