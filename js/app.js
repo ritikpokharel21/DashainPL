@@ -257,7 +257,7 @@ function vPlayer(pid){
   '</div>';
   var pat=pinfo(pid).pattern;
   var pp=pinfo(pid);
-  if(pp.zelle) h+='<div class="card" onclick="App.copyZelle(\''+esc(pp.zelle)+'\')" style="cursor:pointer"><div class="small dim">💳 Zelle Payment — tap to copy</div><div class="big" style="margin-top:4px">'+esc(pp.zelle)+'</div></div>';
+  if(pp.zelle) h+='<div class="card" onclick="App.copyZelle(\''+esc(pp.zelle)+'\')" style="cursor:pointer"><h3 style="margin-top:0">💳 Zelle Payment</h3><div class="small dim">tap to copy</div><div class="big" style="margin-top:6px">'+esc(pp.zelle)+'</div></div>';
   if(pat) h+='<div class="card"><h3 style="margin-top:0">🔍 The Pattern</h3><div style="font-size:14.5px;line-height:1.6">'+esc(pat)+'</div></div>';
   if(pp.strength||pp.weakness) h+='<div class="card"><h3 style="margin-top:0">💪⚖️ Strength & Weakness</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div class="small dim">💪 Strength</div><div style="font-size:14px;line-height:1.55">'+esc(pp.strength||'—')+'</div></div><div style="flex:1;min-width:200px"><div class="small dim">⚖️ Weakness</div><div style="font-size:14px;line-height:1.55">'+esc(pp.weakness||'—')+'</div></div></div></div>';
   h+='<div class="card"><h3 style="margin-top:0">🎴 Table image</h3><div class="row" style="justify-content:space-around;text-align:center">'+
