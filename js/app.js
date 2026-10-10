@@ -202,7 +202,7 @@ function vHome(){
 function vDays(){
   tabbar('#/days');
   var h='<h2>📅 Days</h2>';
-  state.days.forEach(function(d){
+  state.days.slice().reverse().forEach(function(d){
     var t=dayTotals(d.id), r=ranked(t), g=dayGames(d.id);
     var lead=r[0];
     h+='<div class="card" onclick="location.hash=\'#/day/'+d.id+'\'" style="cursor:pointer">'+
