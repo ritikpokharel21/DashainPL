@@ -4,19 +4,19 @@
 window.DPL_SEED = {
 meta: {updated: 'October 7, 2026', rate: '0.10/pt'},
 players: [
-  {id:'p_ritik', zelle:'(225) 220-2592',  name:'Ritik',  title:'Day One Don',        emoji:'🌪️', pattern:"Started the season with a +495 Day 1, then gave it all back. Day 6: +445 — the day's biggest winner by a mile. Day 9: +38 — the tornado spun the right way. 4th. When the tornado touches down, points fly everywhere.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
-  {id:'p_ashu', zelle:'(225) 715-0199',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — 46 round wins (most in the league). Day 9: −282 — the lead is gone. 2nd.", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
+  {id:'p_ritik', zelle:'(225) 220-2592',  name:'Ritik',  title:'Day One Don',        emoji:'🌪️', pattern:"Started the season with a +495 Day 1, then gave it all back. Day 6: +445 — the day's biggest winner by a mile. Day 10: −26 — the tornado touched down in the wrong field. 4th. When the tornado touches down, points fly everywhere.", strength:"Highest ceiling in the league — a +148 round and a +495 day.", weakness:"Gives it back — −317 over the next two days; wildest round-to-round swing."},
+  {id:'p_ashu', zelle:'(225) 715-0199',   name:'Ashutosh', title:'The Banker',         emoji:'🏦', pattern:"The complete package — 49 round wins (most in the league). Day 10: +63 — closing in. 2nd (777).", strength:"The complete engine — 15 crowns (most), +20 avg/round, green all 3 days.", weakness:"None on record — the only knock is 8 blind rounds; occasionally wins ugly."},
   {id:'p_nitesh', zelle:'(318) 737-9191', name:'Nitesh', title:'Mr. Consistent',     emoji:'📈', pattern:"Back on top — 1st (781). The tortoise passes the hare.", strength:"+490 on Day 6 — the biggest day of the season.", weakness:"Murder was his kryptonite (−10.3 avg) until Day 6's +137 — the sample's getting mixed."},
-  {id:'p_bipin', zelle:'(225) 495-6130',  name:'Bipin',  title:'The Comeback King',  emoji:'🔥', pattern:"Boom or bust. Owns the wildest swing in DPL history: −223 on Day 1, +424 on Day 2. Day 9: −30 — quiet. 14th.", strength:"Murder-game monster — +15.6 avg in murder vs +5.6 in classic; 17 crowns.", weakness:"Boom or bust — a −223 day shows the floor is lava when the cards go cold."},
-  {id:'p_ranj', zelle:'(225) 685-7937',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"Day 9: +155 — two green games in a row! 22nd (−519).", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−519 — off the bottom."},
+  {id:'p_bipin', zelle:'(225) 495-6130',  name:'Bipin',  title:'The Comeback King',  emoji:'🔥', pattern:"Boom or bust. Owns the wildest swing in DPL history: −223 on Day 1, +424 on Day 2. Day 10: −35 — 15th.", strength:"Murder-game monster — +15.6 avg in murder vs +5.6 in classic; 19 crowns.", weakness:"Boom or bust — a −223 day shows the floor is lava when the cards go cold."},
+  {id:'p_ranj', zelle:'(225) 685-7937',   name:'Ranju',    title:'The Yo-Yo',          emoji:'🎢', pattern:"Day 10: −46 — 22nd (−565).", strength:"Explosive — a 140-point round, among the season's best.", weakness:"−565 — off the bottom."},
   {id:'p_sanka', zelle:'(412) 938-1419',  name:'Sankalpa', title:'The Grinder',        emoji:'⚙️', pattern:"Day 9: −160 — the grinder got ground. Last (−590).", strength:"Murder edge — +6.8 avg there.", weakness:"Classic games are a woodchipper — −456 in one game."},
   {id:'p_dibi', zelle:'dibibhandhari@gmail.com',   name:'Dibikxya', title:'The Survivor',       emoji:'🛟', pattern:"Day 9: +58 — back in the green. 6th.", strength:"6 round wins in one game (+182) — the hottest 10 rounds of her season.", weakness:"All or nothing — no middle gear; quiet for long stretches."},
-  {id:'p_sumit', zelle:'(225) 476-8179',  name:'Sumit',  title:'The Guest Star',     emoji:'🌟', pattern:"Day 9: +255 — 5th overall.", strength:"Murder specialist — +255 on Day 9 (three games), the day's biggest winner.", weakness:"Classic is hostile territory — −130 with no crowns in his first 10-round game."},
+  {id:'p_sumit', zelle:'(225) 476-8179',  name:'Sumit',  title:'The Guest Star',     emoji:'🌟', pattern:"Day 10: +25 — 5th.", strength:"Murder specialist — +255 on Day 9 (three games), the day's biggest winner; +25 on Day 10.", weakness:"Classic is hostile territory — −130 with no crowns in his first 10-round game."},
   {id:'p_sunil', zelle:'(341) 206-0057',  name:'Sunil',  title:'The Night Owl',      emoji:'🦉', pattern:"Day 9: −245 — the owl flew into the window again. 19th.", strength:"4 crowns — the touch comes and goes.", weakness:"−359 total."},
-  {id:'p_reji', zelle:'(225) 278-8245',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Day 9: +215 — the green streak continues. 20th (−397).", strength:"A 49-point best round — can clearly play.", weakness:"−397 total."},
-  {id:'p_saram', zelle:'(571) 477-8727',  name:'Saramsh',  title:'The Phoenix',        emoji:'🐦‍🔥', pattern:"Two days as the league ATM (−393), then a +302 Day 3 — the biggest single-day score of the season. Day 7: −50. The yo-yo continues.", strength:"Peak form — +302 Day 3 was the biggest day of the season.", weakness:"The first two days — −393 donated before the breakout."},
+  {id:'p_reji', zelle:'(225) 278-8245',   name:'Rejina',   title:'Ice or Fire',        emoji:'❄️', pattern:"Day 10: +144 — the day's biggest winner! 17th (−253).", strength:"A 49-point best round — can clearly play.", weakness:"−253 total."},
+  {id:'p_saram', zelle:'(571) 477-8727',  name:'Saramsh',  title:'The Phoenix',        emoji:'🐦‍🔥', pattern:"Day 10: −118 — the ATM reopened. 19th (−259).", strength:"Peak form — +302 Day 3 was the biggest day of the season.", weakness:"The first two days — −393 donated before the breakout."},
   {id:'p_sami', zelle:'(561) 526-6339',   name:'Samikxya', title:'The Philanthropist', emoji:'💸', pattern:"Day 9: −91 — back in the red. 21st.", strength:"A 90-point round win — the game is in there.", weakness:"Damage control — −473 total."},
-  {id:'p_bijay', zelle:'(225) 371-2140',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝', pattern:"The sponsor is cutting costs: −383 → −37 → +73 → +108 → +153 → +55 → +65 → +221 → +109 Day 9: +396 — the day's biggest winner! 3rd.", strength:"Climbed from −383 to +525 — the league's best comeback.", weakness:"+675 and 3rd — officially out of the hole."},
+  {id:'p_bijay', zelle:'(225) 371-2140',  name:'Bijay',  title:'The Sponsor',        emoji:'🤝', pattern:"The sponsor is cutting costs: −383 → −37 → +73 → +108 → +153 → +55 → +65 → +221 → +109 Day 10: −7 — a quiet night. 3rd.", strength:"Climbed from −383 to +668 — the league's best comeback.", weakness:"+668 and 3rd — officially out of the hole."},
   {id:'p_shishi', zelle:'(225) 284-6997', name:'Shishir',  title:'Trial by Fire',      emoji:'🌋', pattern:"Day 9: −26 — the trial continues. 17th.", strength:"Fearless — stole rounds with 71, 109 and 143.", weakness:"Debut tax — −227."},
   {id:'p_sunira', zelle:'(225) 441-8145', name:'Sunira', title:'The Wildcard',       emoji:'🃏', pattern:"Three round wins on debut — more crowns in a day than most manage in three. The −70 is just tuition fees.", strength:"3 crowns on debut — an instant round-winner.", weakness:"Leaky — only 4 seen vs 7 blind; the wins haven't covered it yet."},
   {id:'p_arun', zelle:'(225) 747-9398',   name:'Arun dai', title:'The OG',             emoji:'🫡', pattern:"Day 7: −10 — the 10-round game (+72) almost erased the −82.", strength:"3 crowns on Day 7.", weakness:"10th — the removal stung."},
@@ -43,7 +43,8 @@ days: [
   {id:'day6', label:'Day 6', date:'2026-10-07', note:'Oct 7'},
   {id:'day7', label:'Day 7', date:'2026-10-08', note:'Oct 8'},
   {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9', settled:true},
-  {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true}
+  {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true},
+  {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -174,6 +175,37 @@ games: [
   {n:3, w:'p_ashu',   s:[[-19,'u'],[69,'s'],[-19,'u'],[-19,'u'],[-12,'s']]},
   {n:4, w:'p_sunira', s:[[-37,'u'],[-37,'u'],[80,'s'],[31,'s'],[-37,'u']]},
   {n:5, w:'p_shishi', s:[[-22,'u'],[-22,'u'],[-5,'s'],[-22,'u'],[71,'s']]}
+ ]},
+/* ---------- DAY 10 ---------- */
+{id:'g_d10_1', dayId:'day10', name:'Murder Game', variant:'murder', date:'2026-10-12', partial:false,
+ playerIds:['p_reji','p_ashu','p_bipin','p_ranj','p_saram'],
+ totals:{p_reji:95,p_ashu:102,p_bipin:-47,p_ranj:-46,p_saram:-104},
+ rounds:[
+  {n:1, w:'p_ashu', s:[[-29,'s'],[101,'s'],[-44,'s'],[21,'s'],[-49,'s']]},
+  {n:2, w:'p_saram',s:[[7,'s'],[-35,'u'],[-3,'s'],[12,'s'],[19,'s']]},
+  {n:3, w:'p_reji', s:[[44,'s'],[-5,'s'],[35,'s'],[-37,'u'],[-37,'u']]},
+  {n:4, w:'p_reji', s:[[103,'s'],[-47,'s'],[-37,'s'],[-12,'s'],[-7,'s']]},
+  {n:5, w:'p_ashu', s:[[-30,'u'],[88,'s'],[2,'s'],[-30,'u'],[-30,'u']]}
+ ]},
+{id:'g_d10_2', dayId:'day10', name:'Murder Game 2', variant:'murder', date:'2026-10-12', partial:false,
+ playerIds:['p_ritik','p_bijay','p_ashu','p_reji','p_saram'],
+ totals:{p_ritik:-83,p_bijay:89,p_ashu:-41,p_reji:49,p_saram:-14},
+ rounds:[
+  {n:1, w:'p_saram',s:[[33,'s'],[-17,'s'],[-12,'s'],[-2,'s'],[-2,'s']]},
+  {n:2, w:'p_bijay',s:[[-31,'u'],[40,'s'],[-31,'u'],[36,'s'],[-14,'s']]},
+  {n:3, w:'p_bijay',s:[[-20,'s'],[84,'s'],[10,'s'],[-37,'u'],[-37,'u']]},
+  {n:4, w:'p_bijay',s:[[-18,'s'],[29,'s'],[-18,'s'],[57,'s'],[-50,'u']]},
+  {n:5, w:'p_saram',s:[[-47,'u'],[-47,'u'],[10,'s'],[-5,'s'],[89,'d']]}
+ ]},
+{id:'g_d10_3', dayId:'day10', name:'Murder Game 3', variant:'murder', date:'2026-10-12', partial:false,
+ playerIds:['p_ritik','p_bijay','p_ashu','p_sumit','p_bipin'],
+ totals:{p_ritik:57,p_bijay:-96,p_ashu:2,p_sumit:25,p_bipin:12},
+ rounds:[
+  {n:1, w:'p_ashu', s:[[15,'s'],[-27,'u'],[66,'s'],[-27,'u'],[-27,'u']]},
+  {n:2, w:'p_ritik',s:[[117,'s'],[-44,'u'],[8,'s'],[-37,'s'],[-44,'u']]},
+  {n:3, w:'p_bipin',s:[[-3,'s'],[-3,'s'],[32,'s'],[-53,'s'],[27,'s']]},
+  {n:4, w:'p_bipin',s:[[-47,'u'],[-47,'u'],[-47,'u'],[60,'s'],[81,'s']]},
+  {n:5, w:'p_sumit',s:[[-25,'s'],[25,'s'],[-57,'u'],[82,'s'],[-25,'s']]}
  ]},
 /* ---------- DAY 9 ---------- */
 {id:'g_d9_11', dayId:'day9', name:'Murder Game 11', variant:'murder', date:'2026-10-10', partial:false,
