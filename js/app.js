@@ -647,7 +647,8 @@ function vVersus(){
   var h='<h2>⚔️ Head to Head</h2>';
   h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every game they played <b>together</b> — and what 3 more games would look like.</div>';
   h+='<div class="chips" style="flex-wrap:wrap;overflow:visible;margin-bottom:12px">';
-  state.players.forEach(function(pl){
+  ranked(overallTotals()).forEach(function(e){
+    var pl=pinfo(e.pid);
     var on=vsSel.indexOf(pl.id)>=0;
     h+='<button class="chip'+(on?' on':'')+'" onclick="App.vsToggle(\''+pl.id+'\')">'+pl.emoji+' '+esc(pl.name)+'</button>';
   });
