@@ -620,16 +620,6 @@ function vsH2HHtml(a,b){
   h+=tapeRow('Best game', d.bestA, d.bestB, fmtPts);
   h+=tapeRow('Streak', st.who==='A'?st.n+'W':'—', st.who==='B'?st.n+'W':'—');
   h+='</div>';
-  /* projection: next 3 games (15 rounds) */
-  var diff=(d.ptsA-d.ptsB)/d.rounds, proj=Math.round(diff*15/2);
-  h+='<h3>🔮 Next 3 games <span class="dim small">(15 rounds together)</span></h3>';
-  h+='<div class="card" style="text-align:center;margin-bottom:10px"><div class="row">'+
-    '<div style="flex:1"><div class="avatar" style="font-size:28px">'+pa.emoji+'</div><div class="nm">'+esc(pa.name)+'</div>'+
-    '<div style="font-size:24px;font-weight:800" class="'+(proj>0?'pos':proj<0?'neg':'')+'">'+fmtPts(proj)+'</div></div>'+
-    '<div style="flex:1"><div class="avatar" style="font-size:28px">'+pb.emoji+'</div><div class="nm">'+esc(pb.name)+'</div>'+
-    '<div style="font-size:24px;font-weight:800" class="'+(proj<0?'pos':proj>0?'neg':'')+'">'+fmtPts(-proj)+'</div></div></div>'+
-    '<div class="small dim" style="margin-top:6px">'+esc(pa.name)+' outscores '+esc(pb.name)+' by '+Math.abs(diff).toFixed(1)+
-    ' pts/round head-to-head — stretched over 15 rounds.</div></div>';
   /* game by game */
   h+='<h3>🃏 Every game together <span class="dim small">('+d.games.length+')</span></h3>';
   d.games.slice().reverse().forEach(function(e){
@@ -645,7 +635,7 @@ function vsH2HHtml(a,b){
 function vVersus(){
   tabbar('#/versus');
   var h='<h2>⚔️ Head to Head</h2>';
-  h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every game they played <b>together</b> — and what 3 more games would look like.</div>';
+  h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every game they played <b>together</b>.</div>';
   h+='<div class="chips" style="flex-wrap:wrap;overflow:visible;margin-bottom:12px">';
   ranked(overallTotals()).forEach(function(e){
     var pl=pinfo(e.pid);
