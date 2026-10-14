@@ -560,20 +560,39 @@ function toggleMusic(){
 
 /* ---------------- versus: head-to-head simulator ---------------- */
 var vsSel=[], vsRes=null;
-function playerRounds(pid){
-  var arr=[];
+function playerPool(pid, pids){
+  /* Weighted training data: each past round scores weight = how many of the
+     other selected players sat at that table. Pure head-to-head signal where
+     it exists, graceful fallback where it doesn't. */
+  var pool=[];
   state.games.forEach(function(g){
     if(g.playerIds.indexOf(pid)<0) return;
-    g.rounds.forEach(function(r){ var sc=r.scores[pid]; if(sc) arr.push(sc.pts); });
+    var others=0, i;
+    for(i=0;i<pids.length;i++) if(pids[i]!==pid && g.playerIds.indexOf(pids[i])>=0) others++;
+    if(others===0) return;
+    g.rounds.forEach(function(r){ var sc=r.scores[pid]; if(sc) pool.push({v:sc.pts, w:others}); });
   });
-  return arr;
+  if(!pool.length){ /* no shared table ever: fall back to overall form */
+    state.games.forEach(function(g){
+      if(g.playerIds.indexOf(pid)<0) return;
+      g.rounds.forEach(function(r){ var sc=r.scores[pid]; if(sc) pool.push({v:sc.pts, w:1, fb:true}); });
+    });
+  }
+  return pool;
+}
+function drawFrom(pool){
+  var tot=0, i;
+  for(i=0;i<pool.length;i++) tot+=pool[i].w;
+  var x=Math.random()*tot;
+  for(i=0;i<pool.length;i++){ x-=pool[i].w; if(x<=0) return pool[i].v; }
+  return pool[pool.length-1].v;
 }
 function simGame(pids, pools){
   var totals={}, i;
   for(i=0;i<pids.length;i++) totals[pids[i]]=0;
   var rounds=[];
   for(var n=1;n<=5;n++){
-    var raw=pids.map(function(id){ var p=pools[id]; return p[Math.floor(Math.random()*p.length)]; });
+    var raw=pids.map(function(id){ return drawFrom(pools[id]); });
     var mean=raw.reduce(function(a,b){return a+b;},0)/raw.length;
     var adj=raw.map(function(v){ return Math.round(v-mean); });
     var drift=adj.reduce(function(a,b){return a+b;},0);
@@ -588,7 +607,7 @@ function simGame(pids, pools){
 function vVersus(){
   tabbar('#/versus');
   var h='<h2>⚔️ Head to Head</h2>';
-  h+='<div class="small dim" style="margin-bottom:10px">Pick 2–5 players. We simulate a 5-round game from their past rounds — 2,000 times — and show the odds plus one sample game.</div>';
+  h+='<div class="small dim" style="margin-bottom:10px">Pick 2–5 players. We simulate a 5-round game from how they\u2019ve played <b>against each other</b> — past rounds vs these opponents weigh most — 2,000 times, then show the odds plus one sample game.</div>';
   h+='<div class="small" style="margin-bottom:8px;font-weight:700"><span id="vsCount">'+vsSel.length+'</span> selected (2–5)</div>';
   h+='<div class="chips" style="flex-wrap:wrap;overflow:visible;margin-bottom:12px">';
   state.players.forEach(function(pl){
@@ -601,6 +620,10 @@ function vVersus(){
   if(vsRes) h+=vsResultsHtml();
   $('#view').innerHTML=h;
 }
+function poolsUsedFallback(pid){
+  var p=vsRes.pools[pid];
+  return p.length>0 && p[0].fb===true;
+}
 function vsResultsHtml(){
   var r=vsRes, pids=r.pids, sims=r.sims, h='';
   h+='<h3>🏆 Win odds <span class="dim small">('+sims.toLocaleString()+' simulations)</span></h3>';
@@ -608,10 +631,11 @@ function vsResultsHtml(){
     return {id:id, win:r.wins[id]/sims*100, avg:r.sum[id]/sims, best:r.best[id], worst:r.worst[id]};
   }).sort(function(a,b){return b.win-a.win;});
   rows.forEach(function(e,i){
-    var pl=pinfo(e.id);
+    var pl=pinfo(e.id), hh=r.hh[e.id], fb=poolsUsedFallback(e.id);
     h+='<div class="card" style="margin-bottom:8px"><div class="row"><div class="avatar">'+pl.emoji+'</div>'+
       '<div class="grow"><div class="nm">'+esc(pl.name)+'</div>'+
-      '<div class="prog"><div style="width:'+Math.max(2,e.win).toFixed(1)+'%"></div></div></div>'+
+      '<div class="prog"><div style="width:'+Math.max(2,e.win).toFixed(1)+'%"></div></div>'+
+      '<div class="small dim">'+hh+' head-to-head rounds'+(fb?' (overall form — never shared a table)':'')+'</div></div>'+
       '<div style="text-align:right"><div style="font-weight:800" class="'+(e.avg>=0?'pos':'neg')+'">'+e.win.toFixed(1)+'%</div>'+
       '<div class="small dim">avg '+fmtPts(Math.round(e.avg))+'</div></div></div></div>';
   });
@@ -627,7 +651,7 @@ function vsResultsHtml(){
   h+='<tr class="tot"><td class="rn">Tot</td>'+pids.map(function(id){
     var v=r.sample.totals[id]; return '<td class="'+(v>0?'pos':v<0?'neg':'')+'">'+fmtPts(v)+'</td>';
   }).join('')+'</tr></tbody></table></div>';
-  h+='<div class="small dim" style="margin-top:8px">Each simulated round draws from that player\u2019s real past rounds, then balances to zero-sum — like a real game. More games = sharper odds.</div>';
+  h+='<div class="small dim" style="margin-top:8px">Each simulated round draws from that player\u2019s past rounds <b>against this group</b> — a round played with 3 of these opponents counts 3\u00d7 more than one played with 1 — then balances to zero-sum like a real game. More shared tables = sharper odds.</div>';
   h+='<div style="margin-top:10px"><button class="btn ghost block" onclick="App.vsSim()">🎲 Run it again</button></div>';
   return h;
 }
@@ -646,8 +670,8 @@ vsToggle:function(pid){
 vsClear:function(){ vsSel=[]; vsRes=null; vVersus(); },
 vsSim:function(){
   if(vsSel.length<2||vsSel.length>5){ toast('Pick 2–5 players'); return; }
-  var pids=vsSel.slice(), pools={}, i;
-  for(i=0;i<pids.length;i++) pools[pids[i]]=playerRounds(pids[i]);
+  var pids=vsSel.slice(), pools={}, hhRounds={}, i;
+  for(i=0;i<pids.length;i++){ pools[pids[i]]=playerPool(pids[i], pids); hhRounds[pids[i]]=pools[pids[i]].length; }
   var SIMS=2000, wins={}, sum={}, best={}, worst={};
   for(i=0;i<pids.length;i++){ wins[pids[i]]=0; sum[pids[i]]=0; best[pids[i]]=-1e9; worst[pids[i]]=1e9; }
   var sample=null;
@@ -659,7 +683,7 @@ vsSim:function(){
     tied.forEach(function(id){ wins[id]+=1/tied.length; });
     for(i=0;i<pids.length;i++){ var t2=g.totals[pids[i]]; sum[pids[i]]+=t2; if(t2>best[pids[i]]) best[pids[i]]=t2; if(t2<worst[pids[i]]) worst[pids[i]]=t2; }
   }
-  vsRes={pids:pids, sims:SIMS, wins:wins, sum:sum, best:best, worst:worst, sample:sample};
+  vsRes={pids:pids, sims:SIMS, wins:wins, sum:sum, best:best, worst:worst, sample:sample, hh:hhRounds, pools:pools};
   vVersus();
   setTimeout(function(){ var el=document.querySelector('#view h3'); if(el&&window.scrollTo) try{ window.scrollTo(0, el.offsetTop-70); }catch(e){} },50);
 },
