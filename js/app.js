@@ -558,102 +558,104 @@ function toggleMusic(){
   else { YT_PLAYER.playVideo(); toast('\uD83C\uDFB6 Dashain Tihar on loop'); }
 }
 
-/* ---------------- versus: head-to-head simulator ---------------- */
-var vsSel=[], vsRes=null;
-function playerPool(pid, pids){
-  /* Weighted training data: each past round scores weight = how many of the
-     other selected players sat at that table. Pure head-to-head signal where
-     it exists, graceful fallback where it doesn't. */
-  var pool=[];
+/* ---------------- versus: 2-player head-to-head ---------------- */
+var vsSel=[];
+function hhData(a,b){
+  var d={a:a,b:b,games:[],gwA:0,gwB:0,gt:0,ptsA:0,ptsB:0,rounds:0,rwA:0,rwB:0,rt:0,crA:0,crB:0,bestA:-1e9,bestB:-1e9};
   state.games.forEach(function(g){
-    if(g.playerIds.indexOf(pid)<0) return;
-    var others=0, i;
-    for(i=0;i<pids.length;i++) if(pids[i]!==pid && g.playerIds.indexOf(pids[i])>=0) others++;
-    if(others===0) return;
-    g.rounds.forEach(function(r){ var sc=r.scores[pid]; if(sc) pool.push({v:sc.pts, w:others}); });
-  });
-  if(!pool.length){ /* no shared table ever: fall back to overall form */
-    state.games.forEach(function(g){
-      if(g.playerIds.indexOf(pid)<0) return;
-      g.rounds.forEach(function(r){ var sc=r.scores[pid]; if(sc) pool.push({v:sc.pts, w:1, fb:true}); });
+    if(g.playerIds.indexOf(a)<0||g.playerIds.indexOf(b)<0) return;
+    var ta=g.totals[a]||0, tb=g.totals[b]||0;
+    d.games.push({g:g,ta:ta,tb:tb});
+    d.ptsA+=ta; d.ptsB+=tb;
+    if(ta>tb) d.gwA++; else if(tb>ta) d.gwB++; else d.gt++;
+    if(ta>d.bestA) d.bestA=ta; if(tb>d.bestB) d.bestB=tb;
+    g.rounds.forEach(function(r){
+      var sa=r.scores[a], sb=r.scores[b]; if(!sa||!sb) return;
+      d.rounds++;
+      if(sa.pts>sb.pts) d.rwA++; else if(sb.pts>sa.pts) d.rwB++; else d.rt++;
+      if(r.winner===a) d.crA++; else if(r.winner===b) d.crB++;
     });
-  }
-  return pool;
+  });
+  return d;
 }
-function drawFrom(pool){
-  var tot=0, i;
-  for(i=0;i<pool.length;i++) tot+=pool[i].w;
-  var x=Math.random()*tot;
-  for(i=0;i<pool.length;i++){ x-=pool[i].w; if(x<=0) return pool[i].v; }
-  return pool[pool.length-1].v;
-}
-function simGame(pids, pools){
-  var totals={}, i;
-  for(i=0;i<pids.length;i++) totals[pids[i]]=0;
-  var rounds=[];
-  for(var n=1;n<=5;n++){
-    var raw=pids.map(function(id){ return drawFrom(pools[id]); });
-    var mean=raw.reduce(function(a,b){return a+b;},0)/raw.length;
-    var adj=raw.map(function(v){ return Math.round(v-mean); });
-    var drift=adj.reduce(function(a,b){return a+b;},0);
-    if(drift!==0){ var mi=0,k; for(k=1;k<adj.length;k++) if(adj[k]>adj[mi]) mi=k; adj[mi]-=drift; }
-    var w=pids[0];
-    for(k=1;k<pids.length;k++) if(adj[k]>adj[pids.indexOf(w)]) w=pids[k];
-    for(i=0;i<pids.length;i++) totals[pids[i]]+=adj[i];
-    rounds.push({n:n, scores:adj, w:w});
+function hhStreak(d){
+  var s=0, who=null;
+  for(var i=d.games.length-1;i>=0;i--){
+    var w=d.games[i].ta>d.games[i].tb?'A':(d.games[i].tb>d.games[i].ta?'B':'T');
+    if(w==='T') break;
+    if(who===null) who=w;
+    if(w!==who) break;
+    s++;
   }
-  return {rounds:rounds, totals:totals};
+  return {n:s, who:who};
+}
+function tapeRow(label, va, vb, fmt){
+  fmt=fmt||function(x){return x;};
+  var ca=va>vb?'font-weight:800;color:var(--gold,#d4a017)':'';
+  var cb=vb>va?'font-weight:800;color:var(--gold,#d4a017)':'';
+  return '<div class="row" style="padding:7px 2px;border-bottom:1px solid rgba(128,0,0,.08)">'+
+    '<div style="flex:1;text-align:left;'+ca+'">'+fmt(va)+'</div>'+
+    '<div class="small dim" style="flex:1.4;text-align:center">'+label+'</div>'+
+    '<div style="flex:1;text-align:right;'+cb+'">'+fmt(vb)+'</div></div>';
+}
+function vsH2HHtml(a,b){
+  var d=hhData(a,b), pa=pinfo(a), pb=pinfo(b), h='';
+  if(!d.games.length){
+    return '<div class="card" style="text-align:center;padding:22px"><div style="font-size:34px;margin-bottom:8px">🪑</div>'+
+      '<div style="font-weight:800">'+esc(pa.name)+' & '+esc(pb.name)+'</div>'+
+      '<div class="small dim">have never shared a table.</div></div>';
+  }
+  var st=hhStreak(d);
+  /* tale of the tape */
+  h+='<div class="card" style="margin-bottom:10px"><div class="row" style="margin-bottom:6px">'+
+    '<div style="flex:1;text-align:center"><div class="avatar" style="font-size:34px">'+pa.emoji+'</div><div class="nm">'+esc(pa.name)+'</div><div class="ti2">'+esc(pa.title)+'</div></div>'+
+    '<div style="flex:1;text-align:center;align-self:center"><div style="font-size:26px;font-weight:800">'+d.gwA+' <span class="dim">–</span> '+d.gwB+'</div><div class="small dim">games won head-to-head</div></div>'+
+    '<div style="flex:1;text-align:center"><div class="avatar" style="font-size:34px">'+pb.emoji+'</div><div class="nm">'+esc(pb.name)+'</div><div class="ti2">'+esc(pb.title)+'</div></div></div>';
+  h+=tapeRow('Games together', d.games.length, d.games.length, function(x){return '<b>'+x+'</b>';});
+  h+=tapeRow('Win %', d.gwA/d.games.length*100, d.gwB/d.games.length*100, function(x){return x.toFixed(0)+'%';});
+  h+=tapeRow('Total points', d.ptsA, d.ptsB, fmtPts);
+  h+=tapeRow('Pts / game', d.ptsA/d.games.length, d.ptsB/d.games.length, function(x){return fmtPts(Math.round(x));});
+  h+=tapeRow('Rounds won', d.rwA, d.rwB);
+  h+=tapeRow('Crowns 👑', d.crA, d.crB);
+  h+=tapeRow('Best game', d.bestA, d.bestB, fmtPts);
+  h+=tapeRow('Streak', st.who==='A'?st.n+'W':'—', st.who==='B'?st.n+'W':'—');
+  h+='</div>';
+  /* projection: next 3 games (15 rounds) */
+  var diff=(d.ptsA-d.ptsB)/d.rounds, proj=Math.round(diff*15/2);
+  h+='<h3>🔮 Next 3 games <span class="dim small">(15 rounds together)</span></h3>';
+  h+='<div class="card" style="text-align:center;margin-bottom:10px"><div class="row">'+
+    '<div style="flex:1"><div class="avatar" style="font-size:28px">'+pa.emoji+'</div><div class="nm">'+esc(pa.name)+'</div>'+
+    '<div style="font-size:24px;font-weight:800" class="'+(proj>0?'pos':proj<0?'neg':'')+'">'+fmtPts(proj)+'</div></div>'+
+    '<div style="flex:1"><div class="avatar" style="font-size:28px">'+pb.emoji+'</div><div class="nm">'+esc(pb.name)+'</div>'+
+    '<div style="font-size:24px;font-weight:800" class="'+(proj<0?'pos':proj>0?'neg':'')+'">'+fmtPts(-proj)+'</div></div></div>'+
+    '<div class="small dim" style="margin-top:6px">'+esc(pa.name)+' outscores '+esc(pb.name)+' by '+Math.abs(diff).toFixed(1)+
+    ' pts/round head-to-head — stretched over 15 rounds.</div></div>';
+  /* game by game */
+  h+='<h3>🃏 Every game together <span class="dim small">('+d.games.length+')</span></h3>';
+  d.games.slice().reverse().forEach(function(e){
+    var w=e.ta>e.tb?a:(e.tb>e.ta?b:null);
+    h+='<div class="lb"><div class="avatar">'+(w?a==w?pa.emoji:pb.emoji:'🤝')+'</div>'+
+      '<div class="grow"><div class="nm">'+esc(e.g.name)+'</div><div class="ti2">'+esc(dayLabel(e.g.dayId))+'</div></div>'+
+      '<div style="text-align:right"><span class="'+(e.ta>=e.tb?'pos':'neg')+'" style="font-weight:700">'+fmtPts(e.ta)+'</span>'+
+      '<span class="dim"> – </span><span class="'+(e.tb>=e.ta?'pos':'neg')+'" style="font-weight:700">'+fmtPts(e.tb)+'</span>'+
+      '<div class="ti2">'+esc(pa.name)+' – '+esc(pb.name)+'</div></div></div>';
+  });
+  return h;
 }
 function vVersus(){
   tabbar('#/versus');
   var h='<h2>⚔️ Head to Head</h2>';
-  h+='<div class="small dim" style="margin-bottom:10px">Pick 2–5 players. We simulate a 5-round game from how they\u2019ve played <b>against each other</b> — past rounds vs these opponents weigh most — 2,000 times, then show the odds plus one sample game.</div>';
-  h+='<div class="small" style="margin-bottom:8px;font-weight:700"><span id="vsCount">'+vsSel.length+'</span> selected (2–5)</div>';
+  h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every game they played <b>together</b> — and what 3 more games would look like.</div>';
   h+='<div class="chips" style="flex-wrap:wrap;overflow:visible;margin-bottom:12px">';
   state.players.forEach(function(pl){
     var on=vsSel.indexOf(pl.id)>=0;
     h+='<button class="chip'+(on?' on':'')+'" onclick="App.vsToggle(\''+pl.id+'\')">'+pl.emoji+' '+esc(pl.name)+'</button>';
   });
   h+='</div>';
-  h+='<button class="btn block" '+(vsSel.length>=2&&vsSel.length<=5?'':'disabled style="opacity:.4"')+' onclick="App.vsSim()">🎲 Simulate next game</button>';
-  if(vsSel.length) h+='<div style="margin-top:8px"><button class="btn ghost sm" onclick="App.vsClear()">Clear selection</button></div>';
-  if(vsRes) h+=vsResultsHtml();
+  if(vsSel.length===2) h+=vsH2HHtml(vsSel[0], vsSel[1]);
+  else if(vsSel.length===1) h+='<div class="small dim">Pick one more player to compare.</div>';
+  if(vsSel.length) h+='<div style="margin-top:8px"><button class="btn ghost sm" onclick="App.vsClear()">Clear</button></div>';
   $('#view').innerHTML=h;
-}
-function poolsUsedFallback(pid){
-  var p=vsRes.pools[pid];
-  return p.length>0 && p[0].fb===true;
-}
-function vsResultsHtml(){
-  var r=vsRes, pids=r.pids, sims=r.sims, h='';
-  h+='<h3>🏆 Win odds <span class="dim small">('+sims.toLocaleString()+' simulations)</span></h3>';
-  var rows=pids.map(function(id){
-    return {id:id, win:r.wins[id]/sims*100, avg:r.sum[id]/sims, best:r.best[id], worst:r.worst[id]};
-  }).sort(function(a,b){return b.win-a.win;});
-  rows.forEach(function(e,i){
-    var pl=pinfo(e.id), hh=r.hh[e.id], fb=poolsUsedFallback(e.id);
-    h+='<div class="card" style="margin-bottom:8px"><div class="row"><div class="avatar">'+pl.emoji+'</div>'+
-      '<div class="grow"><div class="nm">'+esc(pl.name)+'</div>'+
-      '<div class="prog"><div style="width:'+Math.max(2,e.win).toFixed(1)+'%"></div></div>'+
-      '<div class="small dim">'+hh+' head-to-head rounds'+(fb?' (overall form — never shared a table)':'')+'</div></div>'+
-      '<div style="text-align:right"><div style="font-weight:800" class="'+(e.avg>=0?'pos':'neg')+'">'+e.win.toFixed(1)+'%</div>'+
-      '<div class="small dim">avg '+fmtPts(Math.round(e.avg))+'</div></div></div></div>';
-  });
-  h+='<h3>🎲 One simulated game <span class="dim small">(5 rounds)</span></h3>';
-  h+='<div class="tscroll"><table class="grid"><thead><tr><th>Rd</th>'+
-    pids.map(function(id){ var pl=pinfo(id); return '<th>'+pl.emoji+'<br>'+esc(pl.name)+'</th>'; }).join('')+'</tr></thead><tbody>';
-  r.sample.rounds.forEach(function(rd){
-    h+='<tr><td class="rn">'+rd.n+'</td>'+pids.map(function(id,j){
-      var v=rd.scores[j], crown=rd.w===id;
-      return '<td class="'+(v>0?'pos':v<0?'neg':'')+'">'+v+(crown?'<span class="cell-ic">👑</span>':'')+'</td>';
-    }).join('')+'</tr>';
-  });
-  h+='<tr class="tot"><td class="rn">Tot</td>'+pids.map(function(id){
-    var v=r.sample.totals[id]; return '<td class="'+(v>0?'pos':v<0?'neg':'')+'">'+fmtPts(v)+'</td>';
-  }).join('')+'</tr></tbody></table></div>';
-  h+='<div class="small dim" style="margin-top:8px">Each simulated round draws from that player\u2019s past rounds <b>against this group</b> — a round played with 3 of these opponents counts 3\u00d7 more than one played with 1 — then balances to zero-sum like a real game. More shared tables = sharper odds.</div>';
-  h+='<div style="margin-top:10px"><button class="btn ghost block" onclick="App.vsSim()">🎲 Run it again</button></div>';
-  return h;
 }
 
 /* ---------------- App API ---------------- */
@@ -664,29 +666,10 @@ shareStandings:function(){ shareText(standingsText()); },
 vsToggle:function(pid){
   var i=vsSel.indexOf(pid);
   if(i>=0) vsSel.splice(i,1);
-  else { if(vsSel.length>=5){ toast('Max 5 players'); return; } vsSel.push(pid); }
-  vsRes=null; vVersus();
-},
-vsClear:function(){ vsSel=[]; vsRes=null; vVersus(); },
-vsSim:function(){
-  if(vsSel.length<2||vsSel.length>5){ toast('Pick 2–5 players'); return; }
-  var pids=vsSel.slice(), pools={}, hhRounds={}, i;
-  for(i=0;i<pids.length;i++){ pools[pids[i]]=playerPool(pids[i], pids); hhRounds[pids[i]]=pools[pids[i]].length; }
-  var SIMS=2000, wins={}, sum={}, best={}, worst={};
-  for(i=0;i<pids.length;i++){ wins[pids[i]]=0; sum[pids[i]]=0; best[pids[i]]=-1e9; worst[pids[i]]=1e9; }
-  var sample=null;
-  for(var sN=0;sN<SIMS;sN++){
-    var g=simGame(pids, pools);
-    if(sN===0) sample=g;
-    var mx=-1e9, tied=[];
-    for(i=0;i<pids.length;i++){ var t=g.totals[pids[i]]; if(t>mx){ mx=t; tied=[pids[i]]; } else if(t===mx) tied.push(pids[i]); }
-    tied.forEach(function(id){ wins[id]+=1/tied.length; });
-    for(i=0;i<pids.length;i++){ var t2=g.totals[pids[i]]; sum[pids[i]]+=t2; if(t2>best[pids[i]]) best[pids[i]]=t2; if(t2<worst[pids[i]]) worst[pids[i]]=t2; }
-  }
-  vsRes={pids:pids, sims:SIMS, wins:wins, sum:sum, best:best, worst:worst, sample:sample, hh:hhRounds, pools:pools};
+  else { if(vsSel.length>=2){ toast('Only 2 players — head to head'); return; } vsSel.push(pid); }
   vVersus();
-  setTimeout(function(){ var el=document.querySelector('#view h3'); if(el&&window.scrollTo) try{ window.scrollTo(0, el.offsetTop-70); }catch(e){} },50);
 },
+vsClear:function(){ vsSel=[]; vVersus(); },
 copyZelleFor:function(pid){
   var p=state.players.find(function(x){return x.id===pid;});
   if(p&&p.zelle) App.copyZelle(p.zelle); else toast('No Zelle info for this player');
