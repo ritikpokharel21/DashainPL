@@ -27,6 +27,7 @@ players: [
   {id:'p_arunbanjara', zelle:'(318) 557-0574', name:'Arun Banjara', title:'The Other Arun', emoji:'🎭', pattern:"One game, −53, zero crowns. Forever the other Arun.", strength:"A 23-point round — the game is in there.", weakness:"One game — the mystery continues."},
   {id:'p_solti', zelle:'(225) 456-3902', name:'Solti dai', title:'The Khunkhar', emoji:'👹', pattern:"Three games, one day, −66. The Khunkhar shows up, takes his cut of chaos, leaves.", strength:"A 69-point round — the Khunkhar energy is real.", weakness:"One day played — a cameo, not a campaign."},
   {id:'p_anit', zelle:'(225) 384-7673', name:'Anit', title:'The Firecracker', emoji:'🧨', pattern:"+273 on debut day, then −376 across the next two. 16 crowns in 12 games — explodes in every direction.", strength:"16 crowns in 12 games — the round-winning touch is real.", weakness:"No middle gear — feast or famine, nothing between."},
+  {id:'p_kusum', name:'Kusum', title:'', emoji:'🪷', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
@@ -44,7 +45,8 @@ days: [
   {id:'day7', label:'Day 7', date:'2026-10-08', note:'Oct 8'},
   {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9', settled:true},
   {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true},
-  {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true}
+  {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true},
+  {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14'}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -640,5 +642,37 @@ games: [
   {n:3, w:'p_ritik',  s:[[-38,'u'],[48,'s'],[-6,'s'],[34,'s'],[-38,'u']]},
   {n:4, w:'p_bijay',  s:[[56,'s'],[-20,'u'],[-3,'s'],[-13,'s'],[-20,'u']]},
   {n:5, w:'p_nitesh', s:[[-17,'u'],[-10,'s'],[-17,'u'],[61,'s'],[-17,'u']]}
+ ]}
+/* ---------- DAY 11 ---------- */
+,{id:'g_d11_1', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_bijay','p_bipin','p_ritik','p_arun','p_ashu'],
+ totals:{p_bijay:104,p_bipin:44,p_ritik:58,p_arun:-8,p_ashu:-198},
+ rounds:[
+  {n:1, w:'p_ritik', s:[[-26,'s'],[24,'s'],[68,'s'],[-33,'u'],[-33,'u']]},
+  {n:2, w:'p_ritik', s:[[65,'s'],[-42,'u'],[61,'s'],[-42,'u'],[-42,'u']]},
+  {n:3, w:'p_bijay', s:[[89,'s'],[-10,'s'],[-42,'u'],[5,'s'],[-42,'u']]},
+  {n:4, w:'p_bipin', s:[[13,'s'],[67,'s'],[8,'s'],[-44,'u'],[-44,'u']]},
+  {n:5, w:'p_arun',  s:[[-37,'u'],[5,'s'],[-37,'u'],[106,'s'],[-37,'u']]}
+ ]}
+,{id:'g_d11_2', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_ranj','p_kusum','p_ashmita','p_reji','p_sunira'],
+ totals:{p_ranj:-67,p_kusum:-23,p_ashmita:-91,p_reji:21,p_sunira:160},
+ rounds:[
+  {n:1, w:'p_sunira',  s:[[-52,'u'],[-52,'u'],[-52,'u'],[90,'s'],[66,'s']]},
+  {n:2, w:'p_kusum',   s:[[-23,'u'],[85,'s'],[-23,'u'],[-16,'s'],[-23,'u']]},
+  {n:3, w:'p_ashmita', s:[[-12,'s'],[-12,'s'],[3,'s'],[-2,'s'],[23,'s']]},
+  {n:4, w:'p_sunira',  s:[[-22,'u'],[-22,'u'],[10,'s'],[-22,'u'],[56,'s']]},
+  {n:5, w:'p_ranj',    s:[[42,'s'],[-22,'s'],[-29,'u'],[-29,'u'],[38,'s']]}
+ ]}
+,{id:'g_d11_3', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_ritik','p_bijay','p_ashu','p_reji','p_saram','p_sumit'],
+ totals:{p_ritik:-15,p_bijay:-133,p_ashu:-81,p_reji:136,p_saram:32,p_sumit:61},
+ rounds:[
+  {n:1, w:'p_saram', s:[[-23,'s'],[-54,'u'],[73,'s'],[-54,'u'],[105,'s'],[-47,'s']]},
+  {n:2, w:'p_ashu',  s:[[46,'s'],[-8,'s'],[2,'s'],[-39,'u'],[-29,'f'],[28,'s']]},
+  {n:3, w:'p_sumit', s:[[-34,'u'],[-9,'s'],[-34,'u'],[27,'s'],[-49,'u'],[99,'s']]},
+  {n:4, w:'p_reji',  s:[[-24,'u'],[-24,'u'],[-24,'u'],[53,'s'],[43,'s'],[-24,'u']]},
+  {n:5, w:'p_ritik', s:[[54,'s'],[-34,'u'],[-34,'u'],[33,'s'],[-34,'u'],[15,'s']]},
+  {n:6, w:'p_saram', s:[[-34,'s'],[-4,'s'],[-64,'s'],[116,'s'],[-4,'s'],[-10,'s']]}
  ]}
 ]};
