@@ -6,6 +6,29 @@
 <title>Dashain Premier League 🪁</title>
 <meta name="description" content="Dashain Premier League — Marriage card game season standings, day-wise ranks, player stats and settlements.">
 <meta name="theme-color" content="#7f1d1d">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script>
+/* Bump DPL_BUILD on every deploy. The page checks it is the latest copy:
+   if the browser served a stale cached index.html, it reloads fresh. */
+var DPL_BUILD=38;
+(function(){
+  if(!/^https?:/.test(location.protocol)) return;
+  var done=false;
+  function freshCheck(){
+    if(done || typeof fetch!=='function') return;
+    fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){ return r.text(); }).then(function(t){
+      var m=t.match(/DPL_BUILD\s*=\s*(\d+)/);
+      if(m && +m[1]!==DPL_BUILD && !done){
+        done=true;
+        location.href=location.pathname+'?fresh='+Date.now()+location.hash;
+      }
+    }).catch(function(){});
+  }
+  window.addEventListener('pageshow', freshCheck);
+})();
+</script>
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/app.css?v=20">
 </head>
@@ -26,7 +49,7 @@
   <nav id="tabbar"></nav>
 </div>
 <script src="js/seed.js?v=33"></script>
-<script src="js/app.js?v=38"></script>
+<script src="js/app.js?v=39"></script>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 </body>
 </html>
