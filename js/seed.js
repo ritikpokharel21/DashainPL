@@ -47,7 +47,7 @@ days: [
   {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9', settled:true},
   {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true},
   {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true},
-  {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14'}
+  {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
