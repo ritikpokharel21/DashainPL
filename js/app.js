@@ -206,7 +206,7 @@ function vDays(){
     var t=dayTotals(d.id), r=ranked(t), g=dayGames(d.id);
     var lead=r[0];
     h+='<div class="card" onclick="location.hash=\'#/day/'+d.id+'\'" style="cursor:pointer">'+
-      '<div class="row"><div class="grow"><div style="font-weight:800;font-size:17px">🗓️ '+esc(d.label)+'</div><div class="small dim">'+esc(d.note||d.date)+' · '+g.length+' games</div></div>'+
+      '<div class="row"><div class="grow"><div style="font-weight:800;font-size:17px">🗓️ '+esc(d.label)+'</div><div class="small dim">'+esc(d.note||d.date)+' · '+g.length+' rounds</div></div>'+
       '<div style="text-align:right"><div class="small dim">Day winner</div><div style="font-weight:800" class="pos">'+(lead?pinfo(lead.pid).emoji+' '+esc(pinfo(lead.pid).name)+' '+fmtPts(lead.pts):'—')+'</div></div></div>'+
       '<div class="small" style="margin-top:8px;color:var(--dim)">'+r.slice(0,5).map(function(e,i){return (i+1)+'. '+esc(pname(e.pid))+' ('+fmtPts(e.pts)+')';}).join(' · ')+(r.length>5?' …':'')+'</div>'+
     '</div>';
@@ -234,12 +234,12 @@ function vDay(id){
         '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
     });
   }
-  h+='<h3>Games ('+g.length+')</h3>';
+  h+='<h3>Rounds ('+g.length+')</h3>';
   g.forEach(function(gm){
     var gt=gameTotals(gm), gr=ranked(gt), lead=gr[0];
     h+='<div class="lb" onclick="location.hash=\'#/game/'+gm.id+'\'" style="cursor:pointer">'+
       '<div class="avatar">'+(gm.variant==='murder'?'🔪':'🃏')+'</div>'+
-      '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' rounds'+(gm.partial?' · partial history':'')+'</div></div>'+
+      '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' games'+(gm.partial?' · partial history':'')+'</div></div>'+
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
   $('#view').innerHTML=h;
@@ -270,8 +270,8 @@ function vPlayer(pid){
   var h='<div class="pf-hero"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
     '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>';
   h+='<div class="tiles">'+
-    tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / round')+
-    tile(s.best===null?'—':fmtPts(s.best),'Best round')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst round')+tile(s.dayWins,'🏅 Day wins')+
+    tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / game')+
+    tile(s.best===null?'—':fmtPts(s.best),'Best game')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst game')+tile(s.dayWins,'🏅 Day wins')+
   '</div>';
   var pat=pinfo(pid).pattern;
   var pp=pinfo(pid);
@@ -291,11 +291,11 @@ function vPlayer(pid){
     h+='<tr><td>'+esc(d.label)+'</td><td class="num '+cls(dt[pid])+'"><b>'+fmtPts(dt[pid])+'</b></td><td class="num">'+dayRankMap(d.id)[pid]+'</td><td class="num">'+moveArrow(pid,di)+'</td></tr>';
   });
   h+='</table></div>';
-  h+='<h3>🃏 Game history</h3>';
+  h+='<h3>🃏 Round history</h3>';
   var gs=state.games.filter(function(g){return g.playerIds.indexOf(pid)>=0;}).slice().reverse();
   gs.forEach(function(g){
     var gt=gameTotals(g), gr=ranked(gt), rk=gr.findIndex(function(e){return e.pid===pid;})+1;
-    h+='<div class="lb" onclick="location.hash=\'#/game/'+g.id+'\'" style="cursor:pointer"><div class="rank">'+rk+'</div><div class="grow"><div class="nm">'+esc(g.name)+' <span class="small dim">'+esc(dayLabel(g.dayId))+'</span></div><div class="ti2">'+g.rounds.length+' rounds'+(g.variant==='murder'?' · 🔪 murder':'')+'</div></div><div class="sc"><div class="pv '+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</div><div class="mv">'+fmtMoney(gt[pid])+'</div></div></div>';
+    h+='<div class="lb" onclick="location.hash=\'#/game/'+g.id+'\'" style="cursor:pointer"><div class="rank">'+rk+'</div><div class="grow"><div class="nm">'+esc(g.name)+' <span class="small dim">'+esc(dayLabel(g.dayId))+'</span></div><div class="ti2">'+g.rounds.length+' games'+(g.variant==='murder'?' · 🔪 murder':'')+'</div></div><div class="sc"><div class="pv '+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</div><div class="mv">'+fmtMoney(gt[pid])+'</div></div></div>';
   });
   $('#view').innerHTML=h;
 }
@@ -312,8 +312,8 @@ function vGame(gid){
   if(!g){ location.hash='#/days'; return; }
   var gt=gameTotals(g), r=ranked(gt);
   var h='<h2>'+(g.variant==='murder'?'🔪 ':'🃏 ')+esc(g.name)+' '+(g.variant==='murder'?'<span class="tag murder">MURDER</span>':'<span class="tag">CLASSIC</span>')+'</h2>';
-  h+='<div class="small dim" style="margin:-6px 2px 12px">🗓️ '+esc(dayLabel(g.dayId))+' · '+esc(g.date||'')+' · '+g.playerIds.length+' players · '+g.rounds.length+' rounds</div>';
-  if(g.partial) h+='<div class="note">📼 Imported history — only the captured rounds are shown, but totals are complete.</div>';
+  h+='<div class="small dim" style="margin:-6px 2px 12px">🗓️ '+esc(dayLabel(g.dayId))+' · '+esc(g.date||'')+' · '+g.playerIds.length+' players · '+g.rounds.length+' games</div>';
+  if(g.partial) h+='<div class="note">📼 Imported history — only the captured games are shown, but totals are complete.</div>';
   h+='<div class="tscroll"><table class="grid"><thead><tr><th>#</th>'+g.playerIds.map(function(pid){return '<th>'+esc(pname(pid))+'</th>';}).join('')+'</tr></thead><tbody>';
   g.rounds.forEach(function(rd){
     h+='<tr><td class="rn">'+rd.n+'</td>'+g.playerIds.map(function(pid){
@@ -324,8 +324,8 @@ function vGame(gid){
   h+='<tr class="tot"><td class="rn">Σ</td>'+g.playerIds.map(function(pid){return '<td class="'+cls(gt[pid])+'">'+fmtPts(gt[pid])+'</td>';}).join('')+'</tr>';
   h+='<tr class="money"><td class="rn">💰</td>'+g.playerIds.map(function(pid){return '<td>'+fmtMoney(gt[pid])+'</td>';}).join('')+'</tr>';
   h+='</tbody></table></div>';
-  h+='<div class="small dim" style="margin:8px 2px">👑 round winner · 👁️ saw maal · 🙈 blind · 🀄 dublee · 🚩 foul</div>';
-  h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareGame(\''+gid+'\')">📤 Share game</button></div>';
+  h+='<div class="small dim" style="margin:8px 2px">👑 game winner · 👁️ saw maal · 🙈 blind · 🀄 dublee · 🚩 foul</div>';
+  h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareGame(\''+gid+'\')">📤 Share round</button></div>';
   $('#view').innerHTML=h;
 }
 
@@ -384,13 +384,13 @@ function vStats(){
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
   var cards=[
-    ['🌼 Sayapatri Mala','most rounds won', top('crowns'), function(e){return e.v+' crowns';}],
+    ['🌼 Sayapatri Mala','most games won', top('crowns'), function(e){return e.v+' crowns';}],
     ['🧲 Maal Magnet','saw the maal the most', top('seen'), function(e){return e.v+' times';}],
     ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
-    ['💥 Dashain Dhamaka','biggest single round', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
-    ['🎁 Generous Host','most generous single round', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
-    ['🎯 Sharp Shooter','best pts / round (10+ rounds)', avgTop(), function(e){return fmtPts(e.v)+' / round';}],
-    ['🏔️ Sagarmatha Cap','best single game', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
+    ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🎯 Sharp Shooter','best pts / game (10+ games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}],
+    ['🏔️ Sagarmatha Cap','best single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
   ];
   cards.forEach(function(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
@@ -608,19 +608,19 @@ function vsH2HHtml(a,b){
   /* tale of the tape */
   h+='<div class="card" style="margin-bottom:10px"><div class="row" style="margin-bottom:6px">'+
     '<div style="flex:1;text-align:center"><div class="avatar" style="font-size:34px">'+pa.emoji+'</div><div class="nm">'+esc(pa.name)+'</div><div class="ti2">'+esc(pa.title)+'</div></div>'+
-    '<div style="flex:1;text-align:center;align-self:center"><div style="font-size:26px;font-weight:800">'+d.gwA+' <span class="dim">–</span> '+d.gwB+'</div><div class="small dim">games won head-to-head</div></div>'+
+    '<div style="flex:1;text-align:center;align-self:center"><div style="font-size:26px;font-weight:800">'+d.gwA+' <span class="dim">–</span> '+d.gwB+'</div><div class="small dim">rounds won head-to-head</div></div>'+
     '<div style="flex:1;text-align:center"><div class="avatar" style="font-size:34px">'+pb.emoji+'</div><div class="nm">'+esc(pb.name)+'</div><div class="ti2">'+esc(pb.title)+'</div></div></div>';
-  h+=tapeRow('Games together', d.games.length, d.games.length, function(x){return '<b>'+x+'</b>';});
+  h+=tapeRow('Rounds together', d.games.length, d.games.length, function(x){return '<b>'+x+'</b>';});
   h+=tapeRow('Win %', d.gwA/d.games.length*100, d.gwB/d.games.length*100, function(x){return x.toFixed(0)+'%';});
   h+=tapeRow('Total points', d.ptsA, d.ptsB, fmtPts);
-  h+=tapeRow('Pts / game', d.ptsA/d.games.length, d.ptsB/d.games.length, function(x){return fmtPts(Math.round(x));});
-  h+=tapeRow('Rounds won', d.rwA, d.rwB);
+  h+=tapeRow('Pts / round', d.ptsA/d.games.length, d.ptsB/d.games.length, function(x){return fmtPts(Math.round(x));});
+  h+=tapeRow('Games won', d.rwA, d.rwB);
   h+=tapeRow('Crowns 👑', d.crA, d.crB);
-  h+=tapeRow('Best game', d.bestA, d.bestB, fmtPts);
+  h+=tapeRow('Best round', d.bestA, d.bestB, fmtPts);
   h+=tapeRow('Streak', st.who==='A'?st.n+'W':'—', st.who==='B'?st.n+'W':'—');
   h+='</div>';
   /* game by game */
-  h+='<h3>🃏 Every game together <span class="dim small">('+d.games.length+')</span></h3>';
+  h+='<h3>🃏 Every round together <span class="dim small">('+d.games.length+')</span></h3>';
   d.games.slice().reverse().forEach(function(e){
     var w=e.ta>e.tb?a:(e.tb>e.ta?b:null);
     h+='<div class="lb"><div class="avatar">'+(w?a==w?pa.emoji:pb.emoji:'🤝')+'</div>'+
@@ -634,7 +634,7 @@ function vsH2HHtml(a,b){
 function vVersus(){
   tabbar('#/versus');
   var h='<h2>⚔️ Head to Head</h2>';
-  h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every game they played <b>together</b>.</div>';
+  h+='<div class="small dim" style="margin-bottom:10px">Pick <b>2 players</b>. Their record from every round they played <b>together</b>.</div>';
   h+='<div class="chips" style="flex-wrap:wrap;overflow:visible;margin-bottom:12px">';
   ranked(overallTotals()).forEach(function(e){
     var pl=pinfo(e.pid);
