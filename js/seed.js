@@ -28,6 +28,7 @@ players: [
   {id:'p_solti', zelle:'(225) 456-3902', name:'Solti dai', title:'The Khunkhar', emoji:'👹', pattern:"Three games, one day, −66. The Khunkhar shows up, takes his cut of chaos, leaves.", strength:"A 69-point round — the Khunkhar energy is real.", weakness:"One day played — a cameo, not a campaign."},
   {id:'p_anit', zelle:'(225) 384-7673', name:'Anit', title:'The Firecracker', emoji:'🧨', pattern:"+273 on debut day, then −376 across the next two. 16 crowns in 12 games — explodes in every direction.", strength:"16 crowns in 12 games — the round-winning touch is real.", weakness:"No middle gear — feast or famine, nothing between."},
   {id:'p_kusum', name:'Kusum', title:'', emoji:'🪷', pattern:'', strength:'', weakness:''},
+  {id:'p_dipesh', name:'Dipesh', title:'', emoji:'🎲', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
@@ -674,5 +675,25 @@ games: [
   {n:4, w:'p_reji',  s:[[-24,'u'],[-24,'u'],[-24,'u'],[53,'s'],[43,'s'],[-24,'u']]},
   {n:5, w:'p_ritik', s:[[54,'s'],[-34,'u'],[-34,'u'],[33,'s'],[-34,'u'],[15,'s']]},
   {n:6, w:'p_saram', s:[[-34,'s'],[-4,'s'],[-64,'s'],[116,'s'],[-4,'s'],[-10,'s']]}
+ ]}
+,{id:'g_d11_4', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_bijay','p_ritik','p_sumit','p_arun','p_dipesh'],
+ totals:{p_bijay:-167,p_ritik:-53,p_sumit:100,p_arun:65,p_dipesh:55},
+ rounds:[
+  {n:1, w:'p_bijay',  s:[[-7,'s'],[-32,'s'],[68,'s'],[-32,'s'],[3,'s']]},
+  {n:2, w:'p_dipesh', s:[[-57,'u'],[-40,'s'],[10,'s'],[50,'s'],[37,'s']]},
+  {n:3, w:'p_ritik',  s:[[-45,'s'],[52,'s'],[15,'s'],[-52,'u'],[30,'s']]},
+  {n:4, w:'p_arun',   s:[[-28,'s'],[-38,'s'],[22,'s'],[-3,'s'],[47,'s']]},
+  {n:5, w:'p_arun',   s:[[-30,'s'],[5,'s'],[-15,'s'],[102,'s'],[-62,'u']]}
+ ]}
+,{id:'g_d11_5', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_bijay','p_bipin','p_saram','p_arun','p_ashu'],
+ totals:{p_bijay:27,p_bipin:-116,p_saram:131,p_arun:91,p_ashu:-133},
+ rounds:[
+  {n:1, w:'p_saram', s:[[-49,'u'],[-49,'u'],[137,'s'],[-17,'s'],[-22,'s']]},
+  {n:2, w:'p_bijay', s:[[75,'s'],[-15,'s'],[10,'s'],[-40,'s'],[-30,'s']]},
+  {n:3, w:'p_arun',  s:[[-25,'u'],[-25,'u'],[-25,'u'],[100,'s'],[-25,'u']]},
+  {n:4, w:'p_bipin', s:[[8,'s'],[37,'s'],[-34,'u'],[23,'s'],[-34,'u']]},
+  {n:5, w:'p_arun',  s:[[18,'s'],[-64,'u'],[43,'s'],[25,'s'],[-22,'s']]}
  ]}
 ]};
