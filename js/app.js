@@ -174,11 +174,10 @@ function lbRow(e, i, mv, clickable){
 function vHome(){
   tabbar('#/');
   var t=overallTotals(), r=ranked(t);
-  var pot=r.filter(function(e){return e.pts>0;}).reduce(function(a,e){return a+e.pts;},0);
   var lead=r[0]?pinfo(r[0].pid):null;
-  var h='<div class="hero"><div class="kicker">🪁 Season Standings · Cumulative</div>';
+  var h='<div class="hero"><div class="kicker">🪁 Season\'s Big Gun</div>';
   if(lead){ h+='<div class="big">'+lead.emoji+' '+esc(lead.name)+'</div><div class="mut">'+esc(lead.title)+' · <b class="'+cls(r[0].pts)+'">'+fmtPts(r[0].pts)+' pts</b> ('+fmtMoney(r[0].pts)+')</div>'; }
-  h+='<div class="small mut" style="margin-top:8px">💰 Total money in play: <b class="gold">'+fmtMoney(pot)+'</b> · '+state.games.length+' games · '+state.days.length+' days</div></div>';
+  h+='</div>';
   var lastD=state.days[state.days.length-1], lr=ranked(dayTotals(lastD.id));
   if(lr.length){ var lp=pinfo(lr[0].pid);
     h+='<div class="card" onclick="location.hash=\'#/day/'+lastD.id+'\'" style="cursor:pointer"><div class="row"><div class="grow"><div class="small dim">🗓️ Last session — '+esc(lastD.label)+' <span class="dim">'+esc(lastD.note||'')+'</span></div><div style="font-weight:800;font-size:16px">Winner: '+lp.emoji+' '+esc(lp.name)+' <span class="pos">'+fmtPts(lr[0].pts)+' pts</span></div></div><div class="gold" style="font-size:20px">→</div></div></div>'; }
@@ -196,7 +195,7 @@ function vHome(){
     }
     h+=lbRow(e,i,mv);
   });
-  h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Each point = 0.10 · Tap a player for full stats &amp; history<br>Updated '+esc(state.meta.updated||'')+'</div>';
+  h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Tap a player for full stats</div>';
   $('#view').innerHTML=h;
 }
 

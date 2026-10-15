@@ -12,7 +12,7 @@
 <script>
 /* Bump DPL_BUILD on every deploy. The page checks it is the latest copy:
    if the browser served a stale cached index.html, it reloads fresh. */
-var DPL_BUILD=39;
+var DPL_BUILD=40;
 (function(){
   if(!/^https?:/.test(location.protocol)) return;
   var done=false;
@@ -26,7 +26,18 @@ var DPL_BUILD=39;
       }
     }).catch(function(){});
   }
-  window.addEventListener('pageshow', freshCheck);
+  window.addEventListener('pageshow', function(){ freshCheck(); daysLeft(); });
+  document.addEventListener('DOMContentLoaded', daysLeft);
+  /* Days left in the season (ends Nov 15, 2026) — shown under the header title, updates daily */
+  function daysLeft(){
+    try{
+      var el=document.querySelector('.tb-sub'); if(!el) return;
+      var now=new Date(); now.setHours(0,0,0,0);
+      var end=new Date(2026,10,15); end.setHours(0,0,0,0);
+      var d=Math.round((end-now)/86400000);
+      el.textContent = d>1 ? d+' days left' : d===1 ? '1 day left' : d===0 ? 'Last day!' : 'Season complete';
+    }catch(e){}
+  }
 })();
 </script>
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -39,17 +50,16 @@ var DPL_BUILD=39;
       <div class="tb-kite">🪁</div>
       <div class="tb-txt">
         <div class="tb-title">Dashain Premier League</div>
-        <div class="tb-sub">Marriage Championship · 0.10 / pt</div>
+        <div class="tb-sub">Season 2026</div>
       </div>
       <button class="icon-btn" id="musicBtn" onclick="App.toggleMusic()" title="Play music">🎵</button>
-      <button class="icon-btn" onclick="App.shareStandings()" title="Share standings">📤</button>
     </div>
   </header>
   <main id="view"></main>
   <nav id="tabbar"></nav>
 </div>
-<script src="js/seed.js?v=34"></script>
-<script src="js/app.js?v=40"></script>
+<script src="js/seed.js?v=35"></script>
+<script src="js/app.js?v=41"></script>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 </body>
 </html>

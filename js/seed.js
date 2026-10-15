@@ -27,8 +27,8 @@ players: [
   {id:'p_arunbanjara', zelle:'(318) 557-0574', name:'Arun Banjara', title:'The Other Arun', emoji:'🎭', pattern:"One game, −53, zero crowns. Forever the other Arun.", strength:"A 23-point round — the game is in there.", weakness:"One game — the mystery continues."},
   {id:'p_solti', zelle:'(225) 456-3902', name:'Solti dai', title:'The Khunkhar', emoji:'👹', pattern:"Three games, one day, −66. The Khunkhar shows up, takes his cut of chaos, leaves.", strength:"A 69-point round — the Khunkhar energy is real.", weakness:"One day played — a cameo, not a campaign."},
   {id:'p_anit', zelle:'(225) 384-7673', name:'Anit', title:'The Firecracker', emoji:'🧨', pattern:"+273 on debut day, then −376 across the next two. 16 crowns in 12 games — explodes in every direction.", strength:"16 crowns in 12 games — the round-winning touch is real.", weakness:"No middle gear — feast or famine, nothing between."},
-  {id:'p_kusum', name:'Kusum', title:'', emoji:'🪷', pattern:'', strength:'', weakness:''},
-  {id:'p_dipesh', name:'Dipesh', title:'', emoji:'🎲', pattern:'', strength:'', weakness:''},
+  {id:'p_kusum', name:'Kusum', title:'The Dark Horse', emoji:'🪷', pattern:'', strength:'', weakness:''},
+  {id:'p_dipesh', name:'Dipesh', title:'The Wildcard', emoji:'🎲', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
