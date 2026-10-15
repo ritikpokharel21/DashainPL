@@ -696,4 +696,24 @@ games: [
   {n:4, w:'p_bipin', s:[[8,'s'],[37,'s'],[-34,'u'],[23,'s'],[-34,'u']]},
   {n:5, w:'p_arun',  s:[[18,'s'],[-64,'u'],[43,'s'],[25,'s'],[-22,'s']]}
  ]}
+,{id:'g_d11_6', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_bijay','p_ashu','p_bipin','p_shishi','p_dipesh'],
+ totals:{p_bijay:171,p_ashu:66,p_bipin:-51,p_shishi:-7,p_dipesh:-179},
+ rounds:[
+  {n:1, w:'p_bijay',  s:[[161,'s'],[-43,'s'],[-50,'u'],[-18,'s'],[-50,'u']]},
+  {n:2, w:'p_ashu',   s:[[64,'s'],[33,'s'],[-43,'u'],[-11,'s'],[-43,'u']]},
+  {n:3, w:'p_shishi', s:[[3,'s'],[-29,'u'],[16,'d'],[7,'s'],[3,'s']]},
+  {n:4, w:'p_bipin',  s:[[-9,'s'],[56,'s'],[13,'s'],[-19,'s'],[-41,'u']]},
+  {n:5, w:'p_bipin',  s:[[-48,'u'],[49,'s'],[13,'s'],[34,'s'],[-48,'u']]}
+ ]}
+,{id:'g_d11_7', dayId:'day11', name:'Murder Game', variant:'murder', date:'2026-10-14', partial:false,
+ playerIds:['p_sunira','p_sami','p_ashmita','p_saram','p_reji'],
+ totals:{p_sunira:162,p_sami:-7,p_ashmita:107,p_saram:-113,p_reji:-149},
+ rounds:[
+  {n:1, w:'p_sunira',  s:[[82,'s'],[0,'s'],[-25,'s'],[-57,'u'],[0,'s']]},
+  {n:2, w:'p_saram',   s:[[37,'s'],[-45,'u'],[12,'s'],[41,'s'],[-45,'u']]},
+  {n:3, w:'p_sami',    s:[[21,'s'],[41,'s'],[-9,'s'],[-49,'s'],[-4,'s']]},
+  {n:4, w:'p_sunira',  s:[[22,'s'],[22,'s'],[7,'s'],[-8,'s'],[-43,'s']]},
+  {n:5, w:'p_ashmita', s:[[0,'s'],[-25,'s'],[122,'s'],[-40,'s'],[-57,'u']]}
+ ]}
 ]};
