@@ -47,7 +47,8 @@ days: [
   {id:'day8', label:'Day 8', date:'2026-10-09', note:'Oct 9', settled:true},
   {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true},
   {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true},
-  {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14', settled:true}
+  {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14', settled:true},
+  {id:'day12', label:'Day 12', date:'2026-10-17', note:'Oct 17'}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -715,5 +716,16 @@ games: [
   {n:3, w:'p_sami',    s:[[21,'s'],[41,'s'],[-9,'s'],[-49,'s'],[-4,'s']]},
   {n:4, w:'p_sunira',  s:[[22,'s'],[22,'s'],[7,'s'],[-8,'s'],[-43,'s']]},
   {n:5, w:'p_ashmita', s:[[0,'s'],[-25,'s'],[122,'s'],[-40,'s'],[-57,'u']]}
+ ]}
+/* ---------- DAY 12 ---------- */
+,{id:'g_d12_1', dayId:'day12', name:'Murder Round', variant:'murder', date:'2026-10-17', partial:false,
+ playerIds:['p_ashu','p_shreya','p_dibi','p_ranj','p_sanka'],
+ totals:{p_ashu:6,p_shreya:-43,p_dibi:378,p_ranj:-142,p_sanka:-199},
+ rounds:[
+  {n:1, w:'p_dibi',   s:[[-33,'u'],[-33,'u'],[110,'s'],[-33,'u'],[-11,'s']]},
+  {n:2, w:'p_dibi',   s:[[-29,'u'],[28,'s'],[52,'s'],[-29,'u'],[-22,'s']]},
+  {n:3, w:'p_dibi',   s:[[70,'s'],[-5,'s'],[27,'s'],[-30,'s'],[-62,'u']]},
+  {n:4, w:'p_dibi',   s:[[-48,'u'],[-41,'s'],[138,'s'],[-1,'s'],[-48,'u']]},
+  {n:5, w:'p_shreya', s:[[46,'s'],[8,'s'],[51,'s'],[-49,'s'],[-56,'u']]}
  ]}
 ]};
