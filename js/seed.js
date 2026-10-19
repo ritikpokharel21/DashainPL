@@ -29,6 +29,9 @@ players: [
   {id:'p_anit', zelle:'(225) 384-7673', name:'Anit', title:'The Firecracker', emoji:'🧨', pattern:"+273 on debut day, then −376 across the next two. 16 crowns in 12 rounds — explodes in every direction.", strength:"16 crowns in 12 rounds — the game-winning touch is real.", weakness:"No middle gear — feast or famine, nothing between."},
   {id:'p_kusum', name:'Kusum', title:'The Dark Horse', emoji:'🪷', pattern:'', strength:'', weakness:''},
   {id:'p_dipesh', name:'Dipesh', title:'The Wildcard', emoji:'🎲', pattern:'', strength:'', weakness:''},
+  {id:'p_bijaysir', name:'Bijay Sir', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+  {id:'p_achyut', name:'Achyut sir', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+  {id:'p_utsav', name:'Utsav', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
@@ -48,7 +51,8 @@ days: [
   {id:'day9', label:'Day 9', date:'2026-10-10', note:'Oct 10', settled:true},
   {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true},
   {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14', settled:true},
-  {id:'day12', label:'Day 12', date:'2026-10-17', note:'Oct 17', settled:true}
+  {id:'day12', label:'Day 12', date:'2026-10-17', note:'Oct 17', settled:true},
+  {id:'day13', label:'Day 13', date:'2026-10-18', note:'Oct 18', settled:true, forcePair:['p_ritik','p_utsav']}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -742,5 +746,43 @@ games: [
   {n:8, w:'p_ashu',  s:[[-69,'u'],[-15,'s'],[48,'s'],[23,'s'],[13,'s']]},
   {n:9, w:'p_bijay', s:[[96,'s'],[-40,'u'],[-40,'u'],[-8,'s'],[-8,'s']]},
   {n:10, w:'p_ashu', s:[[-25,'u'],[100,'s'],[-25,'u'],[-25,'u'],[-25,'u']]}
+ ]}
+/* ---------- DAY 13 ---------- */
+,{id:'g_d13_1', dayId:'day13', name:'Murder Round', variant:'murder', date:'2026-10-18', partial:false,
+ playerIds:['p_ritik','p_ashu','p_shishi','p_achyut','p_bijaysir'],
+ totals:{p_ritik:-81,p_ashu:75,p_shishi:77,p_achyut:-46,p_bijaysir:-25},
+ rounds:[
+  {n:1, w:'p_ashu',    s:[[-17,'s'],[18,'s'],[63,'s'],[-12,'s'],[-52,'s']]},
+  {n:2, w:'p_shishi',  s:[[-19,'u'],[-19,'u'],[59,'s'],[-2,'s'],[-19,'u']]},
+  {n:3, w:'p_achyut',  s:[[-15,'s'],[35,'s'],[-40,'s'],[5,'s'],[15,'s']]},
+  {n:4, w:'p_bijaysir',s:[[-20,'u'],[-20,'u'],[12,'s'],[-20,'u'],[48,'s']]},
+  {n:5, w:'p_ashu',    s:[[-10,'s'],[61,'s'],[-17,'u'],[-17,'u'],[-17,'u']]}
+ ]}
+,{id:'g_d13_2', dayId:'day13', name:'Murder Round', variant:'murder', date:'2026-10-18', partial:false,
+ playerIds:['p_bijay','p_ashu','p_shishi','p_achyut','p_bijaysir'],
+ totals:{p_bijay:21,p_ashu:-16,p_shishi:-16,p_achyut:8,p_bijaysir:3},
+ rounds:[
+  {n:1, w:'p_shishi',  s:[[-21,'s'],[-21,'s'],[91,'s'],[4,'s'],[-53,'u']]},
+  {n:2, w:'p_bijay',   s:[[8,'s'],[-7,'s'],[-32,'s'],[-32,'s'],[63,'s']]},
+  {n:3, w:'p_bijaysir',s:[[42,'s'],[-30,'u'],[-30,'u'],[-30,'u'],[48,'s']]},
+  {n:4, w:'p_ashu',    s:[[-31,'s'],[76,'s'],[-53,'u'],[29,'s'],[-21,'s']]},
+  {n:5, w:'p_achyut',  s:[[23,'s'],[-34,'u'],[8,'s'],[37,'s'],[-34,'u']]}
+ ]}
+,{id:'g_d13_3', dayId:'day13', name:'Murder Round', variant:'murder', date:'2026-10-18', partial:true,
+ playerIds:['p_bijay','p_ashu','p_saram','p_bipin','p_utsav'],
+ totals:{p_bijay:-81,p_ashu:68,p_saram:-174,p_bipin:16,p_utsav:171},
+ rounds:[
+  {n:4, w:'p_utsav', s:[[3,'s'],[-12,'s'],[23,'s'],[-37,'s'],[23,'s']]},
+  {n:5, w:'p_ashu',  s:[[-19,'s'],[13,'s'],[-36,'u'],[46,'s'],[-4,'s']]},
+  {n:6, w:'p_saram', s:[[27,'s'],[17,'s'],[34,'s'],[-23,'s'],[-55,'u']]},
+  {n:7, w:'p_ashu',  s:[[-35,'u'],[108,'s'],[-35,'u'],[-35,'u'],[-3,'s']]},
+  {n:8, w:'p_utsav', s:[[93,'s'],[-47,'s'],[-64,'u'],[-37,'s'],[55,'s']]},
+  {n:9, w:'p_utsav', s:[[50,'s'],[13,'d'],[-45,'s'],[-72,'u'],[54,'s']]},
+  {n:10, w:'p_saram',s:[[-37,'u'],[-37,'u'],[116,'s'],[-5,'s'],[-37,'u']]},
+  {n:11, w:'p_bipin',s:[[-32,'u'],[-32,'u'],[-32,'u'],[61,'s'],[35,'s']]},
+  {n:12, w:'p_bijay',s:[[59,'s'],[-5,'s'],[-52,'u'],[-35,'s'],[33,'d']]},
+  {n:13, w:'p_utsav',s:[[-22,'u'],[-22,'u'],[-22,'u'],[-22,'u'],[88,'s']]},
+  {n:14, w:'p_ashu', s:[[-32,'s'],[48,'s'],[33,'s'],[-32,'s'],[-17,'s']]},
+  {n:15, w:'p_utsav',s:[[-34,'u'],[43,'s'],[8,'s'],[-34,'u'],[17,'s']]}
  ]}
 ]};

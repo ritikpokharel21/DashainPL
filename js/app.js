@@ -21,7 +21,7 @@ function seedState(){
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
   st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||'',zelle:p.zelle||''}; });
-  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled}; });
+  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled,forcePair:d.forcePair||null}; });
   st.couples = S.couples||[];
   st.games = S.games.map(function(g){
     return {
@@ -59,7 +59,7 @@ function ranked(totals){
     .sort(function(a,b){ return b.pts-a.pts; });
 }
 /* Minimal settlement: couples settle with each other first, then debtors pay creditors, fewest transactions possible */
-function settlements(t){
+function settlements(t, force){
   var bal={};
   for(var pid in t) bal[pid]=Math.round(t[pid]*10)/10;
   var out=[];
@@ -69,6 +69,9 @@ function settlements(t){
     out.push({from:frm, to:to, pts:amt, couple:!!couple});
     bal[frm]=Math.round((bal[frm]+amt)*10)/10;
     bal[to]=Math.round((bal[to]-amt)*10)/10;
+  }
+  if(force && bal[force[0]]<0 && bal[force[1]]>0){
+    pay(force[0], force[1], Math.min(-bal[force[0]], bal[force[1]]));
   }
   state.couples.forEach(function(cp){
     var a=cp[0], b=cp[1];
@@ -224,7 +227,7 @@ function vDay(id){
   h+='<h3>Standings</h3>';
   r.forEach(function(e,i){ h+=lbRow(e,i,moveArrow(e.pid,di)); });
   if(d.settled){
-    var ss=settlements(t);
+    var ss=settlements(t, d.forcePair);
     ss.sort(function(a,b){return b.pts-a.pts;});
     h+='<h3>Who Pays Who</h3>';
     if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
