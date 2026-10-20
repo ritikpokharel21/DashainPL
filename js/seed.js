@@ -32,6 +32,8 @@ players: [
   {id:'p_bijaysir', name:'Bijay Sir', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_achyut', name:'Achyut sir', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_utsav', name:'Utsav', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+  {id:'p_pawan', name:'Pawan', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+  {id:'p_sadikxya', name:'Sadikxya', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
@@ -784,5 +786,15 @@ games: [
   {n:13, w:'p_utsav',s:[[-22,'u'],[-22,'u'],[-22,'u'],[-22,'u'],[88,'s']]},
   {n:14, w:'p_ashu', s:[[-32,'s'],[48,'s'],[33,'s'],[-32,'s'],[-17,'s']]},
   {n:15, w:'p_utsav',s:[[-34,'u'],[43,'s'],[8,'s'],[-34,'u'],[17,'s']]}
+ ]}
+,{id:'g_d13_4', dayId:'day13', name:'Murder Round', variant:'murder', date:'2026-10-18', partial:false,
+ playerIds:['p_ranj','p_pawan','p_sadikxya','p_ashmita','p_dibi'],
+ totals:{p_ranj:-49,p_pawan:-58,p_sadikxya:-25,p_ashmita:43,p_dibi:89},
+ rounds:[
+  {n:1, w:'p_ashmita',s:[[-22,'u'],[-22,'u'],[-22,'u'],[56,'s'],[10,'s']]},
+  {n:2, w:'p_sadikxya',s:[[30,'s'],[-37,'u'],[81,'s'],[-37,'u'],[-37,'u']]},
+  {n:3, w:'p_ashmita',s:[[4,'s'],[-23,'u'],[-23,'u'],[65,'s'],[-23,'u']]},
+  {n:4, w:'p_pawan',   s:[[-21,'u'],[64,'s'],[-21,'u'],[-1,'d'],[-21,'u']]},
+  {n:5, w:'p_dibi',    s:[[-40,'u'],[-40,'u'],[-40,'u'],[-40,'u'],[160,'s']]}
  ]}
 ]};
