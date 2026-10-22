@@ -54,7 +54,8 @@ days: [
   {id:'day10', label:'Day 10', date:'2026-10-12', note:'Oct 12', settled:true},
   {id:'day11', label:'Day 11', date:'2026-10-14', note:'Oct 14', settled:true},
   {id:'day12', label:'Day 12', date:'2026-10-17', note:'Oct 17', settled:true},
-  {id:'day13', label:'Day 13', date:'2026-10-18', note:'Oct 18', settled:true, forcePair:['p_ritik','p_utsav']}
+  {id:'day13', label:'Day 13', date:'2026-10-18', note:'Oct 18', settled:true, forcePair:['p_ritik','p_utsav']},
+  {id:'day14', label:'Day 14', date:'2026-10-21', note:'Oct 21', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -796,5 +797,66 @@ games: [
   {n:3, w:'p_ashmita',s:[[4,'s'],[-23,'u'],[-23,'u'],[65,'s'],[-23,'u']]},
   {n:4, w:'p_pawan',   s:[[-21,'u'],[64,'s'],[-21,'u'],[-1,'d'],[-21,'u']]},
   {n:5, w:'p_dibi',    s:[[-40,'u'],[-40,'u'],[-40,'u'],[-40,'u'],[160,'s']]}
+ ]}
+/* ---------- DAY 14 ---------- */
+,{id:'g_d14_1', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_bijay','p_ashu','p_shishi','p_solti','p_sunira'],
+ totals:{p_bijay:101,p_ashu:-11,p_shishi:-88,p_solti:55,p_sunira:-57},
+ rounds:[
+  {n:1, w:'p_solti', s:[[73,'s'],[-2,'s'],[-27,'s'],[-27,'s'],[-17,'s']]},
+  {n:2, w:'p_shishi',s:[[67,'s'],[-30,'u'],[23,'s'],[-30,'u'],[-30,'u']]},
+  {n:3, w:'p_solti', s:[[-39,'u'],[-22,'s'],[-39,'u'],[107,'s'],[-7,'s']]},
+  {n:4, w:'p_ashu',  s:[[-22,'u'],[88,'s'],[-22,'u'],[-22,'u'],[-22,'u']]},
+  {n:5, w:'p_sunira',s:[[22,'s'],[-45,'u'],[-23,'s'],[27,'s'],[19,'s']]}
+ ]}
+,{id:'g_d14_2', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_sunira','p_reji','p_sunil','p_shishi','p_ashmita'],
+ totals:{p_sunira:-71,p_reji:39,p_sunil:11,p_shishi:-105,p_ashmita:126},
+ rounds:[
+  {n:1, w:'p_shishi', s:[[-26,'u'],[-26,'u'],[9,'d'],[47,'s'],[-4,'s']]},
+  {n:2, w:'p_reji',   s:[[-34,'u'],[136,'s'],[-34,'u'],[-34,'u'],[-34,'u']]},
+  {n:3, w:'p_ashmita',s:[[-45,'u'],[-45,'u'],[-45,'u'],[-45,'u'],[180,'s']]},
+  {n:4, w:'p_reji',   s:[[52,'s'],[24,'s'],[2,'s'],[-55,'u'],[-23,'s']]},
+  {n:5, w:'p_sunil',  s:[[-18,'s'],[-50,'u'],[79,'s'],[-18,'s'],[7,'s']]}
+ ]}
+,{id:'g_d14_3', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_reji','p_ashu','p_bijay','p_sunil','p_saram'],
+ totals:{p_reji:33,p_ashu:127,p_bijay:76,p_sunil:-174,p_saram:-62},
+ rounds:[
+  {n:1, w:'p_ashu',  s:[[-42,'u'],[54,'s'],[40,'s'],[-42,'u'],[-10,'s']]},
+  {n:2, w:'p_ashu',  s:[[30,'s'],[27,'s'],[-52,'u'],[-10,'s'],[5,'s']]},
+  {n:3, w:'p_ashu',  s:[[84,'s'],[53,'s'],[-41,'s'],[-48,'u'],[-48,'u']]},
+  {n:4, w:'p_bijay', s:[[-45,'u'],[-28,'s'],[91,'s'],[-45,'u'],[27,'s']]},
+  {n:5, w:'p_bijay', s:[[6,'s'],[21,'s'],[38,'s'],[-29,'s'],[-36,'u']]}
+ ]}
+,{id:'g_d14_4', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_ranj','p_ashu','p_ashmita','p_sunil','p_dibi'],
+ totals:{p_ranj:80,p_ashu:140,p_ashmita:-50,p_sunil:-35,p_dibi:-135},
+ rounds:[
+  {n:1, w:'p_ashu',   s:[[-24,'u'],[96,'s'],[-24,'u'],[-24,'u'],[-24,'u']]},
+  {n:2, w:'p_ranj',   s:[[102,'s'],[-52,'u'],[5,'s'],[-45,'s'],[-10,'s']]},
+  {n:3, w:'p_dibi',   s:[[-21,'s'],[44,'s'],[7,'d'],[-21,'s'],[-9,'s']]},
+  {n:4, w:'p_ashmita',s:[[82,'s'],[-50,'u'],[4,'s'],[7,'s'],[-43,'s']]},
+  {n:5, w:'p_ashu',   s:[[-59,'u'],[102,'s'],[-42,'s'],[48,'s'],[-49,'d']]}
+ ]}
+,{id:'g_d14_5', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_ranj','p_ashu','p_ashmita','p_sunil','p_dibi'],
+ totals:{p_ranj:-69,p_ashu:-162,p_ashmita:319,p_sunil:-131,p_dibi:43},
+ rounds:[
+  {n:1, w:'p_dibi',   s:[[-55,'u'],[-55,'u'],[30,'d'],[-55,'u'],[135,'s']]},
+  {n:2, w:'p_dibi',   s:[[-45,'s'],[-20,'s'],[80,'s'],[-10,'s'],[-5,'s']]},
+  {n:3, w:'p_ashmita',s:[[-30,'u'],[-30,'u'],[113,'s'],[-23,'s'],[-30,'u']]},
+  {n:4, w:'p_ranj',   s:[[93,'s'],[-25,'u'],[-25,'u'],[-18,'s'],[-25,'u']]},
+  {n:5, w:'p_ashmita',s:[[-32,'u'],[-32,'u'],[121,'s'],[-25,'s'],[-32,'u']]}
+ ]}
+,{id:'g_d14_6', dayId:'day14', name:'Murder Round', variant:'murder', date:'2026-10-21', partial:false,
+ playerIds:['p_shishi','p_ashu','p_bijay','p_sunira','p_ashmita'],
+ totals:{p_shishi:-61,p_ashu:32,p_bijay:40,p_sunira:52,p_ashmita:-63},
+ rounds:[
+  {n:1, w:'p_shishi', s:[[74,'s'],[-13,'s'],[-8,'s'],[-55,'u'],[2,'s']]},
+  {n:2, w:'p_ashmita',s:[[-28,'f'],[-38,'u'],[-38,'u'],[84,'s'],[20,'s']]},
+  {n:3, w:'p_sunira', s:[[-32,'u'],[-17,'u'],[-17,'u'],[76,'s'],[-10,'s']]},
+  {n:4, w:'p_bijay',  s:[[-39,'u'],[-22,'s'],[139,'s'],[-39,'u'],[-39,'u']]},
+  {n:5, w:'p_ashu',   s:[[-36,'u'],[122,'s'],[-36,'u'],[-14,'s'],[-36,'u']]}
  ]}
 ]};
