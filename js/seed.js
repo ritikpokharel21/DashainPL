@@ -935,8 +935,8 @@ games: [
   {n:1, w:'p_bijay', s:[[180,'s'],[-45,'u'],[-45,'u'],[-45,'u'],[-45,'u']]}
  ]}
 ,{id:'g_d16_2', dayId:'day16', name:'Murder Round', variant:'murder', date:'2026-10-23', partial:true,
- playerIds:['p_bijay','p_shreya','p_ashmita','p_sunira','p_sanka','p_shishi'],
- totals:{p_bijay:-92,p_shreya:53,p_ashmita:3,p_sunira:51,p_sanka:2,p_shishi:-17},
+ playerIds:['p_bijay','p_shreya','p_ashmita','p_sunil','p_sanka','p_shishi'],
+ totals:{p_bijay:-92,p_shreya:53,p_ashmita:3,p_sunil:51,p_sanka:2,p_shishi:-17},
  rounds:[
   {n:5, w:'p_sanka',  s:[[-25,'u'],[-6,'s'],[-25,'u'],[-25,'u'],[106,'s'],[-25,'u']]},
   {n:6, w:'p_shishi', s:[[-66,'s'],[-54,'s'],[24,'s'],[-42,'s'],[147,'d'],[-9,'s']]},
