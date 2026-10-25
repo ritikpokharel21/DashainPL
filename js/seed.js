@@ -60,7 +60,8 @@ days: [
   {id:'day13', label:'Day 13', date:'2026-10-18', note:'Oct 18', settled:true, forcePair:['p_ritik','p_utsav']},
   {id:'day14', label:'Day 14', date:'2026-10-21', note:'Oct 21', settled:true},
   {id:'day15', label:'Day 15', date:'2026-10-22', note:'Oct 22', settled:true},
-  {id:'day16', label:'Day 16', date:'2026-10-23', note:'Oct 23', settled:true}
+  {id:'day16', label:'Day 16', date:'2026-10-23', note:'Oct 23', settled:true},
+  {id:'day17', label:'Day 17', date:'2026-10-24', note:'Oct 24', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -968,5 +969,19 @@ games: [
   {n:4, w:'p_ashmita',s:[[1,'s'],[-59,'s'],[-17,'s'],[19,'s'],[-5,'s'],[61,'s']]},
   {n:5, w:'p_bijay',  s:[[127,'s'],[17,'s'],[5,'s'],[-62,'u'],[-62,'u'],[-25,'s']]},
   {n:6, w:'p_dibi',   s:[[-52,'u'],[-52,'u'],[15,'s'],[105,'s'],[-1,'s'],[-15,'s']]}
+ ]}
+/* ---------- DAY 17 ---------- */
+,{id:'g_d17_1', dayId:'day17', name:'Murder Round', variant:'murder', date:'2026-10-24', partial:true,
+ playerIds:['p_ashu','p_shreya','p_sanka','p_sandeep','p_ranj'],
+ totals:{p_ashu:-321,p_shreya:291,p_sanka:198,p_sandeep:-99,p_ranj:-69},
+ rounds:[
+  {n:8, w:'p_sandeep', s:[[-70,'u'],[127,'s'],[-70,'u'],[41,'s'],[-28,'s']]},
+  {n:9, w:'p_ranj',    s:[[24,'s'],[-33,'u'],[-1,'s'],[-33,'u'],[43,'s']]},
+  {n:10, w:'p_shreya', s:[[-39,'u'],[72,'s'],[18,'s'],[-12,'s'],[-39,'u']]},
+  {n:11, w:'p_sanka',  s:[[-47,'u'],[-47,'u'],[121,'s'],[-47,'u'],[20,'s']]},
+  {n:12, w:'p_sandeep',s:[[10,'s'],[-57,'u'],[-15,'s'],[62,'s'],[0,'s']]},
+  {n:13, w:'p_sanka',  s:[[33,'s'],[-34,'u'],[69,'s'],[-34,'u'],[-34,'u']]},
+  {n:14, w:'p_sanka',  s:[[-15,'s'],[20,'s'],[107,'s'],[-40,'s'],[-72,'u']]},
+  {n:15, w:'p_shreya', s:[[-6,'s'],[13,'s'],[69,'s'],[-38,'u'],[-38,'u']]}
  ]}
 ]};
