@@ -49,6 +49,44 @@ function dayTotals(dayId){
   dayGames(dayId).forEach(function(g){ var gt=gameTotals(g); for(var pid in gt) t[pid]=(t[pid]||0)+gt[pid]; });
   return t;
 }
+function cumSeries(pid){
+  var out=[], cum=0;
+  state.days.forEach(function(d){ var t=dayTotals(d.id); if(t[pid]!==undefined){ cum+=t[pid]; out.push({label:d.label, v:cum*PT_RATE}); } });
+  return out;
+}
+function fmtAxis(v){ var s=(v>0?'+':(v<0?'−':''))+Math.abs(v).toFixed(1); return s.replace(/\.0$/,''); }
+function sparkSVG(series){
+  if(!series.length) return '';
+  var W=264,H=118,PL=6,PR=8,PT=15,PB=15;
+  var vs=series.map(function(p){return p.v;});
+  var mn=Math.min.apply(null,vs.concat([0])), mx=Math.max.apply(null,vs.concat([0]));
+  if(mx-mn<10){ var pad=(10-(mx-mn))/2; mx+=pad; mn-=pad; }
+  var n=series.length;
+  function X(i){ return n===1?(PL+(W-PL-PR)/2):PL+(W-PL-PR)*i/(n-1); }
+  function Y(v){ return PT+(mx-v)*(H-PT-PB)/(mx-mn); }
+  function r1(x){ return Math.round(x*10)/10; }
+  var pts=series.map(function(p,i){ return r1(X(i))+','+r1(Y(p.v)); });
+  var line='M'+pts.join(' L');
+  var zeroY=Y(0);
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative earnings graph">';
+  s+='<defs><linearGradient id="cumGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eec27f" stop-opacity=".20"/><stop offset="1" stop-color="#eec27f" stop-opacity=".01"/></linearGradient></defs>';
+  if(n>1) s+='<path d="'+line+' L'+r1(X(n-1))+','+r1(zeroY)+' L'+r1(X(0))+','+r1(zeroY)+' Z" fill="url(#cumGrad)" stroke="none"/>';
+  if(mn<0&&mx>0) s+='<line x1="'+PL+'" y1="'+r1(zeroY)+'" x2="'+(W-PR)+'" y2="'+r1(zeroY)+'" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 4"/>';
+  if(n>1) s+='<path d="'+line+'" fill="none" stroke="#eec27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<circle cx="'+r1(X(0))+'" cy="'+r1(Y(series[0].v))+'" r="2" fill="#eec27f" opacity=".55"/>';
+  s+='<circle cx="'+r1(X(n-1))+'" cy="'+r1(Y(series[n-1].v))+'" r="3.2" fill="#eec27f" stroke="#3a0f18" stroke-width="1"/>';
+  s+='<text x="'+PL+'" y="10">'+fmtAxis(Math.max.apply(null,vs))+'</text>';
+  var minV=Math.min.apply(null,vs);
+  if(minV<Math.max.apply(null,vs)) s+='<text x="'+PL+'" y="'+(H-14)+'">'+fmtAxis(minV)+'</text>';
+  var dlab=function(l){ return l.replace('Day ','D'); };
+  if(n===1) s+='<text x="'+r1(X(0))+'" y="'+(H-2)+'" text-anchor="middle">'+dlab(series[0].label)+'</text>';
+  else{
+    s+='<text x="'+PL+'" y="'+(H-2)+'">'+dlab(series[0].label)+'</text>';
+    s+='<text x="'+(W-PR)+'" y="'+(H-2)+'" text-anchor="end">'+dlab(series[n-1].label)+'</text>';
+  }
+  s+='</svg>';
+  return s;
+}
 function overallTotals(){
   var t={};
   state.games.forEach(function(g){ var gt=gameTotals(g); for(var pid in gt) t[pid]=(t[pid]||0)+gt[pid]; });
@@ -270,8 +308,10 @@ function vPlayer(pid){
   var s=playerStats(pid);
   var t=overallTotals(), r=ranked(t);
   var orank=r.findIndex(function(e){return e.pid===pid;})+1;
-  var h='<div class="pf-hero"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
-    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>';
+  var _cs=cumSeries(pid);
+  var h='<div class="pf-hero"><div class="pf-id"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
+    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>'+
+    (_cs.length?'<div class="pf-graph">'+sparkSVG(_cs)+'</div>':'')+'</div>';
   h+='<div class="tiles">'+
     tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / game')+
     tile(s.best===null?'—':fmtPts(s.best),'Best game')+tile(s.worst===null?'—':fmtPts(s.worst),'Worst game')+tile(s.dayWins,'🏅 Day wins')+
