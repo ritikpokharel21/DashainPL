@@ -986,6 +986,16 @@ games: [
   {n:15, w:'p_shreya', s:[[-6,'s'],[13,'s'],[69,'s'],[-38,'u'],[-38,'u']]}
  ]}
 /* ---------- DAY 18 ---------- */
+,{id:'g_d18_2', dayId:'day18', name:'Murder Round', variant:'murder', date:'2026-10-27', partial:false,
+ playerIds:['p_reji','p_sanka','p_ashu','p_ranj','p_ritik'],
+ totals:{p_reji:4,p_sanka:49,p_ashu:-155,p_ranj:-27,p_ritik:129},
+ rounds:[
+  {n:1, w:'p_ritik', s:[[-47,'u'],[-47,'u'],[-47,'u'],[-15,'s'],[156,'s']]},
+  {n:2, w:'p_ranj',  s:[[38,'s'],[3,'s'],[-29,'u'],[17,'s'],[-29,'u']]},
+  {n:3, w:'p_sanka', s:[[-22,'s'],[0,'s'],[-54,'u'],[53,'s'],[23,'s']]},
+  {n:4, w:'p_ritik', s:[[78,'s'],[-22,'s'],[-39,'u'],[-39,'u'],[22,'s']]},
+  {n:5, w:'p_sanka', s:[[-43,'u'],[115,'s'],[14,'s'],[-43,'u'],[-43,'u']]}
+ ]}
 ,{id:'g_d18_1', dayId:'day18', name:'Murder Round', variant:'murder', date:'2026-10-27', partial:false,
  playerIds:['p_reji','p_sanka','p_ashu','p_ranj','p_ritik','p_sunira'],
  totals:{p_reji:-43,p_sanka:-2,p_ashu:-19,p_ranj:-139,p_ritik:233,p_sunira:-30},
