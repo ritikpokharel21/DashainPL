@@ -310,7 +310,7 @@ function vPlayer(pid){
   var orank=r.findIndex(function(e){return e.pid===pid;})+1;
   var _cs=cumSeries(pid);
   var h='<div class="pf-hero"><div class="pf-id"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div>'+
-    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtPts(s.total)+' PTS</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>'+
+    '<div style="margin-top:8px"><span class="tag">RANK #'+orank+'</span> <span class="tag">'+fmtMoney(s.total)+'</span></div>'+streakHtml+'</div>'+
     (_cs.length?'<div class="pf-graph">'+sparkSVG(_cs)+'</div>':'')+'</div>';
   h+='<div class="tiles">'+
     tile(s.daysPlayed,'🗓️ Days')+tile(s.crowns,'👑 Crowns')+tile(s.avg,'Avg / game')+
