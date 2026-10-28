@@ -216,8 +216,9 @@ function vHome(){
   tabbar('#/');
   var t=overallTotals(), r=ranked(t);
   var lead=r[0]?pinfo(r[0].pid):null;
-  var h='<div class="hero"><div class="kicker">🪁 Season\'s Big Gun</div>';
-  if(lead){ h+='<div class="big">'+lead.emoji+' '+esc(lead.name)+'</div><div class="mut">'+esc(lead.title)+' · <b class="'+cls(r[0].pts)+'">'+fmtPts(r[0].pts)+' pts</b> ('+fmtMoney(r[0].pts)+')</div>'; }
+  var h='<div class="hero"><div class="hero-id"><div class="kicker">🪁 Season\'s Big Gun</div>';
+  if(lead){ h+='<div class="big">'+lead.emoji+' '+esc(lead.name)+'</div><div class="hero-money '+cls(r[0].pts)+'">'+fmtMoney(r[0].pts)+'</div></div><div class="hero-graph">'+sparkSVG(cumSeries(r[0].pid))+'</div>'; }
+  else h+='</div>';
   h+='</div>';
   var lastD=state.days[state.days.length-1], lr=ranked(dayTotals(lastD.id));
   if(lr.length){ var lp=pinfo(lr[0].pid);
