@@ -75,9 +75,8 @@ function sparkSVG(series){
   if(n>1) s+='<path d="'+line+'" fill="none" stroke="#eec27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
   s+='<circle cx="'+r1(X(0))+'" cy="'+r1(Y(series[0].v))+'" r="2" fill="#eec27f" opacity=".55"/>';
   s+='<circle cx="'+r1(X(n-1))+'" cy="'+r1(Y(series[n-1].v))+'" r="3.2" fill="#eec27f" stroke="#3a0f18" stroke-width="1"/>';
-  s+='<text x="'+PL+'" y="10">'+fmtAxis(Math.max.apply(null,vs))+'</text>';
-  var minV=Math.min.apply(null,vs);
-  if(minV<Math.max.apply(null,vs)) s+='<text x="'+PL+'" y="'+(H-14)+'">'+fmtAxis(minV)+'</text>';
+  var lastV=series[n-1].v;
+  s+='<text x="'+r1(X(n-1))+'" y="'+r1(Math.max(9,Y(lastV)-7))+'" text-anchor="end">'+fmtAxis(lastV)+'</text>';
   var dlab=function(l){ return l.replace('Day ','D'); };
   if(n===1) s+='<text x="'+r1(X(0))+'" y="'+(H-2)+'" text-anchor="middle">'+dlab(series[0].label)+'</text>';
   else{
