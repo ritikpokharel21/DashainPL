@@ -50,7 +50,7 @@ function dayTotals(dayId){
   return t;
 }
 function cumSeries(pid){
-  var out=[], cum=0;
+  var out=[{label:'Day 0', v:0}], cum=0;
   state.days.forEach(function(d){ var t=dayTotals(d.id); if(t[pid]!==undefined){ cum+=t[pid]; out.push({label:d.label, v:cum*PT_RATE}); } });
   return out;
 }
@@ -71,7 +71,7 @@ function sparkSVG(series){
   var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative earnings graph">';
   s+='<defs><linearGradient id="cumGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eec27f" stop-opacity=".20"/><stop offset="1" stop-color="#eec27f" stop-opacity=".01"/></linearGradient></defs>';
   if(n>1) s+='<path d="'+line+' L'+r1(X(n-1))+','+r1(zeroY)+' L'+r1(X(0))+','+r1(zeroY)+' Z" fill="url(#cumGrad)" stroke="none"/>';
-  if(mn<0&&mx>0) s+='<line x1="'+PL+'" y1="'+r1(zeroY)+'" x2="'+(W-PR)+'" y2="'+r1(zeroY)+'" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 4"/>';
+  s+='<line x1="'+PL+'" y1="'+r1(zeroY)+'" x2="'+(W-PR)+'" y2="'+r1(zeroY)+'" stroke="rgba(244,102,112,.38)" stroke-width="1" stroke-dasharray="3 4"/>';
   if(n>1) s+='<path d="'+line+'" fill="none" stroke="#eec27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
   s+='<circle cx="'+r1(X(0))+'" cy="'+r1(Y(series[0].v))+'" r="2" fill="#eec27f" opacity=".55"/>';
   s+='<circle cx="'+r1(X(n-1))+'" cy="'+r1(Y(series[n-1].v))+'" r="3.2" fill="#eec27f" stroke="#3a0f18" stroke-width="1"/>';
