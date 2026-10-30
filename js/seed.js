@@ -1080,4 +1080,14 @@ games: [
   {n:3, w:'p_bijay',  s:[[50,'s'],[-2,'s'],[2,'s'],[-50,'s']]},
   {n:4, w:'p_sanka', s:[[-28,'u'],[25,'s'],[-28,'u'],[31,'s']]}
  ]}
+,{id:'g_d20_4', dayId:'day20', name:'Murder Round', variant:'murder', date:'2026-10-29', partial:false,
+ playerIds:['p_ashu','p_sanka','p_bijay','p_sunil','p_saram'],
+ totals:{p_ashu:77,p_sanka:-137,p_bijay:-57,p_sunil:-25,p_saram:142},
+ rounds:[
+  {n:1, w:'p_sanka', s:[[-30,'u'],[31,'s'],[-30,'u'],[2,'s'],[27,'s']]},
+  {n:2, w:'p_saram', s:[[-13,'u'],[-13,'u'],[-13,'u'],[-13,'u'],[52,'s']]},
+  {n:3, w:'p_saram', s:[[-5,'s'],[-62,'u'],[-5,'s'],[5,'s'],[67,'s']]},
+  {n:4, w:'p_ashu',  s:[[69,'s'],[-42,'u'],[15,'s'],[0,'s'],[-42,'u']]},
+  {n:5, w:'p_saram', s:[[56,'s'],[-51,'u'],[-24,'s'],[-19,'s'],[38,'s']]}
+ ]}
 ]};
