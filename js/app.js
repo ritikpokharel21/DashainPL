@@ -139,7 +139,7 @@ function setCumSelection(chart, idx, show){
         var tipW=tip.offsetWidth||92;
         var half=Math.min(rect.width/2, Math.max(48,tipW/2+4));
         tip.style.left=Math.max(half, Math.min(rect.width-half, px))+'px';
-        tip.style.top='2px';
+        tip.style.top='-8px';
       }
     }
   } else {
