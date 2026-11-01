@@ -135,13 +135,11 @@ function setCumSelection(chart, idx, show){
     if(tip){
       var rect=chart.getBoundingClientRect();
       if(rect.width&&rect.height){
-        var px=p.x/264*rect.width, py=p.y/118*rect.height;
-        var tipW=tip.offsetWidth||124, tipH=tip.offsetHeight||46;
+        var px=p.x/264*rect.width;
+        var tipW=tip.offsetWidth||92;
         var half=Math.min(rect.width/2, Math.max(48,tipW/2+4));
         tip.style.left=Math.max(half, Math.min(rect.width-half, px))+'px';
-        var below=py<58;
-        tip.classList.toggle('below',below);
-        tip.style.top=(below?Math.min(rect.height-tipH,py+11):Math.max(0,py-tipH-9))+'px';
+        tip.style.top='2px';
       }
     }
   } else {
