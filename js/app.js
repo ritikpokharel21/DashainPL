@@ -50,8 +50,8 @@ function dayTotals(dayId){
   return t;
 }
 function cumSeries(pid){
-  var out=[{label:'Day 0', v:0}], cum=0;
-  state.days.forEach(function(d){ var t=dayTotals(d.id); if(t[pid]!==undefined){ cum+=t[pid]; out.push({label:d.label, v:cum*PT_RATE}); } });
+  var out=[{label:'Day 0', date:'Start', pts:0, v:0}], cum=0;
+  state.days.forEach(function(d){ var t=dayTotals(d.id); if(t[pid]!==undefined){ cum+=t[pid]; out.push({label:d.label, date:d.note||d.date, pts:cum, v:cum*PT_RATE}); } });
   return out;
 }
 function fmtAxis(v){ var s=(v>0?'+':(v<0?'−':''))+Math.abs(v).toFixed(1); return s.replace(/\.0$/,''); }
@@ -65,27 +65,141 @@ function sparkSVG(series){
   function X(i){ return n===1?(PL+(W-PL-PR)/2):PL+(W-PL-PR)*i/(n-1); }
   function Y(v){ return PT+(mx-v)*(H-PT-PB)/(mx-mn); }
   function r1(x){ return Math.round(x*10)/10; }
+  function pointPts(p){ return p.pts!==undefined?p.pts:Math.round(p.v/PT_RATE); }
   var pts=series.map(function(p,i){ return r1(X(i))+','+r1(Y(p.v)); });
   var line='M'+pts.join(' L');
   var zeroY=Y(0);
-  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative earnings graph">';
+  var lastP=series[n-1], lastX=X(n-1), lastY=Y(lastP.v);
+  var lastText=lastP.label+': '+fmtPts(pointPts(lastP))+' points';
+  var s='<div class="cum-chart" tabindex="0" role="slider" aria-label="Cumulative score graph. Touch, drag, or use arrow keys to inspect each day." aria-valuemin="0" aria-valuemax="'+(n-1)+'" aria-valuenow="'+(n-1)+'" aria-valuetext="'+esc(lastText)+'">';
+  s+='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative earnings graph">';
   s+='<defs><linearGradient id="cumGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eec27f" stop-opacity=".20"/><stop offset="1" stop-color="#eec27f" stop-opacity=".01"/></linearGradient></defs>';
   if(n>1) s+='<path d="'+line+' L'+r1(X(n-1))+','+r1(zeroY)+' L'+r1(X(0))+','+r1(zeroY)+' Z" fill="url(#cumGrad)" stroke="none"/>';
   s+='<line x1="'+PL+'" y1="'+r1(zeroY)+'" x2="'+(W-PR)+'" y2="'+r1(zeroY)+'" stroke="rgba(244,102,112,.38)" stroke-width="1" stroke-dasharray="3 4"/>';
-  if(n>1) s+='<path d="'+line+'" fill="none" stroke="#eec27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  if(n>1) s+='<path class="cum-line" d="'+line+'" fill="none" stroke="#eec27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
   s+='<circle cx="'+r1(X(0))+'" cy="'+r1(Y(series[0].v))+'" r="2" fill="#eec27f" opacity=".55"/>';
-  s+='<circle cx="'+r1(X(n-1))+'" cy="'+r1(Y(series[n-1].v))+'" r="3.2" fill="#eec27f" stroke="#3a0f18" stroke-width="1"/>';
-  var lastV=series[n-1].v;
-  s+='<text x="'+r1(X(n-1))+'" y="'+r1(Math.max(9,Y(lastV)-7))+'" text-anchor="end">'+fmtAxis(lastV)+'</text>';
+  s+='<circle cx="'+r1(lastX)+'" cy="'+r1(lastY)+'" r="3.2" fill="#eec27f" stroke="#3a0f18" stroke-width="1"/>';
+  series.forEach(function(p,i){
+    s+='<circle class="cum-data" cx="'+r1(X(i))+'" cy="'+r1(Y(p.v))+'" r="1" fill="#fff" opacity="0" pointer-events="none" data-label="'+esc(p.label)+'" data-date="'+esc(p.date||'')+'" data-pts="'+pointPts(p)+'"/>';
+  });
+  s+='<g class="cum-scrub" aria-hidden="true"><line class="cum-guide" x1="'+r1(lastX)+'" y1="'+PT+'" x2="'+r1(lastX)+'" y2="'+(H-PB)+'"/><circle class="cum-halo" cx="'+r1(lastX)+'" cy="'+r1(lastY)+'" r="8.5"/><circle class="cum-dot" cx="'+r1(lastX)+'" cy="'+r1(lastY)+'" r="4"/></g>';
+  var lastV=lastP.v;
+  s+='<text class="cum-final-label" x="'+r1(lastX)+'" y="'+r1(Math.max(9,lastY-7))+'" text-anchor="end">'+fmtAxis(lastV)+'</text>';
   var dlab=function(l){ return l.replace('Day ','D'); };
   if(n===1) s+='<text x="'+r1(X(0))+'" y="'+(H-2)+'" text-anchor="middle">'+dlab(series[0].label)+'</text>';
   else{
     s+='<text x="'+PL+'" y="'+(H-2)+'">'+dlab(series[0].label)+'</text>';
     s+='<text x="'+(W-PR)+'" y="'+(H-2)+'" text-anchor="end">'+dlab(series[n-1].label)+'</text>';
   }
-  s+='</svg>';
+  s+='</svg><div class="cum-tip" aria-hidden="true"><div class="cum-tip-day"></div><div class="cum-tip-value"></div></div></div>';
   return s;
 }
+function cumMoney(pts){
+  var d=Math.round(pts*PT_RATE*100)/100;
+  return (d<0?'−$':'+$')+Math.abs(d).toFixed(2);
+}
+function cumPoints(chart){
+  if(chart._cumPoints) return chart._cumPoints;
+  var nodes=chart.querySelectorAll('.cum-data'), out=[];
+  for(var i=0;i<nodes.length;i++){
+    out.push({
+      label:nodes[i].getAttribute('data-label')||'',
+      date:nodes[i].getAttribute('data-date')||'',
+      pts:parseFloat(nodes[i].getAttribute('data-pts')||'0'),
+      x:parseFloat(nodes[i].getAttribute('cx')||'0'),
+      y:parseFloat(nodes[i].getAttribute('cy')||'0')
+    });
+  }
+  chart._cumPoints=out;
+  return out;
+}
+function setCumSelection(chart, idx, show){
+  var points=cumPoints(chart);
+  if(!points.length) return;
+  idx=Math.max(0, Math.min(points.length-1, idx));
+  var p=points[idx];
+  chart._cumIndex=idx;
+  var guide=chart.querySelector('.cum-guide'), halo=chart.querySelector('.cum-halo'), dot=chart.querySelector('.cum-dot');
+  if(guide){ guide.setAttribute('x1',p.x); guide.setAttribute('x2',p.x); }
+  if(halo){ halo.setAttribute('cx',p.x); halo.setAttribute('cy',p.y); }
+  if(dot){ dot.setAttribute('cx',p.x); dot.setAttribute('cy',p.y); }
+  chart.setAttribute('aria-valuenow',idx);
+  chart.setAttribute('aria-valuetext',p.label+': '+fmtPts(p.pts)+' points, '+cumMoney(p.pts));
+  var tip=chart.querySelector('.cum-tip');
+  if(tip){
+    tip.querySelector('.cum-tip-day').textContent=p.label+(p.date&&p.date!=='Start'?' · '+p.date:'')+' · '+cumMoney(p.pts);
+    tip.querySelector('.cum-tip-value').textContent=fmtPts(p.pts)+' pts';
+  }
+  if(show){
+    chart.classList.add('cum-on');
+    if(tip){
+      var rect=chart.getBoundingClientRect();
+      if(rect.width&&rect.height){
+        var px=p.x/264*rect.width, py=p.y/118*rect.height;
+        var tipW=tip.offsetWidth||124, tipH=tip.offsetHeight||46;
+        var half=Math.min(rect.width/2, Math.max(48,tipW/2+4));
+        tip.style.left=Math.max(half, Math.min(rect.width-half, px))+'px';
+        var below=py<58;
+        tip.classList.toggle('below',below);
+        tip.style.top=(below?Math.min(rect.height-tipH,py+11):Math.max(0,py-tipH-9))+'px';
+      }
+    }
+  } else {
+    chart.classList.remove('cum-on');
+  }
+}
+function cumIndexFromClientX(chart, clientX){
+  var points=cumPoints(chart), rect=chart.getBoundingClientRect();
+  if(!points.length||!rect.width) return 0;
+  var x=(clientX-rect.left)/rect.width*264, best=0, bestDist=Infinity;
+  points.forEach(function(p,i){ var dist=Math.abs(p.x-x); if(dist<bestDist){ bestDist=dist; best=i; } });
+  return best;
+}
+var activeCumChart=null, activeCumPointer=null;
+document.addEventListener('pointerdown',function(e){
+  var chart=e.target&&e.target.closest?e.target.closest('.cum-chart'):null;
+  if(!chart||!cumPoints(chart).length) return;
+  if(e.button!==undefined&&e.button!==0) return;
+  activeCumChart=chart; activeCumPointer=e.pointerId;
+  chart.classList.add('cum-scrubbing');
+  setCumSelection(chart,cumIndexFromClientX(chart,e.clientX),true);
+  if(e.cancelable) e.preventDefault();
+},{passive:false});
+document.addEventListener('pointermove',function(e){
+  if(!activeCumChart||(activeCumPointer!==null&&e.pointerId!==activeCumPointer)) return;
+  setCumSelection(activeCumChart,cumIndexFromClientX(activeCumChart,e.clientX),true);
+  if(e.cancelable) e.preventDefault();
+},{passive:false});
+function endCumScrub(e){
+  if(!activeCumChart||(activeCumPointer!==null&&e.pointerId!==activeCumPointer)) return;
+  var chart=activeCumChart;
+  chart.classList.remove('cum-scrubbing');
+  setCumSelection(chart,cumPoints(chart).length-1,false);
+  activeCumChart=null; activeCumPointer=null;
+}
+document.addEventListener('pointerup',endCumScrub);
+document.addEventListener('pointercancel',endCumScrub);
+document.addEventListener('keydown',function(e){
+  var chart=e.target&&e.target.closest?e.target.closest('.cum-chart'):null;
+  if(!chart) return;
+  var points=cumPoints(chart); if(!points.length) return;
+  var idx=chart._cumIndex===undefined?points.length-1:chart._cumIndex;
+  if(e.key==='ArrowLeft') idx--;
+  else if(e.key==='ArrowRight') idx++;
+  else if(e.key==='Home') idx=0;
+  else if(e.key==='End') idx=points.length-1;
+  else return;
+  setCumSelection(chart,idx,true);
+  e.preventDefault();
+});
+document.addEventListener('focusin',function(e){
+  var chart=e.target&&e.target.closest?e.target.closest('.cum-chart'):null;
+  if(chart&&chart!==activeCumChart) setCumSelection(chart,chart._cumIndex===undefined?cumPoints(chart).length-1:chart._cumIndex,true);
+});
+document.addEventListener('focusout',function(e){
+  var chart=e.target&&e.target.closest?e.target.closest('.cum-chart'):null;
+  if(chart&&chart!==activeCumChart) chart.classList.remove('cum-on');
+});
 function overallTotals(){
   var t={};
   state.games.forEach(function(g){ var gt=gameTotals(g); for(var pid in gt) t[pid]=(t[pid]||0)+gt[pid]; });

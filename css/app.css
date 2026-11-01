@@ -163,6 +163,24 @@ table.grid tr.money td{background:rgba(20,52,34,.55);font-weight:800;color:var(-
 .pf-graph{flex:1 1 63%;min-width:0;}
 .pf-graph svg{display:block;width:100%;height:auto;}
 .pf-graph text{fill:rgba(255,236,214,.52);font-size:8.5px;font-weight:600;letter-spacing:.2px;}
+/* cumulative graph scrubber — touch or drag to inspect a day */
+.cum-chart{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:crosshair;border-radius:12px;outline:none;}
+.cum-chart:focus-visible{box-shadow:0 0 0 2px rgba(238,194,127,.55);}
+.cum-chart .cum-line{transition:stroke-width .15s ease;}
+.cum-chart.cum-on .cum-line{stroke-width:2.4;}
+.cum-chart .cum-final-label{transition:opacity .15s ease;}
+.cum-chart.cum-on .cum-final-label{opacity:0;}
+.cum-chart .cum-guide{stroke:rgba(255,241,214,.58);stroke-width:1;stroke-dasharray:3 3;opacity:0;transition:opacity .15s ease;}
+.cum-chart .cum-halo{fill:rgba(238,194,127,.18);stroke:rgba(238,194,127,.38);stroke-width:1;opacity:0;transition:opacity .15s ease;}
+.cum-chart .cum-dot{fill:#ffe1a3;stroke:#3a0f18;stroke-width:1.5;opacity:0;transition:opacity .15s ease;}
+.cum-chart.cum-on .cum-guide,.cum-chart.cum-on .cum-halo,.cum-chart.cum-on .cum-dot{opacity:1;}
+.cum-tip{position:absolute;z-index:6;min-width:112px;max-width:182px;padding:7px 9px 8px;border-radius:12px;background:rgba(35,10,17,.90);border:1px solid rgba(255,214,150,.40);box-shadow:inset 0 1px 0 rgba(255,233,200,.22),0 10px 24px rgba(0,0,0,.38);color:#fff4df;text-align:center;pointer-events:none;opacity:0;visibility:hidden;transform:translate(-50%,4px) scale(.94);transform-origin:50% 100%;transition:opacity .14s ease,transform .14s ease,visibility .14s ease;-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%);}
+.cum-tip.below{transform-origin:50% 0;}
+.cum-chart.cum-on .cum-tip{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1);}
+.cum-tip::after{content:'';position:absolute;left:50%;bottom:-5px;width:9px;height:9px;background:rgba(35,10,17,.90);border-right:1px solid rgba(255,214,150,.40);border-bottom:1px solid rgba(255,214,150,.40);transform:translateX(-50%) rotate(45deg);}
+.cum-tip.below::after{bottom:auto;top:-5px;border:none;border-left:1px solid rgba(255,214,150,.40);border-top:1px solid rgba(255,214,150,.40);}
+.cum-tip-day{font-size:9.5px;font-weight:700;letter-spacing:.25px;text-transform:uppercase;color:rgba(255,231,196,.74);white-space:nowrap;}
+.cum-tip-value{font-size:14.5px;font-weight:800;white-space:nowrap;margin-top:1px;}
 .pf-hero .em{font-size:46px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));}
 .pf-hero .nm{font-size:23px;font-weight:800;margin-top:6px;text-shadow:0 2px 12px rgba(0,0,0,.45);}
 .pf-hero .tt{color:var(--gold2);font-weight:600;text-shadow:0 1px 8px rgba(0,0,0,.4);}
