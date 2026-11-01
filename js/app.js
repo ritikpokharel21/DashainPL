@@ -21,12 +21,12 @@ function seedState(){
   var S = window.DPL_SEED;
   st.meta = S.meta || {};
   st.players = S.players.map(function(p){ return {id:p.id,name:p.name,title:p.title,emoji:p.emoji,pattern:p.pattern||'',strength:p.strength||'',weakness:p.weakness||'',zelle:p.zelle||''}; });
-  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled,forcePair:d.forcePair||null}; });
+  st.days = S.days.map(function(d){ return {id:d.id,label:d.label,date:d.date,note:d.note||'',settled:!!d.settled,forcePair:d.forcePair||null,settlePerRound:!!d.settlePerRound}; });
   st.couples = S.couples||[];
   st.games = S.games.map(function(g){
     return {
       id:g.id, dayId:g.dayId, name:g.name, variant:g.variant||'classic',
-      date:g.date, partial:!!g.partial, playerIds:g.playerIds.slice(),
+      date:g.date, partial:!!g.partial, note:g.note||'', playerIds:g.playerIds.slice(),
       totals: Object.assign({}, g.totals),
       rounds: g.rounds.map(function(r){
         var scores={};
@@ -265,22 +265,31 @@ function vDay(id){
   h+='<h3>Standings</h3>';
   r.forEach(function(e,i){ h+=lbRow(e,i,moveArrow(e.pid,di)); });
   if(d.settled){
-    var ss=settlements(t, d.forcePair);
-    ss.sort(function(a,b){return b.pts-a.pts;});
-    h+='<h3>Who Pays Who</h3>';
-    if(!ss.length){ h+='<div class="small dim">All square — nobody owes anyone.</div>'; }
-    ss.forEach(function(x){
-      h+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
-        '<div class="sc"><div class="pv">$'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
-        '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
-    });
+    var settleBlock=function(ss, title){
+      ss.sort(function(a,b){return b.pts-a.pts;});
+      var bh='<h3>'+title+'</h3>';
+      if(!ss.length){ return bh+'<div class="small dim">All square — nobody owes anyone.</div>'; }
+      ss.forEach(function(x){
+        bh+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
+          '<div class="sc"><div class="pv">$'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
+          '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
+      });
+      return bh;
+    };
+    if(d.settlePerRound){
+      g.forEach(function(gm){
+        h+=settleBlock(settlements(gameTotals(gm), null), 'Who Pays Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):''));
+      });
+    } else {
+      h+=settleBlock(settlements(t, d.forcePair), 'Who Pays Who');
+    }
   }
   h+='<h3>Rounds ('+g.length+')</h3>';
   g.forEach(function(gm){
     var gt=gameTotals(gm), gr=ranked(gt), lead=gr[0];
     h+='<div class="lb" onclick="location.hash=\'#/game/'+gm.id+'\'" style="cursor:pointer">'+
       '<div class="avatar">'+(gm.variant==='murder'?'🔪':'🃏')+'</div>'+
-      '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+gm.playerIds.length+' players · '+gm.rounds.length+' games'+(gm.partial?' · partial history':'')+'</div></div>'+
+      '<div class="grow"><div class="nm">'+esc(gm.name)+' '+(gm.variant==='murder'?'<span class="tag murder">MURDER</span>':'')+'</div><div class="ti2">'+(gm.note?esc(gm.note)+' · ':'')+gm.playerIds.length+' players · '+gm.rounds.length+' games'+(gm.partial?' · partial history':'')+'</div></div>'+
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
   $('#view').innerHTML=h;
