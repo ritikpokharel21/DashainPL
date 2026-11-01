@@ -124,10 +124,10 @@ function setCumSelection(chart, idx, show){
   if(halo){ halo.setAttribute('cx',p.x); halo.setAttribute('cy',p.y); }
   if(dot){ dot.setAttribute('cx',p.x); dot.setAttribute('cy',p.y); }
   chart.setAttribute('aria-valuenow',idx);
-  chart.setAttribute('aria-valuetext',p.label+': '+fmtPts(p.pts)+' points, '+cumMoney(p.pts));
+  chart.setAttribute('aria-valuetext',p.label+': '+fmtPts(p.pts)+' points');
   var tip=chart.querySelector('.cum-tip');
   if(tip){
-    tip.querySelector('.cum-tip-day').textContent=p.label+(p.date&&p.date!=='Start'?' · '+p.date:'')+' · '+cumMoney(p.pts);
+    tip.querySelector('.cum-tip-day').textContent=p.label;
     tip.querySelector('.cum-tip-value').textContent=fmtPts(p.pts)+' pts';
   }
   if(show){
