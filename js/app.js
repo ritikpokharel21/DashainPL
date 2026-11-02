@@ -312,13 +312,18 @@ function tabbar(active){
     return '<button class="tab'+(on?' on':'')+'" onclick="location.hash=\''+t.r+'\'"><span class="ti">'+t.i+'</span><span>'+t.l+'</span></button>';
   }).join('');
 }
-function lbRow(e, i, mv, clickable){
+function gamesPlayed(pid){
+  var n=0;
+  state.games.forEach(function(g){ g.rounds.forEach(function(r){ if(r.scores[pid]) n++; }); });
+  return n;
+}
+function lbRow(e, i, mv, clickable, gamesNote){
   var p=pinfo(e.pid);
   var click = clickable===false ? '' : ' onclick="location.hash=\'#/player/'+e.pid+'\'" style="cursor:pointer"';
   return '<div class="lb"'+click+'>'+
     '<div class="rank r'+(i+1)+'">'+(i+1)+'</div>'+
     '<div class="avatar">'+p.emoji+'</div>'+
-    '<div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="ti2">'+esc(p.title)+'</div></div>'+
+    '<div class="grow"><div class="nm">'+esc(p.name)+(gamesNote?' <span style="font-size:11px;font-weight:400;opacity:.55">('+gamesPlayed(e.pid)+' games played)</span>':'')+'</div><div class="ti2">'+esc(p.title)+'</div></div>'+
     '<div class="sc"><div class="pv '+cls(e.pts)+'">'+fmtPts(e.pts)+'</div><div class="mv">'+fmtMoney(e.pts)+' '+(mv||'')+'</div></div>'+
   '</div>';
 }
@@ -346,7 +351,7 @@ function vHome(){
       else if(d>0) mv='<span class="mv up">▲'+d+'</span>';
       else if(d<0) mv='<span class="mv dn">▼'+(-d)+'</span>';
     }
-    h+=lbRow(e,i,mv);
+    h+=lbRow(e,i,mv,null,true);
   });
   h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Tap a player for full stats</div>';
   $('#view').innerHTML=h;
@@ -526,7 +531,7 @@ function vStats(){
   tabbar('#/stats');
   var h='<h2>📊 League Stats</h2>';
   var agg={};
-  state.players.forEach(function(p){ agg[p.id]={crowns:0,seen:0,unseen:0,dublee:0,foul:0,rounds:0,rpts:0,best:null,worst:null,bestGame:null}; });
+  state.players.forEach(function(p){ agg[p.id]={crowns:0,seen:0,unseen:0,dublee:0,foul:0,rounds:0,rpts:0,best:null,worst:null,bestGame:null,bestDay:null,streak:0,streakPts:0,runLen:0,runPts:0}; });
   state.games.forEach(function(g){
     var gt=gameTotals(g);
     g.playerIds.forEach(function(pid){
@@ -541,6 +546,17 @@ function vStats(){
         if(a.best===null||v>a.best)a.best=v;
         if(a.worst===null||v<a.worst)a.worst=v;
       });
+    });
+  });
+  state.days.forEach(function(d){
+    var dt={};
+    state.games.forEach(function(g){ if(g.dayId!==d.id) return; var gt=gameTotals(g); for(var pid in gt) dt[pid]=(dt[pid]||0)+gt[pid]; });
+    state.players.forEach(function(p){
+      var v=dt[p.id]; if(v===undefined) return;
+      var a=agg[p.id];
+      if(a.bestDay===null||v>a.bestDay) a.bestDay=v;
+      if(v>0){ a.runLen++; a.runPts+=v; if(a.runLen>a.streak||(a.runLen===a.streak&&a.runPts>a.streakPts)){ a.streak=a.runLen; a.streakPts=a.runPts; } }
+      else { a.runLen=0; a.runPts=0; }
     });
   });
   function top(key){
@@ -566,12 +582,21 @@ function vStats(){
     ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
     ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
     ['🎯 Sharp Shooter','best pts / game (10+ games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}],
-    ['🏔️ Sagarmatha Cap','best single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}]
+    ['🏔️ Sagarmatha Cap','best single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
+    ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}]
   ];
   cards.forEach(function(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
     h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="avatar">'+p.emoji+'</div><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
   });
+  var maxStreak=0;
+  state.players.forEach(function(p){ if(agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
+  if(maxStreak>0){
+    var tied=state.players.filter(function(p){return agg[p.id].streak===maxStreak;});
+    tied.sort(function(a,b){ if(a.id==='p_reji') return -1; if(b.id==='p_reji') return 1; return agg[b.id].streakPts-agg[a.id].streakPts; });
+    var names=tied.map(function(p){return esc(p.name);}).join('<br>');
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
+  }
   h+='<div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
 }
