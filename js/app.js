@@ -742,9 +742,10 @@ function vStats(){
   state.players.forEach(function(p){ if(agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
   if(maxStreak>0){
     var tied=state.players.filter(function(p){return agg[p.id].streak===maxStreak;});
-    tied.sort(function(a,b){ if(a.id==='p_reji') return -1; if(b.id==='p_reji') return 1; return agg[b.id].streakPts-agg[a.id].streakPts; });
-    var names=tied.map(function(p){return esc(p.name);}).join('<br>');
-    h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
+    var ot=overallTotals();
+    tied.sort(function(a,b){ return (ot[b.id]||0)-(ot[a.id]||0); });
+    var names=tied.map(function(p){return esc(p.name);}).join(' · ');
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
   }
   h+='<div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
