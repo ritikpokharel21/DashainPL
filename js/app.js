@@ -314,7 +314,12 @@ function tabbar(active){
 }
 function gamesPlayed(pid){
   var n=0;
-  state.games.forEach(function(g){ g.rounds.forEach(function(r){ if(r.scores[pid]) n++; }); });
+  state.games.forEach(function(g){
+    if(g.playerIds.indexOf(pid)<0) return;
+    var maxN=0;
+    g.rounds.forEach(function(r){ if(r.n>maxN) maxN=r.n; });
+    n+=maxN;
+  });
   return n;
 }
 function lbRow(e, i, mv, clickable, gamesNote){
