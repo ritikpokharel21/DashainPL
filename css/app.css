@@ -290,4 +290,4 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .racer.hero{z-index:5}
 .racer.hero::after{content:'';position:absolute;inset:1px -4px;background:rgba(238,194,127,.10);border-radius:9px;z-index:-1}
 .racer.hero .rbar{background:linear-gradient(90deg,rgba(238,194,127,.35),rgba(238,194,127,.95));box-shadow:0 0 14px rgba(238,194,127,.55)}
-.racer.hero .rname{font-size:17px;font-weight:800;color:#ffe9bd;text-shadow:0 0 14px rgba(238,194,127,.65);opacity:1}
+.racer.hero .rname{font-weight:800;color:#ffe9bd;text-shadow:0 0 14px rgba(238,194,127,.65);opacity:1}
