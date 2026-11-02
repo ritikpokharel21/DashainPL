@@ -264,7 +264,7 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .race-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
 .race-day{font-size:22px;font-weight:800;letter-spacing:.5px}
 .race-date{color:var(--dim);font-size:12px}
-.race-replay{margin-left:auto;background:none;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:999px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.race-replay{background:none;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:999px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:inherit}
 .race-track{position:relative;transition:height 1.2s ease;margin-top:2px}
 .race-finish{position:absolute;top:0;bottom:0;right:1px;border-right:2px dashed rgba(255,255,255,.32);z-index:0}
 .race-finish span{position:absolute;top:-4px;right:-5px;font-size:13px}
@@ -290,4 +290,6 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .racer.hero{z-index:5}
 .racer.hero .rbar{background:linear-gradient(90deg,rgba(238,194,127,.35),rgba(238,194,127,.95))}
 .racer.hero .rname{font-weight:800;color:#ffe9bd;opacity:1}
-.homepick{padding:16px 14px;margin-bottom:12px}
+.homepick{padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;text-align:left}
+.homepick .jpick-q{margin:0;white-space:nowrap}
+.homepick select{flex:1;width:auto;max-width:none}

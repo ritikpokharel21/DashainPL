@@ -346,7 +346,7 @@ function vHome(){
     h+='<div class="card" onclick="location.hash=\'#/day/'+lastD.id+'\'" style="cursor:pointer"><div class="row"><div class="grow"><div class="small dim">🗓️ Last session — '+esc(lastD.label)+' <span class="dim">'+esc(lastD.note||'')+'</span></div><div style="font-weight:800;font-size:16px">Winner: '+lp.emoji+' '+esc(lp.name)+' <span class="pos">'+fmtPts(lr[0].pts)+' pts</span></div></div><div class="gold" style="font-size:20px">→</div></div></div>'; }
   var jnames=state.players.slice().sort(function(a,b){ return a.name<b.name?-1:(a.name>b.name?1:0); });
   var jopts=jnames.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
-  h+='<div class="card jpick homepick"><div class="jpick-q" style="font-size:17px">🧭 Watch your journey</div><select id="homeSel"><option value="">— Select your name —</option>'+jopts+'</select></div>';
+  h+='<div class="card jpick homepick"><div class="jpick-q" style="font-size:17px">Your journey</div><select id="homeSel"><option value="">Select your name</option>'+jopts+'</select></div>';
   h+='<h3>🏆 Cumulative Leaderboard</h3>';
   var lastDay=state.days[state.days.length-1];
   var prevDay=state.days.length>1?state.days[state.days.length-2]:null;
@@ -474,7 +474,17 @@ function startRace(heroPid){
     track.appendChild(el);
     els[p.id]=el;
   });
-  var idx=0;
+  var idx=0, paused=false;
+  var pb=document.getElementById('racePause');
+  if(pb) pb.onclick=function(){
+    if(paused){
+      paused=false; pb.textContent='⏸';
+      if(idx<frames.length) _raceTO=setTimeout(step, 1800);
+    } else {
+      paused=true; pb.textContent='▶';
+      if(_raceTO){ clearTimeout(_raceTO); _raceTO=null; }
+    }
+  };
   function apply(fi){
     var f=frames[fi]; if(!f) return;
     var min=Infinity, max=-Infinity;
@@ -514,7 +524,7 @@ function startRace(heroPid){
     apply(idx);
     if(idx<frames.length-1){
       idx++;
-      _raceTO=setTimeout(step, 1800);
+      if(!paused) _raceTO=setTimeout(step, 1800);
     } else {
       var cap=document.getElementById('raceCap');
       if(cap){
@@ -526,8 +536,10 @@ function startRace(heroPid){
         }
         cap.innerHTML=msg;
       }
+      var pb2=document.getElementById('racePause');
+      if(pb2) pb2.style.display='none';
       var rp=document.getElementById('raceReplay');
-      if(rp){ rp.style.display=''; rp.onclick=function(){ var c2=document.getElementById('raceCap'); if(c2) c2.textContent=''; idx=0; step(); }; }
+      if(rp){ rp.style.display=''; rp.onclick=function(){ var c2=document.getElementById('raceCap'); if(c2) c2.textContent=''; var pb3=document.getElementById('racePause'); if(pb3){ pb3.style.display=''; pb3.textContent='⏸'; } paused=false; idx=0; step(); }; }
     }
   }
   step();
@@ -538,8 +550,8 @@ function vJourney(heroPid){
   var names=state.players.slice().sort(function(a,b){ return a.name<b.name?-1:(a.name>b.name?1:0); });
   var opts=names.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
   var h='<h2>🧭 The Journey</h2>';
-  h+='<div class="card jpick" id="jPick"><div class="jpick-q">What\'s your name?</div><div class="jpick-sub">Pick your name and watch your season race.</div><select id="jSel"><option value="">— Select your name —</option>'+opts+'</select></div>';
-  h+='<div id="jStage" style="display:none"><div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="raceReplay" style="display:none">↻ Replay</button></div><div class="race-hero" id="raceHero"></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 15</i></div></div><div class="race-cap" id="raceCap"></div><div class="race-change"><button class="race-replay" id="raceChange">👤 Change name</button></div></div></div>';
+  h+='<div class="card jpick" id="jPick"><div class="jpick-q">What\'s your name?</div><div class="jpick-sub">Pick your name and watch your season race.</div><select id="jSel"><option value="">Select your name</option>'+opts+'</select></div>';
+  h+='<div id="jStage" style="display:none"><div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="racePause" style="margin-left:auto">⏸</button><button class="race-replay" id="raceReplay" style="display:none;margin-left:8px">↻ Replay</button></div><div class="race-hero" id="raceHero"></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 15</i></div></div><div class="race-cap" id="raceCap"></div><div class="race-change"><button class="race-replay" id="raceChange">👤 Change name</button></div></div></div>';
   $('#view').innerHTML=h;
   var sel=document.getElementById('jSel');
   sel.addEventListener('change', function(){
