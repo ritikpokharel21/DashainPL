@@ -265,14 +265,14 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .race-day{font-size:22px;font-weight:800;letter-spacing:.5px}
 .race-date{color:var(--dim);font-size:12px}
 .race-replay{background:none;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:999px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:inherit}
-.race-track{position:relative;transition:height 1.2s ease;margin-top:2px}
+.race-track{position:relative;transition:height .9s ease;margin-top:2px}
 .race-finish{position:absolute;top:0;bottom:0;right:1px;border-right:2px dashed rgba(255,255,255,.32);z-index:0}
 .race-finish span{position:absolute;top:-4px;right:-5px;font-size:13px}
 .race-finish i{position:absolute;top:13px;right:-7px;font-style:normal;font-size:9px;color:var(--dim);white-space:nowrap}
-.racer{position:absolute;left:0;right:0;top:0;transition:transform 1.3s cubic-bezier(.45,0,.2,1),height 1.3s cubic-bezier(.45,0,.2,1),opacity .5s ease;will-change:transform}
-.rbar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:52%;min-height:4px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.30));transition:width 1.3s cubic-bezier(.45,0,.2,1)}
+.racer{position:absolute;left:0;right:0;top:0;transition:transform 1s cubic-bezier(.45,0,.2,1),height 1s cubic-bezier(.45,0,.2,1),opacity .5s ease;will-change:transform}
+.rbar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:52%;min-height:4px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.30));transition:width 1s cubic-bezier(.45,0,.2,1)}
 .rbar.lead{background:linear-gradient(90deg,rgba(238,194,127,.22),rgba(238,194,127,.78))}
-.rname{position:absolute;top:50%;white-space:nowrap;transition:left 1.3s cubic-bezier(.45,0,.2,1);font-weight:600;padding-right:2px}
+.rname{position:absolute;top:50%;white-space:nowrap;transition:left 1s cubic-bezier(.45,0,.2,1);font-weight:600;padding-right:2px}
 .rname b{font-weight:700;opacity:.85;margin-left:4px}
 .racer.t1 .rname{font-size:17px}
 .racer.t2 .rname{font-size:13px;opacity:.92}

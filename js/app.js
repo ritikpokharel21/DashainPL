@@ -479,7 +479,7 @@ function startRace(heroPid){
   if(pb) pb.onclick=function(){
     if(paused){
       paused=false; pb.textContent='⏸';
-      if(idx<frames.length) _raceTO=setTimeout(step, 1800);
+      if(idx<frames.length) _raceTO=setTimeout(step, 1350);
     } else {
       paused=true; pb.textContent='▶';
       if(_raceTO){ clearTimeout(_raceTO); _raceTO=null; }
@@ -524,7 +524,7 @@ function startRace(heroPid){
     apply(idx);
     if(idx<frames.length-1){
       idx++;
-      if(!paused) _raceTO=setTimeout(step, 1800);
+      if(!paused) _raceTO=setTimeout(step, 1350);
     } else {
       var cap=document.getElementById('raceCap');
       if(cap){
