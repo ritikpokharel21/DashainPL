@@ -730,21 +730,24 @@ function vStats(){
     var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null&&qual(e.pid);});
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
-  var cards=[
+  var cardsA=[
     ['🌼 Sayapatri Mala','games won / games played', top('crownRate'), function(e){return (e.v*100).toFixed(1)+'% win rate';}],
     ['🧲 Maal Magnet','maal seen / game played', top('seenRate'), function(e){return (e.v*100).toFixed(1)+'%';}],
-    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
-    ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
     ['👑 Mukut Samrat','most games won', top('crowns'), function(e){return e.v+' crowns';}],
-    ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
-    ['🎯 Sharp Shooter','best pts / game (over 45 games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}],
-    ['🏔️ Sagarmatha Cap','best single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
-    ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}]
+    ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🏔️ Best Round','biggest single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
+    ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
+    ['🎯 Sharp Shooter','best pts / game (over 45 games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}]
   ];
-  cards.forEach(function(c){
+  var cardsB=[
+    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
+    ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}]
+  ];
+  function renderCard(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
     h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="avatar">'+p.emoji+'</div><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
-  });
+  }
+  cardsA.forEach(renderCard);
   var maxStreak=0;
   state.players.forEach(function(p){ if(qual(p.id)&&agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
   if(maxStreak>0){
@@ -754,6 +757,7 @@ function vStats(){
     var names=tied.map(function(p){return esc(p.name);}).join(' · ');
     h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
   }
+  cardsB.forEach(renderCard);
   h+='<div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
 }
