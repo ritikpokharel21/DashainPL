@@ -526,16 +526,6 @@ function startRace(heroPid){
       idx++;
       if(!paused) _raceTO=setTimeout(step, 1350);
     } else {
-      var cap=document.getElementById('raceCap');
-      if(cap){
-        var msg='🏁 Finish line · Nov 15 — yet to come';
-        if(hero&&bestDayGain){
-          var fin=-1;
-          frames[frames.length-1].field.forEach(function(x, r2){ if(x.pid===heroPid) fin=r2+1; });
-          if(fin>0) msg+='<br>⭐ '+esc(hero.name)+' — peak #'+peakRank+' · best day '+fmtPts(bestDayGain.gain)+' ('+bestDayGain.day+') · now #'+fin;
-        }
-        cap.innerHTML=msg;
-      }
       var pb2=document.getElementById('racePause');
       if(pb2) pb2.style.display='none';
       var rp=document.getElementById('raceReplay');
