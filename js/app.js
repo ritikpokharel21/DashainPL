@@ -708,29 +708,35 @@ function vStats(){
       else { a.runLen=0; a.runPts=0; }
     });
   });
+  function qual(pid){ return gamesPlayed(pid)>45; }
+  state.players.forEach(function(p){
+    var a=agg[p.id];
+    a.crownRate=a.rounds? a.crowns/a.rounds : 0;
+    a.seenRate=a.rounds? a.seen/a.rounds : 0;
+  });
   function top(key){
-    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v>0;});
+    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v>0&&qual(e.pid);});
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
   function low(key){
-    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null;});
+    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null&&qual(e.pid);});
     arr.sort(function(a,b){return a.v-b.v;}); return arr[0];
   }
   function avgTop(){
-    var arr=state.players.map(function(p){var a=agg[p.id];return {pid:p.id,v:a.rounds>=10?Math.round(a.rpts/a.rounds*10)/10:null};}).filter(function(e){return e.v!==null;});
+    var arr=state.players.map(function(p){var a=agg[p.id];return {pid:p.id,v:qual(p.id)&&a.rounds?Math.round(a.rpts/a.rounds*10)/10:null};}).filter(function(e){return e.v!==null;});
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
   function hi(key){
-    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null;});
+    var arr=state.players.map(function(p){return {pid:p.id,v:agg[p.id][key]};}).filter(function(e){return e.v!==null&&qual(e.pid);});
     arr.sort(function(a,b){return b.v-a.v;}); return arr[0];
   }
   var cards=[
-    ['🌼 Sayapatri Mala','most games won', top('crowns'), function(e){return e.v+' crowns';}],
-    ['🧲 Maal Magnet','saw the maal the most', top('seen'), function(e){return e.v+' times';}],
-    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
+    ['🌼 Sayapatri Mala','games won / games played', top('crownRate'), function(e){return (e.v*100).toFixed(1)+'% win rate';}],
+    ['🧲 Maal Magnet','maal seen / game played', top('seenRate'), function(e){return (e.v*100).toFixed(1)+'%';}],
     ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
+    ['👑 Mukut Samrat','most games won', top('crowns'), function(e){return e.v+' crowns';}],
     ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
-    ['🎯 Sharp Shooter','best pts / game (10+ games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}],
+    ['🎯 Sharp Shooter','best pts / game (over 45 games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}],
     ['🏔️ Sagarmatha Cap','best single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
     ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}]
   ];
@@ -739,9 +745,9 @@ function vStats(){
     h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="avatar">'+p.emoji+'</div><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
   });
   var maxStreak=0;
-  state.players.forEach(function(p){ if(agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
+  state.players.forEach(function(p){ if(qual(p.id)&&agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
   if(maxStreak>0){
-    var tied=state.players.filter(function(p){return agg[p.id].streak===maxStreak;});
+    var tied=state.players.filter(function(p){return qual(p.id)&&agg[p.id].streak===maxStreak;});
     var ot=overallTotals();
     tied.sort(function(a,b){ return (ot[b.id]||0)-(ot[a.id]||0); });
     var names=tied.map(function(p){return esc(p.name);}).join(' · ');
