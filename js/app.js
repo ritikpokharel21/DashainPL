@@ -429,16 +429,89 @@ function vDay(id){
   $('#view').innerHTML=h;
 }
 
+/* ---------------- the DPL race (Players page) ---------------- */
+var _raceTO=null;
+function raceFrames(){
+  var frames=[], cum={};
+  state.days.forEach(function(d){
+    var dt=dayTotals(d.id);
+    for(var pid in dt) cum[pid]=(cum[pid]||0)+dt[pid];
+    var field=Object.keys(cum).map(function(pid){ return {pid:pid, pts:cum[pid]}; });
+    field.sort(function(a,b){ return b.pts-a.pts; });
+    frames.push({day:d, field:field});
+  });
+  return frames;
+}
+function raceTierH(rank){ return rank<5?34:(rank<10?24:15); }
+function startRace(){
+  var track=document.getElementById('raceTrack');
+  if(!track) return;
+  var frames=raceFrames();
+  var els={};
+  state.players.forEach(function(p){
+    var el=document.createElement('div');
+    el.className='racer t3';
+    el.style.opacity='0';
+    el.innerHTML='<div class="rbar"></div><div class="rname">'+esc(p.name)+'<b></b></div>';
+    track.appendChild(el);
+    els[p.id]=el;
+  });
+  var idx=0;
+  function apply(fi){
+    var f=frames[fi]; if(!f) return;
+    var min=Infinity, max=-Infinity;
+    f.field.forEach(function(e){ if(e.pts<min)min=e.pts; if(e.pts>max)max=e.pts; });
+    var range=(max-min)||1;
+    var y=0;
+    f.field.forEach(function(e, rank){
+      var el=els[e.pid]; if(!el) return;
+      var hh=raceTierH(rank);
+      var x=4+((e.pts-min)/range)*92;
+      el.className='racer '+(rank<5?'t1':(rank<10?'t2':'t3'));
+      el.style.opacity='1';
+      el.style.height=hh+'px';
+      el.style.transform='translateY('+y+'px)';
+      var bar=el.querySelector('.rbar');
+      bar.style.width=x+'%';
+      bar.className='rbar'+(rank===0?' lead':'');
+      var nm=el.querySelector('.rname');
+      nm.style.left=x+'%';
+      nm.style.transform=(x<30?'translate(5px,-50%)':'translate(-100%,-50%)');
+      nm.querySelector('b').textContent=fmtPts(e.pts);
+      y+=hh;
+    });
+    track.style.height=y+'px';
+    var dl=document.getElementById('raceDay'); if(dl) dl.textContent=f.day.label;
+    var rd=document.getElementById('raceDate'); if(rd) rd.textContent=f.day.note||'';
+  }
+  function step(){
+    apply(idx);
+    if(idx<frames.length-1){
+      idx++;
+      _raceTO=setTimeout(step, 2100);
+    } else {
+      var cap=document.getElementById('raceCap');
+      if(cap) cap.textContent='🏁 Finish line · Nov 15 — yet to come';
+      var rp=document.getElementById('raceReplay');
+      if(rp){ rp.style.display=''; rp.onclick=function(){ var c2=document.getElementById('raceCap'); if(c2) c2.textContent=''; idx=0; step(); }; }
+    }
+  }
+  step();
+}
+
 function vPlayers(){
   tabbar('#/players');
   var t=overallTotals(), r=ranked(t);
-  var h='<h2>👥 Players ('+r.length+')</h2><div class="pgrid">';
+  var h='<h2>👥 Players ('+r.length+')</h2>';
+  h+='<div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="raceReplay" style="display:none">↻ Replay</button></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 15</i></div></div><div class="race-cap" id="raceCap"></div></div>';
+  h+='<div class="pgrid">';
   r.forEach(function(e){
     var p=pinfo(e.pid);
     h+='<div class="pcard" onclick="location.hash=\'#/player/'+e.pid+'\'"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div><div class="sc2 '+cls(e.pts)+'">'+fmtPts(e.pts)+' pts</div><div class="small dim">'+fmtMoney(e.pts)+'</div></div>';
   });
   h+='</div>';
   $('#view').innerHTML=h;
+  startRace();
 }
 
 function vPlayer(pid){
@@ -608,6 +681,7 @@ function vStats(){
 
 /* ---------------- router ---------------- */
 function render(){
+  if(_raceTO){ clearTimeout(_raceTO); _raceTO=null; }
   var hsh=location.hash||'#/';
   var parts=hsh.replace(/^#\//,'').split('/');
   if(window.scrollTo) try{ window.scrollTo(0,0); }catch(e){}
