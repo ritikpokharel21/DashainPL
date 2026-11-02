@@ -269,12 +269,25 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .race-finish{position:absolute;top:0;bottom:0;right:1px;border-right:2px dashed rgba(255,255,255,.32);z-index:0}
 .race-finish span{position:absolute;top:-4px;right:-5px;font-size:13px}
 .race-finish i{position:absolute;top:13px;right:-7px;font-style:normal;font-size:9px;color:var(--dim);white-space:nowrap}
-.racer{position:absolute;left:0;right:0;top:0;transition:transform 1.5s cubic-bezier(.45,0,.2,1),height 1.5s cubic-bezier(.45,0,.2,1),opacity .5s ease;will-change:transform}
-.rbar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:52%;min-height:4px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.30));transition:width 1.5s cubic-bezier(.45,0,.2,1)}
+.racer{position:absolute;left:0;right:0;top:0;transition:transform 2s cubic-bezier(.45,0,.2,1),height 2s cubic-bezier(.45,0,.2,1),opacity .5s ease;will-change:transform}
+.rbar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:52%;min-height:4px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.30));transition:width 2s cubic-bezier(.45,0,.2,1)}
 .rbar.lead{background:linear-gradient(90deg,rgba(238,194,127,.22),rgba(238,194,127,.78))}
-.rname{position:absolute;top:50%;white-space:nowrap;transition:left 1.5s cubic-bezier(.45,0,.2,1);font-weight:600;padding-right:2px}
+.rname{position:absolute;top:50%;white-space:nowrap;transition:left 2s cubic-bezier(.45,0,.2,1);font-weight:600;padding-right:2px}
 .rname b{font-weight:700;opacity:.85;margin-left:4px}
 .racer.t1 .rname{font-size:17px}
 .racer.t2 .rname{font-size:13px;opacity:.92}
 .racer.t3 .rname{font-size:10px;opacity:.62;font-weight:500}
 .race-cap{text-align:center;font-size:12px;color:var(--dim);min-height:17px;padding-top:4px}
+
+/* ---- Journey page ---- */
+.jpick{text-align:center;padding:28px 18px}
+.jpick-q{font-size:21px;font-weight:800;margin-bottom:4px}
+.jpick-sub{color:var(--dim);font-size:13px;margin-bottom:16px}
+.jpick select{width:100%;max-width:340px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.08);color:inherit;border:1px solid rgba(255,255,255,.28);font-size:16px;font-family:inherit;outline:none}
+.jpick select option{color:#111}
+.race-hero{font-size:14px;min-height:19px;color:#ffe9bd;margin:2px 0 4px}
+.race-change{text-align:center;padding-top:8px}
+.racer.hero{z-index:5}
+.racer.hero::after{content:'';position:absolute;inset:1px -4px;background:rgba(238,194,127,.10);border-radius:9px;z-index:-1}
+.racer.hero .rbar{background:linear-gradient(90deg,rgba(238,194,127,.35),rgba(238,194,127,.95));box-shadow:0 0 14px rgba(238,194,127,.55)}
+.racer.hero .rname{font-size:17px;font-weight:800;color:#ffe9bd;text-shadow:0 0 14px rgba(238,194,127,.65);opacity:1}

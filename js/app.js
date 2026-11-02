@@ -303,6 +303,7 @@ function tabbar(active){
     {r:'#/', i:'🏠', l:'Home'},
     {r:'#/days', i:'📅', l:'Days'},
     {r:'#/players', i:'👥', l:'Players'},
+    {r:'#/journey', i:'🧭', l:'Journey'},
     {r:'#/versus', i:'⚔️', l:'Versus'},
     {r:'#/stats', i:'📊', l:'Stats'},
     {r:'#/timeline', i:'🪔', l:'Timeline'}
@@ -429,7 +430,7 @@ function vDay(id){
   $('#view').innerHTML=h;
 }
 
-/* ---------------- the DPL race (Players page) ---------------- */
+/* ---------------- the DPL race (Journey page) ---------------- */
 var _raceTO=null;
 function raceFrames(){
   var frames=[], cum={};
@@ -443,16 +444,30 @@ function raceFrames(){
   return frames;
 }
 function raceTierH(rank){ return rank<5?34:(rank<10?24:15); }
-function startRace(){
+function startRace(heroPid){
   var track=document.getElementById('raceTrack');
   if(!track) return;
   var frames=raceFrames();
+  var hero=heroPid? pinfo(heroPid):null;
+  var debutIdx=-1, peakRank=Infinity, bestDayGain=null;
+  if(heroPid){
+    var prev=null;
+    frames.forEach(function(f, fi){
+      f.field.forEach(function(e, rank){
+        if(e.pid!==heroPid) return;
+        if(debutIdx<0) debutIdx=fi;
+        if(rank+1<peakRank) peakRank=rank+1;
+        if(prev!==null){ var gain=e.pts-prev; if(bestDayGain===null||gain>bestDayGain.gain) bestDayGain={gain:gain, day:f.day.label}; }
+        prev=e.pts;
+      });
+    });
+  }
   var els={};
   state.players.forEach(function(p){
     var el=document.createElement('div');
-    el.className='racer t3';
+    el.className='racer t3'+(p.id===heroPid?' hero':'');
     el.style.opacity='0';
-    el.innerHTML='<div class="rbar"></div><div class="rname">'+esc(p.name)+'<b></b></div>';
+    el.innerHTML='<div class="rbar"></div><div class="rname">'+(p.id===heroPid?'⭐ ':'')+esc(p.name)+'<b></b></div>';
     track.appendChild(el);
     els[p.id]=el;
   });
@@ -462,13 +477,14 @@ function startRace(){
     var min=Infinity, max=-Infinity;
     f.field.forEach(function(e){ if(e.pts<min)min=e.pts; if(e.pts>max)max=e.pts; });
     var range=(max-min)||1;
-    var y=0;
+    var y=0, heroRank=-1, heroPts=0;
     f.field.forEach(function(e, rank){
       var el=els[e.pid]; if(!el) return;
       var hh=raceTierH(rank);
       var x=4+((e.pts-min)/range)*92;
-      el.className='racer '+(rank<5?'t1':(rank<10?'t2':'t3'));
-      el.style.opacity='1';
+      el.className='racer '+(rank<5?'t1':(rank<10?'t2':'t3'))+(e.pid===heroPid?' hero':'');
+      el.style.opacity=(heroPid&&e.pid!==heroPid)?'0.42':'1';
+      el.style.zIndex=(e.pid===heroPid)?5:1;
       el.style.height=hh+'px';
       el.style.transform='translateY('+y+'px)';
       var bar=el.querySelector('.rbar');
@@ -478,20 +494,34 @@ function startRace(){
       nm.style.left=x+'%';
       nm.style.transform=(x<30?'translate(5px,-50%)':'translate(-100%,-50%)');
       nm.querySelector('b').textContent=fmtPts(e.pts);
+      if(e.pid===heroPid){ heroRank=rank+1; heroPts=e.pts; }
       y+=hh;
     });
     track.style.height=y+'px';
     var dl=document.getElementById('raceDay'); if(dl) dl.textContent=f.day.label;
     var rd=document.getElementById('raceDate'); if(rd) rd.textContent=f.day.note||'';
+    var hud=document.getElementById('raceHero');
+    if(hud&&hero){
+      if(heroRank>0) hud.innerHTML='⭐ '+esc(hero.name)+' &nbsp;·&nbsp; <b>#'+heroRank+'</b> &nbsp;·&nbsp; '+fmtPts(heroPts)+' pts';
+      else if(debutIdx>=0) hud.innerHTML='⭐ '+esc(hero.name)+' joins on '+frames[debutIdx].day.label+'…';
+    }
   }
   function step(){
     apply(idx);
     if(idx<frames.length-1){
       idx++;
-      _raceTO=setTimeout(step, 2100);
+      _raceTO=setTimeout(step, 2600);
     } else {
       var cap=document.getElementById('raceCap');
-      if(cap) cap.textContent='🏁 Finish line · Nov 15 — yet to come';
+      if(cap){
+        var msg='🏁 Finish line · Nov 15 — yet to come';
+        if(hero&&bestDayGain){
+          var fin=-1;
+          frames[frames.length-1].field.forEach(function(x, r2){ if(x.pid===heroPid) fin=r2+1; });
+          if(fin>0) msg+='<br>⭐ '+esc(hero.name)+' — peak #'+peakRank+' · best day '+fmtPts(bestDayGain.gain)+' ('+bestDayGain.day+') · now #'+fin;
+        }
+        cap.innerHTML=msg;
+      }
       var rp=document.getElementById('raceReplay');
       if(rp){ rp.style.display=''; rp.onclick=function(){ var c2=document.getElementById('raceCap'); if(c2) c2.textContent=''; idx=0; step(); }; }
     }
@@ -499,19 +529,37 @@ function startRace(){
   step();
 }
 
+function vJourney(){
+  tabbar('#/journey');
+  var names=state.players.slice().sort(function(a,b){ return a.name<b.name?-1:(a.name>b.name?1:0); });
+  var opts=names.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
+  var h='<h2>🧭 The Journey</h2>';
+  h+='<div class="card jpick" id="jPick"><div class="jpick-q">What\'s your name?</div><div class="jpick-sub">Pick your name and watch your season race.</div><select id="jSel"><option value="">— Select your name —</option>'+opts+'</select></div>';
+  h+='<div id="jStage" style="display:none"><div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="raceReplay" style="display:none">↻ Replay</button></div><div class="race-hero" id="raceHero"></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 15</i></div></div><div class="race-cap" id="raceCap"></div><div class="race-change"><button class="race-replay" id="raceChange">👤 Change name</button></div></div></div>';
+  $('#view').innerHTML=h;
+  var sel=document.getElementById('jSel');
+  sel.addEventListener('change', function(){
+    if(!sel.value) return;
+    document.getElementById('jPick').style.display='none';
+    document.getElementById('jStage').style.display='';
+    startRace(sel.value);
+  });
+  document.getElementById('raceChange').addEventListener('click', function(){
+    if(_raceTO){ clearTimeout(_raceTO); _raceTO=null; }
+    render();
+  });
+}
+
 function vPlayers(){
   tabbar('#/players');
   var t=overallTotals(), r=ranked(t);
-  var h='<h2>👥 Players ('+r.length+')</h2>';
-  h+='<div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="raceReplay" style="display:none">↻ Replay</button></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 15</i></div></div><div class="race-cap" id="raceCap"></div></div>';
-  h+='<div class="pgrid">';
+  var h='<h2>👥 Players ('+r.length+')</h2><div class="pgrid">';
   r.forEach(function(e){
     var p=pinfo(e.pid);
     h+='<div class="pcard" onclick="location.hash=\'#/player/'+e.pid+'\'"><div class="em">'+p.emoji+'</div><div class="nm">'+esc(p.name)+'</div><div class="tt">'+esc(p.title)+'</div><div class="sc2 '+cls(e.pts)+'">'+fmtPts(e.pts)+' pts</div><div class="small dim">'+fmtMoney(e.pts)+'</div></div>';
   });
   h+='</div>';
   $('#view').innerHTML=h;
-  startRace();
 }
 
 function vPlayer(pid){
@@ -689,6 +737,7 @@ function render(){
   if(parts[0]==='days') return vDays();
   if(parts[0]==='day') return vDay(parts[1]);
   if(parts[0]==='players') return vPlayers();
+  if(parts[0]==='journey') return vJourney();
   if(parts[0]==='player') return vPlayer(parts[1]);
   if(parts[0]==='game') return vGame(parts[1]);
   if(parts[0]==='versus') return vVersus();
