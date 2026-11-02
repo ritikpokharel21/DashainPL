@@ -678,7 +678,7 @@ function vTimeline(){
 }
 function vStats(){
   tabbar('#/stats');
-  var h='<h2>📊 League Stats</h2>';
+  var h='<h2>📊 League Stats</h2><div class="small dim" style="margin:-4px 0 12px">Players with 50 or more games qualify for these titles</div>';
   var agg={};
   state.players.forEach(function(p){ agg[p.id]={crowns:0,seen:0,unseen:0,dublee:0,foul:0,rounds:0,rpts:0,best:null,worst:null,bestGame:null,bestDay:null,streak:0,streakPts:0,runLen:0,runPts:0}; });
   state.games.forEach(function(g){
@@ -708,7 +708,7 @@ function vStats(){
       else { a.runLen=0; a.runPts=0; }
     });
   });
-  function qual(pid){ return gamesPlayed(pid)>45; }
+  function qual(pid){ return gamesPlayed(pid)>=50; }
   state.players.forEach(function(p){
     var a=agg[p.id];
     a.crownRate=a.rounds? a.crowns/a.rounds : 0;
