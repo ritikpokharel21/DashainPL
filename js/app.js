@@ -737,7 +737,7 @@ function vStats(){
     ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}],
     ['🏔️ Best Round','biggest single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
     ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
-    ['🎯 Sharp Shooter','best pts / game (over 45 games)', avgTop(), function(e){return fmtPts(e.v)+' / game';}]
+    ['🎯 Sharp Shooter','best pts / game', avgTop(), function(e){return fmtPts(e.v)+' / game';}]
   ];
   var cardsB=[
     ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
