@@ -26,7 +26,7 @@ function seedState(){
   st.games = S.games.map(function(g){
     return {
       id:g.id, dayId:g.dayId, name:g.name, variant:g.variant||'classic',
-      date:g.date, partial:!!g.partial, note:g.note||'', playerIds:g.playerIds.slice(),
+      date:g.date, partial:!!g.partial, note:g.note||'', settleGroup:g.settleGroup||'', playerIds:g.playerIds.slice(),
       totals: Object.assign({}, g.totals),
       rounds: g.rounds.map(function(r){
         var scores={};
@@ -389,8 +389,20 @@ function vDay(id){
       return bh;
     };
     if(d.settlePerRound){
+      var grouped={}, gorder=[];
       g.forEach(function(gm){
-        h+=settleBlock(settlements(gameTotals(gm), null), 'Who Pays Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):''));
+        if(gm.settleGroup){
+          if(!grouped[gm.settleGroup]){ grouped[gm.settleGroup]={t:{},n:0}; gorder.push(gm.settleGroup); }
+          var gt=gameTotals(gm);
+          for(var pid in gt) grouped[gm.settleGroup].t[pid]=(grouped[gm.settleGroup].t[pid]||0)+gt[pid];
+          grouped[gm.settleGroup].n++;
+        }
+      });
+      g.forEach(function(gm){
+        if(!gm.settleGroup) h+=settleBlock(settlements(gameTotals(gm), null), 'Who Pays Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):''));
+      });
+      gorder.forEach(function(gid){
+        h+=settleBlock(settlements(grouped[gid].t, null), 'Who Pays Who — Combined ('+grouped[gid].n+' tables)');
       });
     } else {
       h+=settleBlock(settlements(t, d.forcePair), 'Who Pays Who');

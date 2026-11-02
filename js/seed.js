@@ -1107,7 +1107,7 @@ games: [
   {n:4, w:'p_sanka',  s:[[-28,'s'],[37,'s'],[-28,'s'],[-28,'s'],[47,'s']]},
   {n:5, w:'p_ashu',  s:[[31,'s'],[-30,'u'],[2,'s'],[-30,'u'],[27,'s']]}
  ]}
-,{id:'g_d21_3', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'7:19 PM table',
+,{id:'g_d21_3', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'7:19 PM table',
  playerIds:['p_anish','p_shreya','p_ashu','p_pradeep','p_sandeep'],
  totals:{p_anish:23,p_shreya:-90,p_ashu:-16,p_pradeep:213,p_sandeep:-130},
  rounds:[
@@ -1117,7 +1117,7 @@ games: [
   {n:4, w:'p_pradeep',s:[[-24,'u'],[-24,'u'],[-24,'u'],[96,'s'],[-24,'u']]},
   {n:5, w:'p_ashu',   s:[[14,'s'],[-43,'u'],[58,'s'],[14,'s'],[-43,'u']]}
  ]}
-,{id:'g_d21_4', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'8:11 PM table',
+,{id:'g_d21_4', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'8:11 PM table',
  playerIds:['p_binay','p_shreya','p_ashu','p_pradeep','p_dibi'],
  totals:{p_binay:-14,p_shreya:45,p_ashu:-2,p_pradeep:34,p_dibi:-63},
  rounds:[
@@ -1127,7 +1127,7 @@ games: [
   {n:4, w:'p_pradeep',s:[[-42,'u'],[40,'s'],[10,'s'],[27,'d'],[-35,'s']]},
   {n:5, w:'p_binay',  s:[[17,'s'],[73,'s'],[-44,'u'],[-2,'s'],[-44,'u']]}
  ]}
-,{id:'g_d21_5', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'9:15 PM table',
+,{id:'g_d21_5', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'9:15 PM table',
  playerIds:['p_ashu','p_sanka','p_pradeep','p_binay','p_dibi'],
  totals:{p_ashu:77,p_sanka:-59,p_pradeep:35,p_binay:-215,p_dibi:162},
  rounds:[
@@ -1159,7 +1159,7 @@ games: [
   {n:14, w:'p_arun', s:[[2,'s'],[24,'s'],[-55,'u'],[2,'s'],[27,'s']]},
   {n:15, w:'p_arun', s:[[-42,'u'],[44,'s'],[-35,'s'],[75,'s'],[-42,'u']]}
  ]}
-,{id:'g_d21_6', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'11:15 PM table',
+,{id:'g_d21_6', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'11:15 PM table',
  playerIds:['p_bibek','p_shreya','p_ranj','p_ashmitab','p_sandeep'],
  totals:{p_bibek:-25,p_shreya:70,p_ranj:-40,p_ashmitab:-125,p_sandeep:120},
  rounds:[
@@ -1172,7 +1172,7 @@ games: [
   {n:9, w:'p_bibek',  s:[[56,'s'],[-16,'s'],[-48,'u'],[-16,'s'],[24,'s']]},
   {n:10, w:'p_ashmitab',s:[[-23,'s'],[12,'s'],[-30,'u'],[71,'s'],[-30,'u']]}
  ]}
-,{id:'g_d21_7', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'11:57 PM table',
+,{id:'g_d21_7', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', partial:true, note:'11:57 PM table',
  playerIds:['p_ashu','p_sanka','p_anish','p_binay','p_dibi'],
  totals:{p_ashu:-128,p_sanka:-85,p_anish:-61,p_binay:-5,p_dibi:279},
  rounds:[
@@ -1186,7 +1186,7 @@ games: [
   {n:9, w:'p_anish', s:[[7,'s'],[-25,'u'],[68,'s'],[-25,'u'],[-25,'u']]},
   {n:10, w:'p_dibi', s:[[-5,'s'],[55,'s'],[-62,'u'],[-62,'u'],[74,'s']]}
  ]}
-,{id:'g_d21_8', dayId:'day21', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'1:12 AM table',
+,{id:'g_d21_8', dayId:'day21', settleGroup:'d21combo', name:'Murder Round', variant:'murder', date:'2026-10-31', note:'1:12 AM table',
  playerIds:['p_ashu','p_sanka','p_anish','p_binay','p_sandeep'],
  totals:{p_ashu:-16,p_sanka:-54,p_anish:-125,p_binay:18,p_sandeep:177},
  rounds:[
