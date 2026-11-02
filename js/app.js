@@ -481,6 +481,7 @@ function startRace(heroPid){
     f.field.forEach(function(e, rank){
       var el=els[e.pid]; if(!el) return;
       var hh=raceTierH(rank);
+      if(e.pid===heroPid) hh+=18;
       var x=4+((e.pts-min)/range)*92;
       el.className='racer '+(rank<5?'t1':(rank<10?'t2':'t3'))+(e.pid===heroPid?' hero':'');
       el.style.opacity=(heroPid&&e.pid!==heroPid)?'0.42':'1';
