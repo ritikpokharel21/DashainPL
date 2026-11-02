@@ -733,6 +733,7 @@ function vStats(){
   var cards=[
     ['🌼 Sayapatri Mala','games won / games played', top('crownRate'), function(e){return (e.v*100).toFixed(1)+'% win rate';}],
     ['🧲 Maal Magnet','maal seen / game played', top('seenRate'), function(e){return (e.v*100).toFixed(1)+'%';}],
+    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
     ['💥 Dashain Dhamaka','biggest single game', hi('best'), function(e){return fmtPts(e.v)+' pts';}],
     ['👑 Mukut Samrat','most games won', top('crowns'), function(e){return e.v+' crowns';}],
     ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}],
