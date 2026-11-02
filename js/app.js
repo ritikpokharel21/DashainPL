@@ -328,7 +328,7 @@ function lbRow(e, i, mv, clickable, gamesNote){
   return '<div class="lb"'+click+'>'+
     '<div class="rank r'+(i+1)+'">'+(i+1)+'</div>'+
     '<div class="avatar">'+p.emoji+'</div>'+
-    '<div class="grow"><div class="nm">'+esc(p.name)+(gamesNote?' <span style="font-size:11px;font-weight:400;opacity:.55">('+gamesPlayed(e.pid)+' games played)</span>':'')+'</div><div class="ti2">'+esc(p.title)+'</div></div>'+
+    '<div class="grow"><div class="nm">'+esc(p.name)+(gamesNote?' <span style="font-size:11px;font-weight:400;opacity:.55">('+gamesPlayed(e.pid)+' games)</span>':'')+'</div><div class="ti2">'+esc(p.title)+'</div></div>'+
     '<div class="sc"><div class="pv '+cls(e.pts)+'">'+fmtPts(e.pts)+'</div><div class="mv">'+fmtMoney(e.pts)+' '+(mv||'')+'</div></div>'+
   '</div>';
 }
