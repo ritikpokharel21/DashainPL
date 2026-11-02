@@ -303,7 +303,6 @@ function tabbar(active){
     {r:'#/', i:'🏠', l:'Home'},
     {r:'#/days', i:'📅', l:'Days'},
     {r:'#/players', i:'👥', l:'Players'},
-    {r:'#/journey', i:'🧭', l:'Journey'},
     {r:'#/versus', i:'⚔️', l:'Versus'},
     {r:'#/stats', i:'📊', l:'Stats'},
     {r:'#/timeline', i:'🪔', l:'Timeline'}
@@ -345,7 +344,9 @@ function vHome(){
   var lastD=state.days[state.days.length-1], lr=ranked(dayTotals(lastD.id));
   if(lr.length){ var lp=pinfo(lr[0].pid);
     h+='<div class="card" onclick="location.hash=\'#/day/'+lastD.id+'\'" style="cursor:pointer"><div class="row"><div class="grow"><div class="small dim">🗓️ Last session — '+esc(lastD.label)+' <span class="dim">'+esc(lastD.note||'')+'</span></div><div style="font-weight:800;font-size:16px">Winner: '+lp.emoji+' '+esc(lp.name)+' <span class="pos">'+fmtPts(lr[0].pts)+' pts</span></div></div><div class="gold" style="font-size:20px">→</div></div></div>'; }
-  h+='<div class="btnrow"><button class="btn ghost" onclick="App.shareStandings()">📤 Share standings</button></div>';
+  var jnames=state.players.slice().sort(function(a,b){ return a.name<b.name?-1:(a.name>b.name?1:0); });
+  var jopts=jnames.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
+  h+='<div class="card jpick homepick"><div class="jpick-q" style="font-size:17px">🧭 Watch your journey</div><select id="homeSel"><option value="">— Select your name —</option>'+jopts+'</select></div>';
   h+='<h3>🏆 Cumulative Leaderboard</h3>';
   var lastDay=state.days[state.days.length-1];
   var prevDay=state.days.length>1?state.days[state.days.length-2]:null;
@@ -361,6 +362,8 @@ function vHome(){
   });
   h+='<div class="garland">🌼 🌼 🌼</div><div class="card small mut center">Tap a player for full stats</div>';
   $('#view').innerHTML=h;
+  var hs=document.getElementById('homeSel');
+  if(hs) hs.addEventListener('change', function(){ if(hs.value) location.hash='#/journey/'+hs.value; });
 }
 
 function vDays(){
@@ -511,7 +514,7 @@ function startRace(heroPid){
     apply(idx);
     if(idx<frames.length-1){
       idx++;
-      _raceTO=setTimeout(step, 2600);
+      _raceTO=setTimeout(step, 1800);
     } else {
       var cap=document.getElementById('raceCap');
       if(cap){
@@ -530,7 +533,7 @@ function startRace(heroPid){
   step();
 }
 
-function vJourney(){
+function vJourney(heroPid){
   tabbar('#/journey');
   var names=state.players.slice().sort(function(a,b){ return a.name<b.name?-1:(a.name>b.name?1:0); });
   var opts=names.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
@@ -547,8 +550,15 @@ function vJourney(){
   });
   document.getElementById('raceChange').addEventListener('click', function(){
     if(_raceTO){ clearTimeout(_raceTO); _raceTO=null; }
-    render();
+    if(location.hash.indexOf('#/journey/')===0) location.hash='#/journey';
+    else render();
   });
+  if(heroPid && pinfo(heroPid).name!=='?'){
+    sel.value=heroPid;
+    document.getElementById('jPick').style.display='none';
+    document.getElementById('jStage').style.display='';
+    startRace(heroPid);
+  }
 }
 
 function vPlayers(){
@@ -738,7 +748,7 @@ function render(){
   if(parts[0]==='days') return vDays();
   if(parts[0]==='day') return vDay(parts[1]);
   if(parts[0]==='players') return vPlayers();
-  if(parts[0]==='journey') return vJourney();
+  if(parts[0]==='journey') return vJourney(parts[1]);
   if(parts[0]==='player') return vPlayer(parts[1]);
   if(parts[0]==='game') return vGame(parts[1]);
   if(parts[0]==='versus') return vVersus();
