@@ -288,5 +288,5 @@ table.plain td.num,table.plain th.num{text-align:right;}
 .race-hero{font-size:14px;min-height:19px;color:#ffe9bd;margin:2px 0 4px}
 .race-change{text-align:center;padding-top:8px}
 .racer.hero{z-index:5}
-.racer.hero .rbar{background:linear-gradient(90deg,rgba(238,194,127,.35),rgba(238,194,127,.95));box-shadow:0 0 14px rgba(238,194,127,.55)}
-.racer.hero .rname{font-weight:800;color:#ffe9bd;text-shadow:0 0 14px rgba(238,194,127,.65);opacity:1}
+.racer.hero .rbar{background:linear-gradient(90deg,rgba(238,194,127,.35),rgba(238,194,127,.95))}
+.racer.hero .rname{font-weight:800;color:#ffe9bd;opacity:1}
