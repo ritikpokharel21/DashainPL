@@ -736,7 +736,7 @@ function vStats(){
   ];
   function renderCard(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
-    h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="avatar">'+p.emoji+'</div><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
   }
   cardsA.forEach(renderCard);
   var maxStreak=0;
@@ -746,7 +746,7 @@ function vStats(){
     var ot=overallTotals();
     tied.sort(function(a,b){ return (ot[b.id]||0)-(ot[a.id]||0); });
     var names=tied.map(function(p){return esc(p.name);}).join(' · ');
-    h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
   }
   cardsB.forEach(renderCard);
   var maxLose=0;
@@ -756,7 +756,7 @@ function vStats(){
     var ot2=overallTotals();
     ltied.sort(function(a,b){ return (ot2[b.id]||0)-(ot2[a.id]||0); });
     var lnames=ltied.map(function(p){return esc(p.name);}).join(' · ');
-    h+='<div class="lb" onclick="location.hash=\'#/player/'+ltied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌧️</div><div class="grow"><div class="nm">🌧️ The Monsoon</div><div class="ti2">longest run of losing days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+lnames+'</div><div class="mv">'+maxLose+' days</div></div></div>';
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+ltied[0].id+'\'" style="cursor:pointer"><div class="grow"><div class="nm">🌧️ The Monsoon</div><div class="ti2">longest run of losing days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+lnames+'</div><div class="mv">'+maxLose+' days</div></div></div>';
   }
   h+='<div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
