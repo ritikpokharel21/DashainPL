@@ -73,7 +73,8 @@ days: [
   {id:'day21', label:'Day 21', date:'2026-10-31', note:'Oct 31', settled:true, settlePerRound:true},
   {id:'day22', label:'Day 22', date:'2026-11-01', note:'Nov 1', settled:true},
   {id:'day23', label:'Day 23', date:'2026-11-02', note:'Nov 2', settled:true, forcePair:['p_ritik','p_ranj']},
-  {id:'day24', label:'Day 24', date:'2026-11-05', note:'Nov 5', settled:true}
+  {id:'day24', label:'Day 24', date:'2026-11-05', note:'Nov 5', settled:true},
+  {id:'day25', label:'Day 25', date:'2026-11-06', note:'Nov 6'}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1290,5 +1291,31 @@ games: [
   {n:4, w:'p_ranj',   s:[[25,'s'],[-24,'u'],[-24,'u'],[-24,'u'],[-24,'u'],[71,'s']]},
   {n:5, w:'p_sandeep',s:[[-38,'s'],[-45,'u'],[-45,'u'],[64,'s'],[109,'s'],[-45,'u']]},
   {n:6, w:'p_dibi',   s:[[-49,'u'],[3,'d'],[-49,'u'],[59,'s'],[36,'s'],[0,'s']]}
+ ]}
+/* ---------- DAY 25 ---------- */
+,{id:'g_d25_1', dayId:'day25', name:'Murder Round', variant:'murder', date:'2026-11-06', note:'9:47 PM table',
+ playerIds:['p_ranj','p_sanka','p_shreya','p_sandeep','p_dibi'],
+ totals:{p_ranj:40,p_sanka:239,p_shreya:-71,p_sandeep:-107,p_dibi:-101},
+ rounds:[
+  {n:1, w:'p_sanka',  s:[[-18,'u'],[72,'s'],[-18,'u'],[-18,'u'],[-18,'u']]},
+  {n:2, w:'p_sandeep',s:[[51,'s'],[46,'s'],[-54,'s'],[11,'d'],[-54,'s']]},
+  {n:3, w:'p_shreya', s:[[-37,'u'],[5,'s'],[64,'s'],[-37,'u'],[5,'s']]},
+  {n:4, w:'p_sanka',  s:[[66,'s'],[35,'d'],[-41,'u'],[-41,'u'],[-19,'s']]},
+  {n:5, w:'p_sanka',  s:[[-22,'u'],[81,'s'],[-22,'u'],[-22,'u'],[-15,'s']]}
+ ]}
+,{id:'g_d25_2', dayId:'day25', name:'Murder Round', variant:'murder', date:'2026-11-06', partial:true, note:'10:18 PM table',
+ playerIds:['p_reji','p_arun','p_indira','p_sujan','p_ritik','p_sushma'],
+ totals:{p_reji:-256,p_arun:171,p_indira:-398,p_sujan:199,p_ritik:175,p_sushma:109},
+ rounds:[
+  {n:3, w:'p_reji',  s:[[91,'s'],[10,'s'],[-27,'u'],[-27,'u'],[-20,'s'],[-27,'u']]},
+  {n:4, w:'p_arun',  s:[[2,'s'],[-10,'s'],[-16,'s'],[-34,'s'],[14,'s'],[44,'s']]},
+  {n:5, w:'p_sujan', s:[[-37,'f'],[-47,'u'],[32,'s'],[139,'s'],[-40,'s'],[-47,'u']]},
+  {n:6, w:'p_ritik', s:[[-42,'u'],[22,'s'],[-27,'u'],[-27,'u'],[101,'s'],[-27,'u']]},
+  {n:7, w:'p_arun',  s:[[-32,'u'],[51,'s'],[-32,'u'],[-32,'u'],[77,'s'],[-32,'u']]},
+  {n:8, w:'p_sujan', s:[[8,'s'],[8,'s'],[-41,'u'],[97,'s'],[-31,'f'],[-41,'u']]},
+  {n:9, w:'p_sushma',s:[[-69,'u'],[-2,'s'],[-69,'u'],[70,'s'],[-35,'s'],[105,'s']]},
+  {n:10, w:'p_arun', s:[[-37,'u'],[136,'s'],[-37,'u'],[-37,'u'],[-37,'u'],[12,'s']]},
+  {n:11, w:'p_reji', s:[[14,'s'],[66,'d'],[-34,'u'],[-34,'u'],[3,'s'],[-15,'s']]},
+  {n:12, w:'p_ritik',s:[[-54,'u'],[-5,'s'],[-47,'s'],[-5,'s'],[68,'s'],[43,'s']]}
  ]}
 ]};
