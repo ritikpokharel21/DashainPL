@@ -739,6 +739,7 @@ function vStats(){
     h+='<div class="lb" onclick="location.hash=\'#/player/'+p.id+'\'" style="cursor:pointer"><div class="grow"><div class="nm">'+c[0]+'</div><div class="ti2">'+c[1]+'</div></div><div class="sc"><div class="pv gold">'+esc(p.name)+'</div><div class="mv">'+c[3](c[2])+'</div></div></div>';
   }
   cardsA.forEach(renderCard);
+  cardsB.forEach(renderCard);
   var maxStreak=0;
   state.players.forEach(function(p){ if(qual(p.id)&&agg[p.id].streak>maxStreak) maxStreak=agg[p.id].streak; });
   if(maxStreak>0){
@@ -748,7 +749,6 @@ function vStats(){
     var names=tied.map(function(p){return esc(p.name);}).join(' · ');
     h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
   }
-  cardsB.forEach(renderCard);
   var maxLose=0;
   state.players.forEach(function(p){ if(qual(p.id)&&agg[p.id].lstreak>maxLose) maxLose=agg[p.id].lstreak; });
   if(maxLose>0){
