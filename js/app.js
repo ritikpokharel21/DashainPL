@@ -730,8 +730,7 @@ function vStats(){
     ['🎯 Sharp Shooter','best pts / game', avgTop(), function(e){return fmtPts(e.v)+' / game';}]
   ];
   var cardsB=[
-    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}],
-    ['🎁 Generous Host','most generous single game', low('worst'), function(e){return fmtPts(e.v)+' pts';}]
+    ['🚩 Foul Machine','most fouls committed', top('foul'), function(e){return e.v+' fouls';}]
   ];
   function renderCard(c){
     if(!c[2]) return; var p=pinfo(c[2].pid);
