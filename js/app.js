@@ -722,7 +722,7 @@ function vStats(){
   }
   var cardsA=[
     ['🌼 Sayapatri Mala','most games won', top('crowns'), function(e){return e.v+' crowns';}],
-    ['👑 Mukut Samrat','games won / games played', top('crownRate'), function(e){return (e.v*100).toFixed(1)+'% win rate';}],
+    ['👹 Mukut Samrat','games won / games played', top('crownRate'), function(e){return (e.v*100).toFixed(1)+'% win rate';}],
     ['🧲 Maal Magnet','most maal seen', top('seen'), function(e){return e.v+' seen';}],
     ['📅 Best Day','biggest single-day total', hi('bestDay'), function(e){return fmtPts(e.v)+' pts';}],
     ['🏔️ Best Round','biggest single round', hi('bestGame'), function(e){return fmtPts(e.v)+' pts';}],
