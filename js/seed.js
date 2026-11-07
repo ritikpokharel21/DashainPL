@@ -37,6 +37,7 @@ players: [
   {id:'p_pradeep', name:'Pradeep', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_binay', name:'Binay', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_ashmitab', name:'Ashmita Bhattarai', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+  {id:'p_amrit', name:'Amrit', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_pawan', name:'Pawan', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_sadikxya', name:'Sadikxya', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_sujan', name:'Sujan', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
@@ -74,7 +75,7 @@ days: [
   {id:'day22', label:'Day 22', date:'2026-11-01', note:'Nov 1', settled:true},
   {id:'day23', label:'Day 23', date:'2026-11-02', note:'Nov 2', settled:true, forcePair:['p_ritik','p_ranj']},
   {id:'day24', label:'Day 24', date:'2026-11-05', note:'Nov 5', settled:true},
-  {id:'day25', label:'Day 25', date:'2026-11-06', note:'Nov 6'}
+  {id:'day25', label:'Day 25', date:'2026-11-06', note:'Nov 6', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1293,6 +1294,21 @@ games: [
   {n:6, w:'p_dibi',   s:[[-49,'u'],[3,'d'],[-49,'u'],[59,'s'],[36,'s'],[0,'s']]}
  ]}
 /* ---------- DAY 25 ---------- */
+,{id:'g_d25_3', dayId:'day25', name:'Murder Round', variant:'murder', date:'2026-11-06', partial:true, note:'9:37 PM table',
+ playerIds:['p_bijay','p_sunira','p_ashu','p_ashmita','p_shishi','p_anish'],
+ totals:{p_bijay:-64,p_sunira:-175,p_ashu:115,p_ashmita:-192,p_shishi:283,p_anish:33},
+ rounds:[
+  {n:15, w:'p_sunira', s:[[-58,'u'],[59,'s'],[-21,'s'],[-58,'u'],[39,'s'],[39,'s']]},
+  {n:16, w:'p_ashmita',s:[[-55,'u'],[84,'s'],[-48,'s'],[129,'s'],[-55,'u'],[-55,'u']]},
+  {n:17, w:'p_sunira', s:[[2,'s'],[64,'s'],[-35,'u'],[2,'s'],[2,'s'],[-35,'u']]},
+  {n:18, w:'p_ashmita',s:[[-15,'s'],[-46,'u'],[-9,'s'],[65,'s'],[51,'s'],[-46,'u']]},
+  {n:19, w:'p_shishi', s:[[-27,'u'],[-27,'u'],[22,'s'],[-27,'u'],[86,'s'],[-27,'u']]},
+  {n:20, w:'p_anish',  s:[[-37,'u'],[-37,'u'],[-37,'u'],[42,'s'],[-37,'u'],[106,'s']]},
+  {n:21, w:'p_bijay',  s:[[74,'s'],[-32,'u'],[-32,'u'],[17,'s'],[-32,'u'],[5,'s']]},
+  {n:22, w:'p_bijay',  s:[[61,'s'],[52,'s'],[-33,'u'],[-14,'s'],[-33,'u'],[-33,'u']]},
+  {n:23, w:'p_sunira', s:[[40,'s'],[-13,'s'],[-75,'u'],[-38,'s'],[34,'s'],[52,'s']]},
+  {n:24, w:'p_shishi', s:[[-20,'u'],[-13,'s'],[-20,'u'],[-20,'u'],[93,'s'],[-20,'u']]}
+ ]}
 ,{id:'g_d25_1', dayId:'day25', name:'Murder Round', variant:'murder', date:'2026-11-06', note:'9:47 PM table',
  playerIds:['p_ranj','p_sanka','p_shreya','p_sandeep','p_dibi'],
  totals:{p_ranj:40,p_sanka:239,p_shreya:-71,p_sandeep:-107,p_dibi:-101},
@@ -1317,5 +1333,21 @@ games: [
   {n:10, w:'p_arun', s:[[-37,'u'],[136,'s'],[-37,'u'],[-37,'u'],[-37,'u'],[12,'s']]},
   {n:11, w:'p_reji', s:[[14,'s'],[66,'d'],[-34,'u'],[-34,'u'],[3,'s'],[-15,'s']]},
   {n:12, w:'p_ritik',s:[[-54,'u'],[-5,'s'],[-47,'s'],[-5,'s'],[68,'s'],[43,'s']]}
+ ]}
+,{id:'g_d25_4', dayId:'day25', name:'Murder Round', variant:'murder', date:'2026-11-06', partial:true, note:'10:41 PM table',
+ playerIds:['p_ranj','p_sanka','p_shreya','p_sandeep','p_dibi','p_amrit'],
+ totals:{p_ranj:51,p_sanka:276,p_shreya:-172,p_sandeep:-144,p_dibi:-173,p_amrit:162},
+ rounds:[
+  {n:2, w:'p_sanka',  s:[[-40,'s'],[138,'s'],[-3,'s'],[-15,'s'],[-40,'s'],[-40,'s']]},
+  {n:3, w:'p_sanka',  s:[[-32,'s'],[96,'s'],[10,'s'],[-57,'u'],[-57,'u'],[40,'s']]},
+  {n:4, w:'p_dibi',   s:[[-11,'s'],[-41,'s'],[-48,'u'],[1,'s'],[92,'s'],[7,'s']]},
+  {n:5, w:'p_sanka',  s:[[30,'s'],[81,'s'],[-37,'u'],[-37,'u'],[-37,'u'],[0,'s']]},
+  {n:6, w:'p_dibi',   s:[[80,'s'],[-40,'s'],[-59,'u'],[-10,'s'],[88,'s'],[-59,'u']]},
+  {n:7, w:'p_shreya', s:[[-20,'s'],[22,'s'],[72,'s'],[40,'s'],[-57,'u'],[-57,'u']]},
+  {n:8, w:'p_amrit',  s:[[-65,'u'],[44,'s'],[-65,'u'],[-65,'u'],[50,'s'],[101,'s']]},
+  {n:9, w:'p_sanka',  s:[[-46,'s'],[46,'s'],[-53,'u'],[62,'s'],[-53,'u'],[44,'s']]},
+  {n:10, w:'p_amrit', s:[[31,'s'],[-29,'s'],[43,'s'],[-66,'u'],[-35,'s'],[56,'s']]},
+  {n:11, w:'p_ranj',  s:[[72,'s'],[-45,'u'],[-8,'s'],[22,'s'],[-45,'u'],[4,'s']]},
+  {n:12, w:'p_shreya',s:[[112,'s'],[-63,'u'],[36,'s'],[4,'s'],[-26,'s'],[-63,'u']]}
  ]}
 ]};
