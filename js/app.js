@@ -670,7 +670,7 @@ function vStats(){
   tabbar('#/stats');
   var h='<h2>📊 League Stats</h2><div class="small dim" style="margin:-4px 0 12px">Players with more than 75 games played qualify for these titles</div>';
   var agg={};
-  state.players.forEach(function(p){ agg[p.id]={crowns:0,seen:0,unseen:0,dublee:0,foul:0,rounds:0,rpts:0,best:null,worst:null,bestGame:null,bestDay:null,streak:0,streakPts:0,runLen:0,runPts:0}; });
+  state.players.forEach(function(p){ agg[p.id]={crowns:0,seen:0,unseen:0,dublee:0,foul:0,rounds:0,rpts:0,best:null,worst:null,bestGame:null,bestDay:null,streak:0,streakPts:0,runLen:0,runPts:0,lstreak:0,lrunLen:0}; });
   state.games.forEach(function(g){
     var gt=gameTotals(g);
     g.playerIds.forEach(function(pid){
@@ -696,6 +696,8 @@ function vStats(){
       if(a.bestDay===null||v>a.bestDay) a.bestDay=v;
       if(v>0){ a.runLen++; a.runPts+=v; if(a.runLen>a.streak||(a.runLen===a.streak&&a.runPts>a.streakPts)){ a.streak=a.runLen; a.streakPts=a.runPts; } }
       else { a.runLen=0; a.runPts=0; }
+      if(v<0){ a.lrunLen++; if(a.lrunLen>a.lstreak) a.lstreak=a.lrunLen; }
+      else { a.lrunLen=0; }
     });
   });
   function qual(pid){ return gamesPlayed(pid)>75; }
@@ -747,6 +749,15 @@ function vStats(){
     h+='<div class="lb" onclick="location.hash=\'#/player/'+tied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌲</div><div class="grow"><div class="nm">🌲 The Evergreen</div><div class="ti2">longest run of winning days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+names+'</div><div class="mv">'+maxStreak+' days</div></div></div>';
   }
   cardsB.forEach(renderCard);
+  var maxLose=0;
+  state.players.forEach(function(p){ if(qual(p.id)&&agg[p.id].lstreak>maxLose) maxLose=agg[p.id].lstreak; });
+  if(maxLose>0){
+    var ltied=state.players.filter(function(p){return qual(p.id)&&agg[p.id].lstreak===maxLose;});
+    var ot2=overallTotals();
+    ltied.sort(function(a,b){ return (ot2[b.id]||0)-(ot2[a.id]||0); });
+    var lnames=ltied.map(function(p){return esc(p.name);}).join(' · ');
+    h+='<div class="lb" onclick="location.hash=\'#/player/'+ltied[0].id+'\'" style="cursor:pointer"><div class="avatar">🌧️</div><div class="grow"><div class="nm">🌧️ The Monsoon</div><div class="ti2">longest run of losing days</div></div><div class="sc"><div class="pv gold" style="font-size:13px">'+lnames+'</div><div class="mv">'+maxLose+' days</div></div></div>';
+  }
   h+='<div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
 }
