@@ -77,7 +77,7 @@ days: [
   {id:'day23', label:'Day 23', date:'2026-11-02', note:'Nov 2', settled:true, forcePair:['p_ritik','p_ranj']},
   {id:'day24', label:'Day 24', date:'2026-11-05', note:'Nov 5', settled:true},
   {id:'day25', label:'Day 25', date:'2026-11-06', note:'Nov 6', settled:true},
-  {id:'day26', label:'Day 26', date:'2026-11-07', note:'Nov 7', settled:false}
+  {id:'day26', label:'Day 26', date:'2026-11-07', note:'Nov 7', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1430,6 +1430,19 @@ games: [
   {n:8, w:'p_shishi',  s:[[51,'s'],[-39,'s'],[-14,'s'],[-46,'u'],[48,'s']]},
   {n:9, w:'p_reji',    s:[[44,'s'],[-38,'u'],[-6,'s'],[38,'s'],[-38,'u']]},
   {n:10, w:'p_sandeep',s:[[-10,'s'],[-27,'u'],[91,'s'],[-27,'u'],[-27,'u']]}
+ ]},
+{id:'g_d26_10', dayId:'day26', name:'Murder Round', variant:'murder', date:'2026-11-07', partial:true, note:'8:18 PM table (Sunir. = Sunira, confirmed by Ritik)',
+ playerIds:['p_sunira','p_ranj','p_ashmita','p_sandeep','p_dipesh'],
+ totals:{p_sunira:23,p_ranj:209,p_ashmita:-39,p_sandeep:-18,p_dipesh:-175},
+ rounds:[
+  {n:3, w:'p_sandeep', s:[[-34,'u'],[58,'s'],[-17,'s'],[27,'s'],[-34,'u']]},
+  {n:4, w:'p_sunira',  s:[[96,'s'],[-32,'u'],[-32,'u'],[0,'s'],[-32,'u']]},
+  {n:5, w:'p_ashmita', s:[[-7,'s'],[-29,'d'],[40,'s'],[18,'s'],[-22,'s']]},
+  {n:6, w:'p_ashmita', s:[[-19,'u'],[-19,'u'],[76,'s'],[-19,'u'],[-19,'u']]},
+  {n:7, w:'p_ranj',    s:[[-37,'u'],[34,'s'],[-37,'u'],[30,'s'],[10,'s']]},
+  {n:8, w:'p_ashmita', s:[[-20,'s'],[35,'s'],[27,'s'],[0,'s'],[-42,'u']]},
+  {n:9, w:'p_ranj',    s:[[-48,'s'],[67,'s'],[-23,'s'],[2,'s'],[2,'s']]},
+  {n:10, w:'p_dipesh', s:[[51,'s'],[-39,'s'],[1,'s'],[-49,'s'],[36,'s']]}
  ]},
 {id:'g_d26_9', dayId:'day26', name:'Murder Round', variant:'murder', date:'2026-11-07', note:'8:22 PM table',
  playerIds:['p_bijay','p_ashu','p_ritik','p_shishi','p_sunil'],
