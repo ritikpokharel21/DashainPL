@@ -28,12 +28,12 @@ var DPL_BUILD=109;
   }
   window.addEventListener('pageshow', function(){ freshCheck(); daysLeft(); });
   document.addEventListener('DOMContentLoaded', daysLeft);
-  /* Days left in the season (ends Jan 1, 2027) — shown under the header title, updates daily */
+  /* Days left in the season (ends Nov 30, 2026) — shown under the header title, updates daily */
   function daysLeft(){
     try{
       var el=document.querySelector('.tb-sub'); if(!el) return;
       var now=new Date(); now.setHours(0,0,0,0);
-      var end=new Date(2027,0,1); end.setHours(0,0,0,0);
+      var end=new Date(2026,10,30); end.setHours(0,0,0,0);
       var d=Math.round((end-now)/86400000);
       el.textContent = d>1 ? d+' days left' : d===1 ? '1 day left' : d===0 ? 'Last day!' : 'Season complete';
     }catch(e){}
@@ -59,7 +59,7 @@ var DPL_BUILD=109;
   <nav id="tabbar"></nav>
 </div>
 <script src="js/seed.js?v=71"></script>
-<script src="js/app.js?v=95"></script>
+<script src="js/app.js?v=96"></script>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 </body>
 </html>

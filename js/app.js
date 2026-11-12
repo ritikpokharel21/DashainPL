@@ -541,7 +541,7 @@ function vJourney(heroPid){
   var opts=names.map(function(p){ return '<option value="'+p.id+'">'+esc(p.name)+'</option>'; }).join('');
   var h='<h2>🧭 The Journey</h2>';
   h+='<div class="card jpick" id="jPick"><div class="jpick-q">What\'s your name?</div><div class="jpick-sub">Pick your name and watch your season race.</div><select id="jSel"><option value="">Select your name</option>'+opts+'</select></div>';
-  h+='<div id="jStage" style="display:none"><div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="racePause" style="margin-left:auto">⏸</button><button class="race-replay" id="raceReplay" style="display:none;margin-left:8px">↻ Replay</button></div><div class="race-hero" id="raceHero"></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Jan 1</i></div></div><div class="race-cap" id="raceCap"></div><div class="race-change"><button class="race-replay" id="raceChange">👤 Change name</button></div></div></div>';
+  h+='<div id="jStage" style="display:none"><div class="race card"><div class="race-head"><div class="race-day" id="raceDay">Day 1</div><div class="race-date" id="raceDate"></div><button class="race-replay" id="racePause" style="margin-left:auto">⏸</button><button class="race-replay" id="raceReplay" style="display:none;margin-left:8px">↻ Replay</button></div><div class="race-hero" id="raceHero"></div><div class="race-track" id="raceTrack"><div class="race-finish"><span>🏁</span><i>Nov 30</i></div></div><div class="race-cap" id="raceCap"></div><div class="race-change"><button class="race-replay" id="raceChange">👤 Change name</button></div></div></div>';
   $('#view').innerHTML=h;
   var sel=document.getElementById('jSel');
   sel.addEventListener('change', function(){
@@ -652,17 +652,17 @@ function vGame(gid){
 function vTimeline(){
   tabbar('#/timeline');
   var h='<h2>🪔 Season Timeline</h2>';
-  var start=new Date(2026,9,2), end=new Date(2027,0,1), now=new Date(); now.setHours(0,0,0,0);
+  var start=new Date(2026,9,2), end=new Date(2026,10,30), now=new Date(); now.setHours(0,0,0,0);
   var total=Math.round((end-start)/864e5)+1, done=Math.min(total,Math.max(1,Math.floor((now-start)/864e5)+1));
   var pct=Math.round(done/total*100);
-  h+='<div class="card"><div class="row"><div class="grow"><b>Season progress</b><div class="small dim">Oct 2 → Jan 1 · Day '+done+' of '+total+'</div></div><div class="gold" style="font-size:20px;font-weight:800">'+pct+'%</div></div><div class="prog"><div style="width:'+pct+'%"></div></div><div class="small dim" style="margin-top:6px">'+(total-done)+' days to the grand finale 🏁</div></div>';
+  h+='<div class="card"><div class="row"><div class="grow"><b>Season progress</b><div class="small dim">Oct 2 → Nov 30 · Day '+done+' of '+total+'</div></div><div class="gold" style="font-size:20px;font-weight:800">'+pct+'%</div></div><div class="prog"><div style="width:'+pct+'%"></div></div><div class="small dim" style="margin-top:6px">'+(total-done)+' days to the grand finale 🏁</div></div>';
   h+='<div class="tl">';
   state.days.forEach(function(d){
     var r=ranked(dayTotals(d.id)), w=r[0]?pinfo(r[0].pid):null;
     h+='<div class="tl-ev" onclick="location.hash=\'#/day/'+d.id+'\'" style="cursor:pointer"><div class="tl-date">'+(d.id==='day3'?'🔪':'🃏')+' '+esc(d.note||d.label)+'</div><div style="font-weight:800;font-size:16px;margin:2px 0">'+esc(d.label)+' — played</div>'+(w?'<div class="small">Winner: '+w.emoji+' <b>'+esc(w.name)+'</b> <span class="pos">'+fmtPts(r[0].pts)+' pts</span></div>':'')+'</div>';
   });
   h+='<div class="tl-ev"><div class="tl-date">🪔 Festival of Lights</div><div style="font-weight:800;font-size:16px;margin:2px 0">Tihar</div><div class="small dim">The league plays on through Dashain, Tihar and Chhath.</div></div>';
-  h+='<div class="tl-ev"><div class="tl-date">🎆 Jan 1</div><div style="font-weight:800;font-size:16px;margin:2px 0">New Year — Grand Finale</div><div class="small dim">The season ends on January 1. Final standings, one champion. 🏆</div></div>';
+  h+='<div class="tl-ev"><div class="tl-date">🎆 Nov 30</div><div style="font-weight:800;font-size:16px;margin:2px 0">Grand Finale</div><div class="small dim">The season ends on November 30. Final standings, one champion. 🏆</div></div>';
   h+='</div><div class="garland">🌼 🌼 🌼</div>';
   $('#view').innerHTML=h;
 }
