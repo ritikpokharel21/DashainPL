@@ -209,7 +209,7 @@ function ranked(totals){
 }
 /* Minimal settlement: couples settle with each other first, then debtors pay creditors, fewest transactions possible */
 function paidMap(){ try{ return JSON.parse(localStorage.getItem('dpl_paid_v1')||'{}'); }catch(e){ return {}; } }
-function isPaid(k){ return !!paidMap()[k]; }
+function isPaid(k){ var m=paidMap(); if(k in m) return !!m[k]; var mm=/^day(\d+)\|/.exec(k); return mm?(+mm[1]<=30):false; }
 function settlements(t, force){
   var bal={};
   for(var pid in t) bal[pid]=Math.round(t[pid]*10)/10;
@@ -1031,11 +1031,11 @@ vsToggle:function(pid){
 },
 vsClear:function(){ vsSel=[]; vVersus(); },
 togglePaid:function(k, el){
-  var m=paidMap();
-  if(m[k]) delete m[k]; else m[k]=1;
+  var on=!isPaid(k);
+  var m=paidMap(); m[k]=on?1:0;
   try{ localStorage.setItem('dpl_paid_v1', JSON.stringify(m)); }catch(e){}
-  var on=!!m[k];
-  if(el){ el.className='paidbtn'+(on?' on':''); el.textContent=on?'\u2713 Settled':'Unsettled'; }
+  var on2=on;
+  if(el){ el.className='paidbtn'+(on2?' on':''); el.textContent=on2?'\u2713 Settled':'Unsettled'; }
 },
 copyZelleFor:function(pid){
   var p=state.players.find(function(x){return x.id===pid;});
