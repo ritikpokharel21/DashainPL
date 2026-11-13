@@ -209,7 +209,41 @@ function ranked(totals){
 }
 /* Minimal settlement: couples settle with each other first, then debtors pay creditors, fewest transactions possible */
 function paidMap(){ try{ return JSON.parse(localStorage.getItem('dpl_paid_v1')||'{}'); }catch(e){ return {}; } }
-function isPaid(k){ var m=paidMap(); if(k in m) return !!m[k]; var mm=/^day(\d+)\|/.exec(k); return mm?(+mm[1]<=30):false; }
+function isPaid(k){ if(syncMap && (k in syncMap)) return !!syncMap[k]; var m=paidMap(); if(k in m) return !!m[k]; var mm=/^day(\d+)\|/.exec(k); return mm?(+mm[1]<=30):false; }
+/* Shared settled-state sync — anonymous npoint bin (free, no account). The bin
+   holds ONLY the settled map {rowKey: 1|0}. Shared state beats the day-number
+   default; localStorage stays as the offline cache. Every sync step is
+   best-effort: any failure silently falls back to per-device behavior. */
+var SYNC_URL='https://api.npoint.io/53e530dd7a677fd19e38';
+var syncMap=null;
+function syncFetch(){
+  if(typeof fetch==='undefined') return;
+  fetch(SYNC_URL+'?_='+Date.now(), {cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
+    if(!j || typeof j!=='object') return;
+    syncMap=j;
+    var m=paidMap(), changed=false;
+    for(var k in j){ var v=j[k]?1:0; if(m[k]!==v){ m[k]=v; changed=true; } }
+    if(changed){ try{ localStorage.setItem('dpl_paid_v1', JSON.stringify(m)); }catch(e){} }
+    syncRefreshButtons();
+  }).catch(function(){});
+}
+function syncRefreshButtons(){
+  var btns=document.querySelectorAll('.paidbtn');
+  for(var i=0;i<btns.length;i++){
+    var k=btns[i].getAttribute('data-pk'); if(!k) continue;
+    var on=isPaid(k);
+    btns[i].className='paidbtn'+(on?' on':'');
+    btns[i].textContent=on?'✓ Settled':'Unsettled';
+  }
+}
+function syncPush(k, v){
+  if(typeof fetch==='undefined') return;
+  fetch(SYNC_URL+'?_='+Date.now(), {cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
+    var doc=(j && typeof j==='object')?j:{};
+    doc[k]=v?1:0; syncMap=doc;
+    return fetch(SYNC_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(doc)});
+  }).catch(function(){});
+}
 function settlements(t, force){
   var bal={};
   for(var pid in t) bal[pid]=Math.round(t[pid]*10)/10;
@@ -404,7 +438,7 @@ function vDay(id){
         bh+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
           '<div class="sc"><div class="pv">$'+amt+'</div></div>'+
           '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button>'+
-          '<button class="paidbtn'+(pd?' on':'')+'" onclick="App.togglePaid(\''+pk.replace(/'/g,"\\'")+'\',this)">'+(pd?'✓ Settled':'Unsettled')+'</button></div>';
+          '<button class="paidbtn'+(pd?' on':'')+'" data-pk="'+esc(pk)+'" onclick="App.togglePaid(\''+pk.replace(/'/g,"\\'")+'\',this)">'+(pd?'✓ Settled':'Unsettled')+'</button></div>';
       });
       return bh;
     };
@@ -437,6 +471,7 @@ function vDay(id){
       '<div class="sc"><div class="pv pos">'+esc(pname(lead.pid))+'</div><div class="mv">'+fmtPts(lead.pts)+' pts</div></div></div>';
   });
   $('#view').innerHTML=h;
+  if(d.settled) syncFetch();
 }
 
 /* ---------------- the DPL race (Journey page) ---------------- */
@@ -1034,6 +1069,8 @@ togglePaid:function(k, el){
   var on=!isPaid(k);
   var m=paidMap(); m[k]=on?1:0;
   try{ localStorage.setItem('dpl_paid_v1', JSON.stringify(m)); }catch(e){}
+  if(syncMap) syncMap[k]=on?1:0;
+  syncPush(k, on);
   var on2=on;
   if(el){ el.className='paidbtn'+(on2?' on':''); el.textContent=on2?'\u2713 Settled':'Unsettled'; }
 },
@@ -1057,5 +1094,7 @@ window.App=App;
 
 /* ---------------- init ---------------- */
 window.addEventListener('hashchange', render);
+window.addEventListener('pageshow', function(){ syncFetch(); });
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) syncFetch(); });
 document.addEventListener('DOMContentLoaded', function(){ render(); musicInit(); });
 })();
