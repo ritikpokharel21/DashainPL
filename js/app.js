@@ -208,6 +208,8 @@ function ranked(totals){
     .sort(function(a,b){ return b.pts-a.pts; });
 }
 /* Minimal settlement: couples settle with each other first, then debtors pay creditors, fewest transactions possible */
+function paidMap(){ try{ return JSON.parse(localStorage.getItem('dpl_paid_v1')||'{}'); }catch(e){ return {}; } }
+function isPaid(k){ return !!paidMap()[k]; }
 function settlements(t, force){
   var bal={};
   for(var pid in t) bal[pid]=Math.round(t[pid]*10)/10;
@@ -396,9 +398,13 @@ function vDay(id){
       var bh='<h3>'+title+'</h3>';
       if(!ss.length){ return bh+'<div class="small dim">All square — nobody owes anyone.</div>'; }
       ss.forEach(function(x){
+        var amt=(Math.round(x.pts*PT_RATE*100)/100).toFixed(2);
+        var pk=d.id+'|'+title+'|'+x.from+'>'+x.to+'|'+amt;
+        var pd=isPaid(pk);
         bh+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
-          '<div class="sc"><div class="pv">$'+(Math.round(x.pts*PT_RATE*100)/100).toFixed(2)+'</div></div>'+
-          '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button></div>';
+          '<div class="sc"><div class="pv">$'+amt+'</div></div>'+
+          '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button>'+
+          '<button class="paidbtn'+(pd?' on':'')+'" onclick="App.togglePaid(\''+pk.replace(/'/g,"\\'")+'\',this)">'+(pd?'✓ Settled':'Unsettled')+'</button></div>';
       });
       return bh;
     };
@@ -1024,6 +1030,13 @@ vsToggle:function(pid){
   vVersus();
 },
 vsClear:function(){ vsSel=[]; vVersus(); },
+togglePaid:function(k, el){
+  var m=paidMap();
+  if(m[k]) delete m[k]; else m[k]=1;
+  try{ localStorage.setItem('dpl_paid_v1', JSON.stringify(m)); }catch(e){}
+  var on=!!m[k];
+  if(el){ el.className='paidbtn'+(on?' on':''); el.textContent=on?'\u2713 Settled':'Unsettled'; }
+},
 copyZelleFor:function(pid){
   var p=state.players.find(function(x){return x.id===pid;});
   if(p&&p.zelle) App.copyZelle(p.zelle); else toast('No Zelle info for this player');
