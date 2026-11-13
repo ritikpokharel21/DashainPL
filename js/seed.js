@@ -44,6 +44,7 @@ players: [
   {id:'p_indira', name:'Indira', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_sushma', zelle:'(540) 504-8688', name:'Sushma', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_alin', name:'Alin', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+    {id:'p_abin', name:'Abin', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
@@ -81,7 +82,8 @@ days: [
   {id:'day27', label:'Day 27', date:'2026-11-08', note:'Nov 8', settled:true},
   {id:'day28', label:'Day 28', date:'2026-11-09', note:'Nov 9', settled:true},
   {id:'day29', label:'Day 29', date:'2026-11-10', note:'Nov 10', settled:true},
-  {id:'day30', label:'Day 30', date:'2026-11-11', note:'Nov 11', settled:true}
+  {id:'day30', label:'Day 30', date:'2026-11-11', note:'Nov 11', settled:true},
+  {id:'day31', label:'Day 31', date:'2026-11-12', note:'Nov 12', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1577,5 +1579,44 @@ games: [
   {n:4, w:'p_ranj',  s:[[-35,'u'],[32,'s'],[2,'s'],[71,'s'],[-35,'u'],[-35,'u']]},
   {n:5, w:'p_ashu',  s:[[146,'s'],[-39,'u'],[-39,'u'],[10,'s'],[-39,'u'],[-39,'u']]},
   {n:6, w:'p_shreya',s:[[-29,'u'],[145,'s'],[-29,'u'],[-29,'u'],[-29,'u'],[-29,'u']]}
+ ]},
+{id:'g_d31_1', dayId:'day31', name:'Murder Round', variant:'murder', date:'2026-11-12', note:'8:00 PM table',
+ playerIds:['p_bijay','p_bipin','p_ritik','p_sumit'],
+ totals:{p_bijay:-56,p_bipin:-77,p_ritik:9,p_sumit:124},
+ rounds:[
+  {n:1, w:'p_sumit', s:[[-37,'u'],[-37,'u'],[-37,'u'],[111,'s']]},
+  {n:2, w:'p_bijay', s:[[26,'s'],[-10,'s'],[6,'s'],[-22,'s']]},
+  {n:3, w:'p_ritik', s:[[-25,'u'],[-10,'s'],[60,'s'],[-25,'u']]},
+  {n:4, w:'p_sumit', s:[[-20,'u'],[-20,'u'],[-20,'u'],[60,'s']]}
+ ]},
+{id:'g_d31_2', dayId:'day31', name:'Murder Round', variant:'murder', date:'2026-11-12', note:'8:29 PM table',
+ playerIds:['p_bijay','p_bipin','p_ritik','p_sumit','p_sunira'],
+ totals:{p_bijay:365,p_bipin:-127,p_ritik:-43,p_sumit:-106,p_sunira:-89},
+ rounds:[
+  {n:1, w:'p_sumit',  s:[[65,'s'],[-42,'u'],[0,'s'],[19,'s'],[-42,'u']]},
+  {n:2, w:'p_bijay',  s:[[116,'s'],[-29,'u'],[-29,'u'],[-29,'u'],[-29,'u']]},
+  {n:3, w:'p_sunira', s:[[56,'s'],[-36,'u'],[-36,'u'],[-36,'u'],[52,'s']]},
+  {n:4, w:'p_bijay',  s:[[30,'s'],[15,'s'],[15,'s'],[-25,'s'],[-35,'s']]},
+  {n:5, w:'p_bijay',  s:[[98,'s'],[-35,'u'],[7,'s'],[-35,'u'],[-35,'u']]}
+ ]},
+{id:'g_d31_3', dayId:'day31', name:'Murder Round', variant:'murder', date:'2026-11-12', note:'9:23 PM table',
+ playerIds:['p_bijay','p_ashu','p_ritik','p_sumit','p_sunira'],
+ totals:{p_bijay:49,p_ashu:-169,p_ritik:3,p_sumit:-94,p_sunira:211},
+ rounds:[
+  {n:1, w:'p_bijay',  s:[[126,'s'],[-42,'u'],[-42,'u'],[0,'s'],[-42,'u']]},
+  {n:2, w:'p_ritik',  s:[[-35,'s'],[-10,'s'],[62,'s'],[-62,'u'],[45,'s']]},
+  {n:3, w:'p_sunira', s:[[-54,'u'],[-22,'s'],[-19,'d'],[28,'s'],[67,'s']]},
+  {n:4, w:'p_sunira', s:[[-5,'s'],[-30,'s'],[-37,'u'],[-37,'u'],[109,'s']]},
+  {n:5, w:'p_ritik',  s:[[17,'s'],[-65,'u'],[39,'s'],[-23,'s'],[32,'s']]}
+ ]},
+{id:'g_d31_4', dayId:'day31', name:'Murder Round', variant:'murder', date:'2026-11-12', note:'10:40 PM table',
+ playerIds:['p_bijay','p_ashu','p_ritik','p_sumit','p_abin'],
+ totals:{p_bijay:-131,p_ashu:77,p_ritik:69,p_sumit:-97,p_abin:82},
+ rounds:[
+  {n:1, w:'p_abin',  s:[[-66,'u'],[-9,'s'],[-14,'s'],[-24,'s'],[113,'s']]},
+  {n:2, w:'p_ritik', s:[[-40,'u'],[92,'s'],[28,'s'],[-40,'u'],[-40,'u']]},
+  {n:3, w:'p_ashu',  s:[[8,'s'],[55,'s'],[-2,'s'],[-34,'u'],[-27,'s']]},
+  {n:4, w:'p_abin',  s:[[17,'s'],[-33,'s'],[-40,'u'],[-40,'u'],[96,'s']]},
+  {n:5, w:'p_sumit', s:[[-50,'d'],[-28,'s'],[97,'s'],[41,'s'],[-60,'u']]}
  ]}
 ]};
