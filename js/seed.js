@@ -44,7 +44,7 @@ players: [
   {id:'p_indira', name:'Indira', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_sushma', zelle:'(540) 504-8688', name:'Sushma', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
   {id:'p_alin', name:'Alin', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
-    {id:'p_abin', name:'Abin', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
+    {id:'p_abin', zelle:'(225) 441-1070', name:'Abin', title:'Debutant 🆕', emoji:'🆕', pattern:'', strength:'', weakness:''},
 ],
 couples: [
   ['p_reji','p_ritik'],
