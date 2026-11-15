@@ -83,7 +83,8 @@ days: [
   {id:'day28', label:'Day 28', date:'2026-11-09', note:'Nov 9', settled:true},
   {id:'day29', label:'Day 29', date:'2026-11-10', note:'Nov 10', settled:true},
   {id:'day30', label:'Day 30', date:'2026-11-11', note:'Nov 11', settled:true},
-  {id:'day31', label:'Day 31', date:'2026-11-12', note:'Nov 12', settled:true}
+  {id:'day31', label:'Day 31', date:'2026-11-12', note:'Nov 12', settled:true},
+  {id:'day32', label:'Day 32', date:'2026-11-13', note:'Nov 13', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1618,5 +1619,20 @@ games: [
   {n:3, w:'p_ashu',  s:[[8,'s'],[55,'s'],[-2,'s'],[-34,'u'],[-27,'s']]},
   {n:4, w:'p_abin',  s:[[17,'s'],[-33,'s'],[-40,'u'],[-40,'u'],[96,'s']]},
   {n:5, w:'p_sumit', s:[[-50,'d'],[-28,'s'],[97,'s'],[41,'s'],[-60,'u']]}
+ ]},
+{id:'g_d32_1', dayId:'day32', name:'Murder Round', variant:'murder', date:'2026-11-13', partial:true, note:'10:16 PM table (games 1-5 cropped; totals complete)',
+ playerIds:['p_sunira','p_indira','p_ashu','p_sandeep','p_sunil'],
+ totals:{p_sunira:-205,p_indira:-353,p_ashu:42,p_sandeep:54,p_sunil:462},
+ rounds:[
+  {n:6, w:'p_sunil', s:[[-35,'u'],[-35,'u'],[-28,'s'],[-35,'u'],[133,'s']]},
+  {n:7, w:'p_indira', s:[[17,'s'],[44,'s'],[7,'s'],[-50,'u'],[-18,'s']]},
+  {n:8, w:'p_sunil', s:[[-13,'s'],[-60,'u'],[-3,'s'],[47,'s'],[29,'s']]},
+  {n:9, w:'p_sandeep', s:[[-52,'u'],[-52,'u'],[55,'s'],[44,'s'],[5,'s']]},
+  {n:10, w:'p_sunil', s:[[1,'s'],[-56,'u'],[36,'s'],[-4,'s'],[23,'s']]},
+  {n:11, w:'p_sunira', s:[[75,'s'],[-26,'u'],[-26,'u'],[-19,'s'],[-4,'s']]},
+  {n:12, w:'p_ashu', s:[[-31,'s'],[-16,'s'],[84,'s'],[-6,'s'],[-31,'s']]},
+  {n:13, w:'p_sandeep', s:[[-29,'s'],[-29,'s'],[-4,'s'],[36,'s'],[26,'s']]},
+  {n:14, w:'p_sunil', s:[[-37,'s'],[13,'s'],[8,'s'],[-44,'u'],[60,'s']]},
+  {n:15, w:'p_sandeep', s:[[-39,'u'],[43,'s'],[-17,'s'],[10,'s'],[3,'s']]}
  ]}
 ]};
