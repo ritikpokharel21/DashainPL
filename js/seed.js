@@ -86,7 +86,7 @@ days: [
   {id:'day30', label:'Day 30', date:'2026-11-11', note:'Nov 11', settled:true},
   {id:'day31', label:'Day 31', date:'2026-11-12', note:'Nov 12', settled:true},
   {id:'day32', label:'Day 32', date:'2026-11-13', note:'Nov 13', settled:true},
-  {id:'day33', label:'Day 33', date:'2026-11-14', note:'Nov 14', settled:true}
+  {id:'day33', label:'Day 33', date:'2026-11-14', note:'Nov 14', settled:true, forcePair:['p_sunil','p_ritik']}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
