@@ -96,7 +96,7 @@ function sparkSVG(series){
 }
 function cumMoney(pts){
   var d=Math.round(pts*PT_RATE*100)/100;
-  return (d<0?'−$':'+$')+Math.abs(d).toFixed(2);
+  return (d<0?'−':'+')+Math.abs(d).toFixed(2);
 }
 function cumPoints(chart){
   if(chart._cumPoints) return chart._cumPoints;
@@ -436,7 +436,7 @@ function vDay(id){
         var pk=d.id+'|'+title+'|'+x.from+'>'+x.to+'|'+amt;
         var pd=isPaid(pk);
         bh+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
-          '<div class="sc"><div class="pv">$'+amt+'</div></div>'+
+          '<div class="sc"><div class="pv">'+amt+'</div></div>'+
           '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button>'+
           '<button class="paidbtn'+(pd?' on':'')+'" data-pk="'+esc(pk)+'" onclick="App.togglePaid(\''+pk.replace(/'/g,"\\'")+'\',this)">'+(pd?'✓ Settled':'Unsettled')+'</button></div>';
       });
