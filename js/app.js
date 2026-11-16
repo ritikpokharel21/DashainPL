@@ -437,7 +437,7 @@ function vDay(id){
         var pd=isPaid(pk);
         bh+='<div class="lb"><div class="grow"><div class="nm">'+esc(pname(x.from))+' <span class="dim">→</span> '+esc(pname(x.to))+'</div></div>'+
           '<div class="sc"><div class="pv">'+amt+'</div></div>'+
-          '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Zelle</button>'+
+          '<button class="btn ghost" style="min-height:0;padding:8px 14px;font-size:13px" onclick="App.copyZelleFor(\''+x.to+'\')">Z</button>'+
           '<button class="paidbtn'+(pd?' on':'')+'" data-pk="'+esc(pk)+'" onclick="App.togglePaid(\''+pk.replace(/'/g,"\\'")+'\',this)">'+(pd?'✓ Settled':'Unsettled')+'</button></div>';
       });
       return bh;
@@ -453,13 +453,13 @@ function vDay(id){
         }
       });
       g.forEach(function(gm){
-        if(!gm.settleGroup) h+=settleBlock(settlements(gameTotals(gm), null), 'Who Pays Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):''));
+        if(!gm.settleGroup) h+=settleBlock(settlements(gameTotals(gm), null), 'Who Gives Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):''));
       });
       gorder.forEach(function(gid){
-        h+=settleBlock(settlements(grouped[gid].t, null), 'Who Pays Who — Combined ('+grouped[gid].n+' tables)');
+        h+=settleBlock(settlements(grouped[gid].t, null), 'Who Gives Who — Combined ('+grouped[gid].n+' tables)');
       });
     } else {
-      h+=settleBlock(settlements(t, d.forcePair), 'Who Pays Who');
+      h+=settleBlock(settlements(t, d.forcePair), 'Who Gives Who');
     }
   }
   h+='<h3>Rounds ('+g.length+')</h3>';
@@ -636,7 +636,7 @@ function vPlayer(pid){
   '</div>';
   var pat=pinfo(pid).pattern;
   var pp=pinfo(pid);
-  if(pp.zelle) h+='<div class="card" onclick="App.copyZelle(\''+esc(pp.zelle)+'\')" style="cursor:pointer"><h3 style="margin-top:0">💳 Zelle Payment</h3><div class="small dim">tap to copy</div><div class="big" style="margin-top:6px">'+esc(pp.zelle)+'</div></div>';
+  if(pp.zelle) h+='<div class="card" onclick="App.copyZelle(\''+esc(pp.zelle)+'\')" style="cursor:pointer"><h3 style="margin-top:0">💳 Z Payment</h3><div class="small dim">tap to copy</div><div class="big" style="margin-top:6px">'+esc(pp.zelle)+'</div></div>';
   if(pat) h+='<div class="card"><h3 style="margin-top:0">🔍 The Pattern</h3><div style="font-size:14.5px;line-height:1.6">'+esc(pat)+'</div></div>';
   if(pp.strength||pp.weakness) h+='<div class="card"><h3 style="margin-top:0">💪⚖️ Strength & Weakness</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div class="small dim">💪 Strength</div><div style="font-size:14px;line-height:1.55">'+esc(pp.strength||'—')+'</div></div><div style="flex:1;min-width:200px"><div class="small dim">⚖️ Weakness</div><div style="font-size:14px;line-height:1.55">'+esc(pp.weakness||'—')+'</div></div></div></div>';
   h+='<div class="card"><h3 style="margin-top:0">🎴 Table image</h3><div class="row" style="justify-content:space-around;text-align:center">'+
@@ -1076,7 +1076,7 @@ togglePaid:function(k, el){
 },
 copyZelleFor:function(pid){
   var p=state.players.find(function(x){return x.id===pid;});
-  if(p&&p.zelle) App.copyZelle(p.zelle); else toast('No Zelle info for this player');
+  if(p&&p.zelle) App.copyZelle(p.zelle); else toast('No Z info for this player');
 },
 copyZelle:function(z){
   function done(){ toast('Copied — paste it in your bank app 💳'); }
