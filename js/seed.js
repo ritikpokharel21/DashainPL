@@ -87,7 +87,8 @@ days: [
   {id:'day31', label:'Day 31', date:'2026-11-12', note:'Nov 12', settled:true},
   {id:'day32', label:'Day 32', date:'2026-11-13', note:'Nov 13', settled:true},
   {id:'day33', label:'Day 33', date:'2026-11-14', note:'Nov 14', settled:true, forcePair:['p_sunil','p_ritik']},
-  {id:'day34', label:'Day 34', date:'2026-11-17', note:'Nov 17', settled:true}
+  {id:'day34', label:'Day 34', date:'2026-11-17', note:'Nov 17', settled:true},
+  {id:'day35', label:'Day 35', date:'2026-11-18', note:'Nov 18', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1713,5 +1714,25 @@ games: [
   {n:4, w:'p_bijay', s:[[101,'s'],[67,'s'],[-42,'u'],[-42,'u'],[-42,'u'],[-42,'u']]},
   {n:5, w:'p_ranj', s:[[-34,'u'],[-34,'u'],[-34,'u'],[-34,'u'],[27,'s'],[109,'s']]},
   {n:6, w:'p_shreya', s:[[-32,'u'],[-32,'u'],[93,'s'],[-32,'u'],[-32,'u'],[35,'s']]}
+ ]},
+{id:'g_d35_1', dayId:'day35', name:'Murder Round', variant:'murder', date:'2026-11-18', note:'10:45 PM table',
+ playerIds:['p_bijay','p_ranj','p_ashu','p_sandeep','p_ritik'],
+ totals:{p_bijay:192,p_ranj:-115,p_ashu:-182,p_sandeep:-45,p_ritik:150},
+ rounds:[
+  {n:1, w:'p_ritik', s:[[24,'s'],[-51,'s'],[-83,'u'],[-83,'u'],[193,'s']]},
+  {n:2, w:'p_bijay', s:[[15,'s'],[33,'s'],[-7,'s'],[8,'s'],[-49,'u']]},
+  {n:3, w:'p_ritik', s:[[64,'s'],[-36,'s'],[-31,'s'],[14,'s'],[-11,'s']]},
+  {n:4, w:'p_ritik', s:[[-31,'u'],[-31,'u'],[-31,'u'],[46,'s'],[47,'s']]},
+  {n:5, w:'p_bijay', s:[[120,'s'],[-30,'u'],[-30,'u'],[-30,'u'],[-30,'u']]}
+ ]},
+{id:'g_d35_2', dayId:'day35', name:'Murder Round', variant:'murder', date:'2026-11-18', note:'11:42 PM table',
+ playerIds:['p_bijay','p_ashu','p_ritik','p_ranj','p_sandeep'],
+ totals:{p_bijay:-49,p_ashu:0,p_ritik:-117,p_ranj:197,p_sandeep:-31},
+ rounds:[
+  {n:1, w:'p_ranj', s:[[-35,'u'],[-35,'u'],[-35,'u'],[133,'s'],[-28,'s']]},
+  {n:2, w:'p_sandeep', s:[[-9,'s'],[1,'s'],[1,'s'],[-9,'s'],[16,'d']]},
+  {n:3, w:'p_bijay', s:[[56,'s'],[-22,'u'],[-22,'u'],[-22,'u'],[10,'s']]},
+  {n:4, w:'p_ranj', s:[[-41,'u'],[-24,'s'],[-41,'u'],[115,'s'],[-9,'s']]},
+  {n:5, w:'p_ashu', s:[[-20,'u'],[80,'s'],[-20,'u'],[-20,'u'],[-20,'u']]}
  ]}
 ]};
