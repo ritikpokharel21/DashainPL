@@ -89,7 +89,8 @@ days: [
   {id:'day33', label:'Day 33', date:'2026-11-14', note:'Nov 14', settled:true, forcePair:['p_sunil','p_ritik']},
   {id:'day34', label:'Day 34', date:'2026-11-17', note:'Nov 17', settled:true},
   {id:'day35', label:'Day 35', date:'2026-11-18', note:'Nov 18', settled:true},
-  {id:'day36', label:'Day 36', date:'2026-11-19', note:'Nov 19', settled:true}
+  {id:'day36', label:'Day 36', date:'2026-11-19', note:'Nov 19', settled:true},
+  {id:'day37', label:'Day 37', date:'2026-11-21', note:'Nov 21', settled:true}
 ],
 games: [
 /* ---------- DAY 1 ---------- */
@@ -1787,5 +1788,47 @@ games: [
   {n:3, w:'p_sandeep', s:[[30,'s'],[-27,'u'],[51,'s'],[-27,'u'],[-27,'u']]},
   {n:4, w:'p_sandeep', s:[[-45,'s'],[30,'s'],[77,'s'],[-52,'u'],[-10,'s']]},
   {n:5, w:'p_nitesh', s:[[-12,'s'],[-29,'u'],[3,'s'],[-12,'s'],[50,'s']]}
+ ]},
+{id:'g_d37_1', dayId:'day37', name:'Murder Round', variant:'murder', date:'2026-11-21', note:'11:17 PM table',
+ playerIds:['p_bijay','p_sandeep','p_shishi','p_sunil','p_nitesh'],
+ totals:{p_bijay:-81,p_sandeep:-58,p_shishi:-106,p_sunil:25,p_nitesh:220},
+ rounds:[
+  {n:1, w:'p_nitesh', s:[[-30,'u'],[-23,'s'],[-30,'u'],[-30,'u'],[113,'s']]},
+  {n:2, w:'p_sunil', s:[[-45,'u'],[12,'s'],[-13,'s'],[24,'s'],[22,'s']]},
+  {n:3, w:'p_sunil', s:[[-38,'u'],[-31,'s'],[-38,'u'],[113,'s'],[-6,'s']]},
+  {n:4, w:'p_sandeep', s:[[70,'s'],[29,'s'],[-47,'u'],[-37,'d'],[-15,'s']]},
+  {n:5, w:'p_nitesh', s:[[-38,'s'],[-45,'u'],[22,'s'],[-45,'u'],[106,'s']]}
+ ]},
+{id:'g_d37_2', dayId:'day37', name:'Murder Round', variant:'murder', date:'2026-11-21', note:'12:11 AM table',
+ playerIds:['p_bijay','p_sandeep','p_shishi','p_sunil','p_nitesh','p_ashu'],
+ totals:{p_bijay:-83,p_sandeep:-88,p_shishi:114,p_sunil:9,p_nitesh:40,p_ashu:8},
+ rounds:[
+  {n:1, w:'p_sunil', s:[[12,'s'],[-37,'u'],[-18,'s'],[117,'s'],[-37,'u'],[-37,'u']]},
+  {n:2, w:'p_nitesh', s:[[-47,'u'],[-47,'u'],[20,'s'],[-47,'u'],[131,'s'],[-10,'s']]},
+  {n:3, w:'p_nitesh', s:[[28,'s'],[-69,'u'],[-32,'s'],[28,'s'],[35,'s'],[10,'s']]},
+  {n:4, w:'p_shishi', s:[[-28,'s'],[-35,'u'],[168,'s'],[-35,'u'],[-35,'u'],[-35,'u']]},
+  {n:5, w:'p_ashu', s:[[-16,'s'],[-41,'u'],[8,'s'],[-22,'s'],[-41,'u'],[112,'s']]},
+  {n:6, w:'p_sandeep', s:[[-32,'u'],[141,'s'],[-32,'u'],[-32,'u'],[-13,'s'],[-32,'u']]}
+ ]},
+{id:'g_d37_3', dayId:'day37', name:'Murder Round', variant:'murder', date:'2026-11-21', note:'1:06 AM table',
+ playerIds:['p_bijay','p_saram','p_shishi','p_sunil','p_nitesh','p_ashu'],
+ totals:{p_bijay:21,p_saram:51,p_shishi:-3,p_sunil:63,p_nitesh:-36,p_ashu:-96},
+ rounds:[
+  {n:1, w:'p_bijay', s:[[91,'s'],[16,'s'],[-33,'u'],[-33,'u'],[-33,'u'],[-8,'s']]},
+  {n:2, w:'p_sunil', s:[[-63,'u'],[64,'s'],[-63,'u'],[126,'s'],[-8,'s'],[-56,'s']]},
+  {n:3, w:'p_shishi', s:[[-20,'u'],[-20,'u'],[100,'s'],[-20,'u'],[-20,'u'],[-20,'u']]},
+  {n:4, w:'p_sunil', s:[[-37,'u'],[-37,'u'],[72,'s'],[69,'s'],[-37,'u'],[-30,'s']]},
+  {n:5, w:'p_bijay', s:[[75,'s'],[65,'d'],[-35,'u'],[-35,'u'],[-35,'u'],[-35,'u']]},
+  {n:6, w:'p_nitesh', s:[[-25,'s'],[-37,'s'],[-44,'u'],[-44,'u'],[97,'s'],[53,'s']]}
+ ]},
+{id:'g_d37_4', dayId:'day37', name:'Murder Round', variant:'murder', date:'2026-11-21', note:'2:19 AM table',
+ playerIds:['p_bijay','p_saram','p_shishi','p_nitesh','p_ashu'],
+ totals:{p_bijay:173,p_saram:-117,p_shishi:-67,p_nitesh:24,p_ashu:-13},
+ rounds:[
+  {n:1, w:'p_ashu', s:[[48,'s'],[-29,'u'],[-29,'u'],[-29,'u'],[39,'s']]},
+  {n:2, w:'p_nitesh', s:[[17,'s'],[-40,'u'],[-8,'s'],[71,'s'],[-40,'u']]},
+  {n:3, w:'p_saram', s:[[32,'s'],[19,'s'],[12,'s'],[-28,'s'],[-35,'u']]},
+  {n:4, w:'p_bijay', s:[[104,'s'],[-39,'u'],[-39,'u'],[13,'s'],[-39,'u']]},
+  {n:5, w:'p_ashu', s:[[-28,'s'],[-28,'s'],[-3,'s'],[-3,'s'],[62,'s']]}
  ]}
 ]};
