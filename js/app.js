@@ -1125,7 +1125,7 @@ var BOT_ALIAS={ashu:'p_ashu',aash:'p_ashu',ashutosh:'p_ashu',ranj:'p_ranj',ranju
   kusum:'p_kusum',dipesh:'p_dipesh',naresh:'p_naresh',utsav:'p_utsav',bibek:'p_bibek',pawan:'p_pawan',
   sadikxya:'p_sadikxya',alin:'p_alin',abin:'p_abin',hari:'p_hari',anit:'p_anit',solti:'p_solti',achyut:'p_achyut'};
 var BOT_PHRASES={'arun dai':'p_arun','arun banjara':'p_arunbanjara','bijay sir':'p_bijaysir','ashmita bhattarai':'p_ashmitab','solti dai':'p_solti','achyut sir':'p_achyut'};
-var botAwaitName=false, botPendingAmbig=null;
+var botAwaitName=false, botPendingAmbig=null, botLastPid=null, botLastRows=[];
 function botFindName(text){
   var t=' '+text.toLowerCase().replace(/[^a-z ]/g,' ').replace(/\s+/g,' ')+' ';
   for(var ph in BOT_PHRASES){ if(t.indexOf(' '+ph+' ')>=0) return {pid:BOT_PHRASES[ph]}; }
@@ -1169,6 +1169,7 @@ function botRows(){
 }
 function botAnswerFor(pid){
   var mine=botRows().filter(function(r){ return (r.from===pid||r.to===pid) && !isPaid(r.pk); });
+  botLastPid=pid; botLastRows=mine;
   if(!mine.length) return 'All settled. Nothing to pay or get.';
   var L=['Unsettled for '+pname(pid)+':'];
   mine.forEach(function(r){
@@ -1177,9 +1178,45 @@ function botAnswerFor(pid){
   });
   return L.join('\n');
 }
+function botSetPaid(k, on){
+  var m=paidMap(); m[k]=on?1:0;
+  try{ localStorage.setItem('dpl_paid_v1', JSON.stringify(m)); }catch(e){}
+  if(syncMap) syncMap[k]=on?1:0;
+  syncPush(k, on);
+}
+function botSettleCmd(raw, low){
+  if(!botLastPid){ botAwaitName=true; return "What's your name?"; }
+  var un=/unsettle|un-settle/.test(low) || (/mark/.test(low) && /unsettled/.test(low));
+  var rows;
+  if(un){
+    rows=botRows().filter(function(r){ return (r.from===botLastPid||r.to===botLastPid) && isPaid(r.pk); });
+    if(!rows.length) return 'Nothing settled to unsettle for '+pname(botLastPid)+'.';
+  } else {
+    rows=botLastRows.slice();
+    if(!rows.length) return 'Nothing unsettled for '+pname(botLastPid)+'.';
+  }
+  var dayM=/day\s*(\d+)/.exec(low);
+  var cp=botFindName(raw);
+  var hasCp=!!(cp && cp.pid && cp.pid!==botLastPid);
+  var target=rows;
+  if(dayM) target=target.filter(function(r){ return r.day===+dayM[1]; });
+  if(hasCp) target=target.filter(function(r){ return r.from===cp.pid||r.to===cp.pid; });
+  if(!dayM && !hasCp && !/\ball\b/.test(low) && target.length>1)
+    return 'Which one? Say "settle day '+rows[rows.length-1].day+'", "settle <name>", or "settle all".';
+  if(!target.length) return 'No unsettled row like that for '+pname(botLastPid)+'.';
+  target.forEach(function(r){ botSetPaid(r.pk, !un); });
+  syncRefreshButtons();
+  botLastRows=botRows().filter(function(r){ return (r.from===botLastPid||r.to===botLastPid) && !isPaid(r.pk); });
+  var L=[un?'Marked unsettled:':'Settled ✓'];
+  target.forEach(function(r){ L.push('Day '+r.day+': '+pname(r.from)+' → '+pname(r.to)+' '+r.amt); });
+  return L.join('\n');
+}
 function botReply(text){
   var raw=(text||'').trim();
   if(!raw) return null;
+  var low0=raw.toLowerCase();
+  if(raw.indexOf('?')<0 && !/^(is|has|did|who|what|why)\b/.test(low0) && /\b(settle|unsettle|mark)\b/.test(low0))
+    return botSettleCmd(raw, low0);
   if(botPendingAmbig){
     var pick=botFindName(raw);
     if(pick && pick.pid && botPendingAmbig.indexOf(pick.pid)>=0){ botPendingAmbig=null; botAwaitName=false; return botAnswerFor(pick.pid); }
