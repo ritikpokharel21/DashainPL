@@ -1214,6 +1214,16 @@ function botSettleCmd(raw, low){
 function botReply(text){
   var raw=(text||'').trim();
   if(!raw) return null;
+  /* Tiny polite replies: only when the message is basically just the phrase.
+     Never touches name/rows state, so a settle command right after still works. */
+  var polite=raw.toLowerCase().replace(/[!.,\s]+$/,'').replace(/\s+/g,' ').trim();
+  if(/^(thanks|thank you|thank u|thx|dhanyabad|thank you so much|thanks a lot)$/.test(polite)) return "You're welcome.";
+  if(/^(bye|bye bye|goodbye|see you|see ya)$/.test(polite)) return 'Bye.';
+  if(/^(hi|hello|hey|namaste|hi there|hello there|hey there|good morning|good afternoon|good evening)$/.test(polite)){
+    if(botLastPid) return 'Hi.';
+    botAwaitName=true;
+    return "Hi. What's your name?";
+  }
   var low0=raw.toLowerCase();
   if(raw.indexOf('?')<0 && !/^(is|has|did|who|what|why)\b/.test(low0) && /\b(settle|unsettle|mark)\b/.test(low0))
     return botSettleCmd(raw, low0);
