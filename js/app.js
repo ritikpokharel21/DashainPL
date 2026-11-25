@@ -1087,9 +1087,120 @@ shareGame:function(gid){
   var gt=gameTotals(g), r=ranked(gt), L=['🃏 DPL — '+g.name+' ('+dayLabel(g.dayId)+')'];
   r.forEach(function(e,i){ L.push((i+1)+'. '+pname(e.pid)+'  '+fmtPts(e.pts)+' ('+fmtMoney(e.pts)+')'); });
   shareText(L.join('\n'));
+},
+chatToggle:function(){
+  var p=document.getElementById('chatPanel'); if(!p) return;
+  var open=p.hasAttribute('hidden');
+  if(open){ p.removeAttribute('hidden'); syncFetch();
+    var log=document.getElementById('chatLog');
+    if(log && !log.children.length) botAddMsg('cm-b', "I answer settled / unsettled questions only. What's your name?");
+    var inp=document.getElementById('chatIn'); if(inp) inp.focus();
+  } else p.setAttribute('hidden','');
+},
+chatSend:function(){
+  var inp=document.getElementById('chatIn'); if(!inp) return;
+  var text=inp.value.trim(); if(!text) return;
+  inp.value='';
+  botAddMsg('cm-u', text);
+  var answer=function(){ var r=botReply(text); if(r) botAddMsg('cm-b', r); };
+  if(syncMap){ answer(); }
+  else { syncFetch(); setTimeout(answer, 700); }
 }
 };
 window.App=App;
+
+/* ---------------- settlement assistant (chatbot) ----------------
+   Answers ONLY settled/unsettled questions, from the site's own Who Gives Who
+   rows + the live settled state (same isPaid logic as the day pages).
+   No external service, no cost. Anyone can ask about anyone by name -
+   the settled map is already public on the day pages. */
+var BOT_ALIAS={ashu:'p_ashu',aash:'p_ashu',ashutosh:'p_ashu',ranj:'p_ranj',ranju:'p_ranj',
+  dibi:'p_dibi',dibikxya:'p_dibi',shis:'p_shishi',shishir:'p_shishi',sami:'p_sami',samiks:'p_sami',samikxya:'p_sami',
+  nite:'p_nitesh',nitesh:'p_nitesh',sand:'p_sandeep',sandeep:'p_sandeep',sank:'p_sanka',sanka:'p_sanka',sankalpa:'p_sanka',
+  suja:'p_sujan',sujan:'p_sujan',sush:'p_sushma',sushma:'p_sushma',reji:'p_reji',rejina:'p_reji',ritik:'p_ritik',vj:'p_ritik',
+  amr:'p_amrit',amrit:'p_amrit',bina:'p_binay',binay:'p_binay',prad:'p_pradeep',pradi:'p_pradeep',pradeep:'p_pradeep',
+  anis:'p_anish',anish:'p_anish',indi:'p_indira',indira:'p_indira',saram:'p_saram',sara:'p_saram',sarams:'p_saram',
+  shar:'p_saram',sharam:'p_saram',saramsh:'p_saram',bijay:'p_bijay',bij:'p_bijay',sunil:'p_sunil',sunira:'p_sunira',sunir:'p_sunira',
+  bipin:'p_bipin',bipi:'p_bipin',sumit:'p_sumit',sumi:'p_sumit',shreya:'p_shreya',ashmita:'p_ashmita',arun:'p_arun',
+  kusum:'p_kusum',dipesh:'p_dipesh',naresh:'p_naresh',utsav:'p_utsav',bibek:'p_bibek',pawan:'p_pawan',
+  sadikxya:'p_sadikxya',alin:'p_alin',abin:'p_abin',hari:'p_hari',anit:'p_anit',solti:'p_solti',achyut:'p_achyut'};
+var BOT_PHRASES={'arun dai':'p_arun','arun banjara':'p_arunbanjara','bijay sir':'p_bijaysir','ashmita bhattarai':'p_ashmitab','solti dai':'p_solti','achyut sir':'p_achyut'};
+var botAwaitName=false, botPendingAmbig=null;
+function botFindName(text){
+  var t=' '+text.toLowerCase().replace(/[^a-z ]/g,' ').replace(/\s+/g,' ')+' ';
+  for(var ph in BOT_PHRASES){ if(t.indexOf(' '+ph+' ')>=0) return {pid:BOT_PHRASES[ph]}; }
+  var toks=t.split(' ').filter(Boolean);
+  for(var i=0;i<toks.length;i++){
+    var w=toks[i];
+    if(w==='suni'||w==='san') return {ambig:(w==='suni'?['p_sunira','p_sunil']:['p_sanka','p_sandeep'])};
+    if(BOT_ALIAS[w]) return {pid:BOT_ALIAS[w]};
+  }
+  return null;
+}
+function botRows(){
+  var rows=[];
+  state.days.forEach(function(d){
+    if(!d.settled) return;
+    var dayNum=+d.id.replace('day','');
+    function collect(ss, title){
+      ss.forEach(function(x){
+        var amt=(Math.round(x.pts*PT_RATE*100)/100).toFixed(2);
+        var pk=d.id+'|'+title+'|'+x.from+'>'+x.to+'|'+amt;
+        rows.push({day:dayNum, from:x.from, to:x.to, amt:amt, pk:pk});
+      });
+    }
+    if(d.settlePerRound){
+      var g=dayGames(d.id), grouped={}, gorder=[];
+      g.forEach(function(gm){
+        if(gm.settleGroup){
+          if(!grouped[gm.settleGroup]){ grouped[gm.settleGroup]={t:{},n:0}; gorder.push(gm.settleGroup); }
+          var gt=gameTotals(gm);
+          for(var pid in gt) grouped[gm.settleGroup].t[pid]=(grouped[gm.settleGroup].t[pid]||0)+gt[pid];
+          grouped[gm.settleGroup].n++;
+        }
+      });
+      g.forEach(function(gm){ if(!gm.settleGroup) collect(settlements(gameTotals(gm), null), 'Who Gives Who — '+esc(gm.name)+(gm.note?' · '+esc(gm.note):'')); });
+      gorder.forEach(function(gid){ collect(settlements(grouped[gid].t, null), 'Who Gives Who — Combined ('+grouped[gid].n+' tables)'); });
+    } else {
+      collect(settlements(dayTotals(d.id), d.forcePair), 'Who Gives Who');
+    }
+  });
+  return rows;
+}
+function botAnswerFor(pid){
+  var mine=botRows().filter(function(r){ return (r.from===pid||r.to===pid) && !isPaid(r.pk); });
+  if(!mine.length) return 'All settled. Nothing to pay or get.';
+  var L=['Unsettled for '+pname(pid)+':'];
+  mine.forEach(function(r){
+    if(r.from===pid) L.push('Day '+r.day+': pay '+pname(r.to)+' '+r.amt);
+    else L.push('Day '+r.day+': get '+r.amt+' from '+pname(r.from));
+  });
+  return L.join('\n');
+}
+function botReply(text){
+  var raw=(text||'').trim();
+  if(!raw) return null;
+  if(botPendingAmbig){
+    var pick=botFindName(raw);
+    if(pick && pick.pid && botPendingAmbig.indexOf(pick.pid)>=0){ botPendingAmbig=null; botAwaitName=false; return botAnswerFor(pick.pid); }
+    botPendingAmbig=null;
+  }
+  var found=botFindName(raw);
+  if(found && found.ambig){ botPendingAmbig=found.ambig; return 'Which one: '+pname(found.ambig[0])+' or '+pname(found.ambig[1])+'?'; }
+  if(found && found.pid){ botAwaitName=false; return botAnswerFor(found.pid); }
+  var low=raw.toLowerCase();
+  if(botAwaitName) return 'No player by that name. Check the spelling and try again.';
+  if(/\b(standing|standings|rank|points|pts|winner|winning|win|won|leading|best|worst|stats|score|champion|crown|games played)\b/.test(low))
+    return 'I only answer settled / unsettled questions.';
+  botAwaitName=true;
+  return "What's your name?";
+}
+function botAddMsg(cls, text){
+  var log=document.getElementById('chatLog'); if(!log) return;
+  var div=document.createElement('div');
+  div.className='cm '+cls; div.textContent=text;
+  log.appendChild(div); log.scrollTop=log.scrollHeight;
+}
 
 /* ---------------- init ---------------- */
 window.addEventListener('hashchange', render);

@@ -13,7 +13,7 @@
 <script>
 /* Bump DPL_BUILD on every deploy. The page checks it is the latest copy:
    if the browser served a stale cached index.html, it reloads fresh. */
-var DPL_BUILD=132;
+var DPL_BUILD=133;
 (function(){
   if(!/^https?:/.test(location.protocol)) return;
   var done=false;
@@ -42,7 +42,7 @@ var DPL_BUILD=132;
 })();
 </script>
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/app.css?v=32">
+<link rel="stylesheet" href="css/app.css?v=33">
 </head>
 <body>
 <div id="phone">
@@ -60,7 +60,16 @@ var DPL_BUILD=132;
   <nav id="tabbar"></nav>
 </div>
 <script src="js/seed.js?v=83"></script>
-<script src="js/app.js?v=104"></script>
+<script src="js/app.js?v=105"></script>
+<button id="chatBtn" onclick="App.chatToggle()" title="Settlement assistant">💬</button>
+<div id="chatPanel" hidden>
+  <div class="chat-head"><span>💬 Settlement assistant</span><button class="chat-x" onclick="App.chatToggle()" title="Close">✕</button></div>
+  <div id="chatLog"></div>
+  <div class="chat-bar"><input id="chatIn" type="text" placeholder="e.g. I am Bijay, do I owe anyone?" autocomplete="off" enterkeyhint="send"><button id="chatSend" onclick="App.chatSend()">Send</button></div>
+</div>
+<script>
+document.getElementById('chatIn').addEventListener('keydown', function(e){ if(e.key==='Enter') App.chatSend(); });
+</script>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 </body>
 </html>

@@ -296,3 +296,22 @@ table.plain td.num,table.plain th.num{text-align:right;}
 
 .paidbtn{min-height:0;padding:8px 12px;font-size:13px;font-weight:700;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#cfd3da;cursor:pointer;white-space:nowrap}
 .paidbtn.on{border-color:rgba(46,204,113,.65);background:rgba(46,204,113,.16);color:#7be495}
+
+/* ---- settlement assistant (chatbot) ---- */
+#chatBtn{position:fixed;right:14px;bottom:calc(var(--tab-h) + 16px);z-index:60;width:54px;height:54px;border-radius:50%;
+  border:1px solid var(--glass-brd);background:var(--glass-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:var(--glass-sh);font-size:24px;cursor:pointer;color:var(--txt)}
+#chatPanel{position:fixed;right:10px;left:10px;bottom:calc(var(--tab-h) + 78px);z-index:61;max-width:400px;margin-left:auto;
+  border:1px solid var(--glass-brd);border-radius:var(--r);background:var(--glass-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--glass-sh);display:flex;flex-direction:column;overflow:hidden}
+#chatPanel[hidden]{display:none}
+.chat-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-weight:700;color:var(--gold2);
+  border-bottom:1px solid var(--line);background:rgba(0,0,0,.18)}
+.chat-x{background:none;border:none;color:var(--txt);font-size:16px;cursor:pointer;padding:2px 6px}
+#chatLog{padding:10px;display:flex;flex-direction:column;gap:8px;max-height:42vh;overflow-y:auto}
+.cm{max-width:88%;padding:8px 11px;border-radius:14px;font-size:14px;line-height:1.45;white-space:pre-line;word-break:break-word}
+.cm-b{align-self:flex-start;background:var(--card2);border:1px solid var(--line);border-bottom-left-radius:4px}
+.cm-u{align-self:flex-end;background:rgba(242,183,59,.18);border:1px solid rgba(242,183,59,.35);border-bottom-right-radius:4px}
+.chat-bar{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:rgba(0,0,0,.18)}
+#chatIn{flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:14px}
+#chatSend{padding:10px 16px;border-radius:12px;border:1px solid rgba(242,183,59,.4);background:rgba(242,183,59,.2);color:var(--gold2);font-weight:700;cursor:pointer}
